@@ -2,5 +2,6 @@
 
 angular.module('lilybook', [
     'ngMaterial',
+    'ui.router',
     'users'
 ]);

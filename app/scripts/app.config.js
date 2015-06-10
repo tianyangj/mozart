@@ -1,4 +1,6 @@
-angular.module('lilybook').config(function ($mdThemingProvider, $mdIconProvider) {
+angular.module('lilybook').config(function ($locationProvider, $mdThemingProvider, $mdIconProvider) {
+
+    $locationProvider.html5Mode(false).hashPrefix('!');
 
     $mdIconProvider
         .defaultIconSet("./assets/svg/avatars.svg", 128)

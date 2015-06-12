@@ -9,6 +9,10 @@ angular.module('lilybook').config(function ($stateProvider, $urlRouterProvider) 
 	.state('app.splash', {
 		url: '/',
 		templateUrl: 'views/pages/splash.html'
+	})
+	.state('app.home', {
+		url: '/home',
+		templateUrl: 'views/pages/splash.html'
 	});
 
 	$urlRouterProvider.otherwise('/');

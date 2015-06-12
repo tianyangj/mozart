@@ -1,5 +1,5 @@
 {
-  "name": "angular-material-starter",
+  "name": "lilybook",
   "description": "A starter project for AngularJS Material",
   "version": "0.0.2",
   "homepage": "https://github.com/angular/material-start",
@@ -10,9 +10,13 @@
     "angular-animate": "^1.4.x",
     "angular-aria": "^1.4.x",
     "angular-material": "^0.9.0",
+    "angular-material-icons": "^0.4.0",
     "angular-ui-router": "^0.2.15"
   },
   "devDependencies": {
     "angular-material": "~0.9.4"
+  },
+  "resolutions": {
+    "angular": "^1.4.x"
   }
 }

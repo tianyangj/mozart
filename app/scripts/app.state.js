@@ -10,7 +10,10 @@ angular.module('lilybook').config(function ($stateProvider, $urlRouterProvider) 
 	})
 	.state('app.splash', {
 		url: '/',
-		templateUrl: 'views/pages/splash.html'
+		views: {
+			'toolbar': { template: '<h2>Splash</h2>' },
+			'': { templateUrl: 'views/pages/splash.html' }
+		}
 	})
 	.state('app.login', {
 		url: '/login',

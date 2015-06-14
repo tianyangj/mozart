@@ -4,7 +4,9 @@ angular.module('lilybook').config(function ($stateProvider, $urlRouterProvider) 
 	.state('app', {
 		abstract: true,
 		url: '',
-		templateUrl: 'views/layout.html'
+		templateUrl: 'views/layout.html',
+		controller: 'AppController',
+		controllerAs: 'appCtrl'
 	})
 	.state('app.splash', {
 		url: '/',

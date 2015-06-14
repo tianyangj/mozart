@@ -3,83 +3,14 @@
 		<h1>LilyBook</h1>
 	</md-toolbar>
 	<md-list>
-		<md-subheader>YOUR HUB</md-subheader>
-		<md-list-item md-ink-ripple layout="row" layout-align="start center">
+		<md-subheader ng-repeat-start="group in appCtrl.sidenav">{{group.subheader}}</md-subheader>
+		<md-list-item md-ink-ripple layout="row" layout-align="start center" ng-repeat="item in group.items">
 			<div class="inset">
-				<ng-md-icon icon="home"></ng-md-icon>
+				<ng-md-icon icon="{{item.icon}}"></ng-md-icon>
 			</div>
-			<div class="inset">Home</div>
+			<div class="inset">{{item.title}}</div>
 		</md-list-item>
-		<md-list-item md-ink-ripple layout="row" layout-align="start center">
-			<div class="inset">
-				<ng-md-icon icon="portrait"></ng-md-icon>
-			</div>
-			<div class="inset">Profile</div>
-		</md-list-item>
-		<md-list-item md-ink-ripple layout="row" layout-align="start center">
-			<div class="inset">
-				<ng-md-icon icon="group"></ng-md-icon>
-			</div>
-			<div class="inset">Friends</div>
-		</md-list-item>
-		<md-list-item md-ink-ripple layout="row" layout-align="start center">
-			<div class="inset">
-				<ng-md-icon icon="group"></ng-md-icon>
-			</div>
-			<div class="inset">Loved</div>
-		</md-list-item>
-		<md-list-item md-ink-ripple layout="row" layout-align="start center">
-			<div class="inset">
-				<ng-md-icon icon="group"></ng-md-icon>
-			</div>
-			<div class="inset">History</div>
-		</md-list-item>
-		<md-divider></md-divider>
-		<md-subheader>DISCOVERY</md-subheader>
-		<md-list-item md-ink-ripple layout="row" layout-align="start center">
-			<div class="inset">
-				<ng-md-icon icon="group"></ng-md-icon>
-			</div>
-			<div class="inset">Recommendations</div>
-		</md-list-item>
-		<md-list-item md-ink-ripple layout="row" layout-align="start center">
-			<div class="inset">
-				<ng-md-icon icon="group"></ng-md-icon>
-			</div>
-			<div class="inset">Composers</div>
-		</md-list-item>
-		<md-list-item md-ink-ripple layout="row" layout-align="start center">
-			<div class="inset">
-				<ng-md-icon icon="group"></ng-md-icon>
-			</div>
-			<div class="inset">Compositions</div>
-		</md-list-item>
-		<md-divider></md-divider>
-		<md-subheader>MANAGEMENT</md-subheader>
-		<md-list-item md-ink-ripple layout="row" layout-align="start center">
-			<div class="inset">
-				<ng-md-icon icon="group"></ng-md-icon>
-			</div>
-			<div class="inset">Login</div>
-		</md-list-item>
-		<md-list-item md-ink-ripple layout="row" layout-align="start center">
-			<div class="inset">
-				<ng-md-icon icon="group"></ng-md-icon>
-			</div>
-			<div class="inset">Signup</div>
-		</md-list-item>
-		<md-list-item md-ink-ripple layout="row" layout-align="start center">
-			<div class="inset">
-				<ng-md-icon icon="group"></ng-md-icon>
-			</div>
-			<div class="inset">Account</div>
-		</md-list-item>
-		<md-list-item md-ink-ripple layout="row" layout-align="start center">
-			<div class="inset">
-				<ng-md-icon icon="group"></ng-md-icon>
-			</div>
-			<div class="inset">Setting</div>
-		</md-list-item>
+		<md-divider ng-repeat-end></md-divider>
 	</md-list>
 </md-sidenav>
 <div layout="column" class="relative" layout-fill role="main">

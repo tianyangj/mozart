@@ -1,3 +1,7 @@
+.block {
+	display: block;
+}
+
 .splash-container {
 	background-image: url('/images/hero.jpg');
 	background-size: cover;

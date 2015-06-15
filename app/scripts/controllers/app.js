@@ -18,13 +18,20 @@ angular.module('lilybook').controller('AppController', function ($rootScope, $st
 		$mdSidenav(sidenavId).toggle();
 	};
 
-	self.login = function (loginData) {
-		userSvc.logIn(loginData.email, loginData.password).then(function (user) {
-			loginData.error = null;
+	self.signup = function (signupData) {
+		userSvc.signUp(signupData.email, signupData.password, signupData.firstname, signupData.lastname).then(function (user) {
 			$rootScope.user = user;
 			$state.go('app.home');
 		}, function (error) {
-				loginData.error = error;
+				$mdToast.show(getSimpleToast(error.message));
+			});
+	};
+
+	self.login = function (loginData) {
+		userSvc.logIn(loginData.email, loginData.password).then(function (user) {
+			$rootScope.user = user;
+			$state.go('app.home');
+		}, function (error) {
 				$mdToast.show(getSimpleToast(error.message));
 			});
 	};

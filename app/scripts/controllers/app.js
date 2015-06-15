@@ -42,4 +42,11 @@ angular.module('lilybook').controller('AppController', function ($rootScope, $st
 			$state.go('app.splash');
 		});
 	};
+
+	$rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams, error) {
+		console.log('$stateChangeError', arguments);
+		if (error === 'AUTH_REQUIRED') {
+			$state.go('app.login');
+		}
+	});
 });

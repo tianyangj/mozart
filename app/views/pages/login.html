@@ -1,13 +1,27 @@
-<div flex layout="column">
-	<md-toolbar>
-		<div class="md-toolbar-tools">
-			<md-button class="md-icon-button" aria-label="Settings">
-				<ng-md-icon icon="menu"></ng-md-icon>
-			</md-button>
-			<h2 flex>Login</h2>
+<md-content flex class="md-padding" layout="column">
+	<div class="md-whiteframe-z2 md-padding">
+		<form name="loginForm">
+			<md-input-container>
+				<label>Email</label>
+				<input type="email" name="email" ng-model="loginData.email" required>
+			</md-input-container>
+			<md-input-container>
+				<label>Password</label>
+				<input type="password" name="password" ng-model="loginData.password" required>
+			</md-input-container>
+			<div class="md-padding" layout="row">
+				<md-button flex class="md-raised md-primary" ng-click="appCtrl.login(loginData)">Login</md-button>
+			</div>
+			<div class="md-padding text-center">
+				<a ui-sref="app.splash">Forgot password?</a>
+			</div>
+		</form>
+		<!--<md-divider></md-divider>
+		<div class="md-padding text-center">
+			Do not have an account?
 		</div>
-	</md-toolbar>
-	<div flex layout="column">
-		todo...
+		<div class="md-padding" layout="row">
+			<md-button flex class="md-raised md-accent">Sign Up</md-button>
+		</div>-->
 	</div>
-</div>
+</md-content>

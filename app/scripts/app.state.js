@@ -17,11 +17,17 @@ angular.module('lilybook').config(function ($stateProvider, $urlRouterProvider) 
 	})
 	.state('app.login', {
 		url: '/login',
-		templateUrl: 'views/pages/login.html'
+		views: {
+			'toolbar': { template: '<h2>Login</h2>' },
+			'': { templateUrl: 'views/pages/login.html' }
+		}
 	})
 	.state('app.signup', {
 		url: '/signup',
-		templateUrl: 'views/pages/signup.html'
+		views: {
+			'toolbar': { template: '<h2>Sign Up</h2>' },
+			'': { templateUrl: 'views/pages/signup.html' }
+		}
 	})
 	.state('app.home', {
 		url: '/home',

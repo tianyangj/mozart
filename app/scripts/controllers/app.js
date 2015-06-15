@@ -10,6 +10,10 @@ angular.module('lilybook').controller('AppController', function ($rootScope, $st
 		self.sidenav = sidenav;
 	});
 
+	userSvc.current().then(function (user) {
+		$rootScope.user = user;
+	});
+
 	self.toggleSidenav = function (sidenavId) {
 		$mdSidenav(sidenavId).toggle();
 	};
@@ -23,5 +27,12 @@ angular.module('lilybook').controller('AppController', function ($rootScope, $st
 				loginData.error = error;
 				$mdToast.show(getSimpleToast(error.message));
 			});
+	};
+
+	self.logout = function () {
+		userSvc.logOut().then(function () {
+			$rootScope.user = null;
+			$state.go('app.splash');
+		});
 	};
 });

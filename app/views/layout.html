@@ -12,6 +12,13 @@
 			<md-divider ng-hide="$last" ng-repeat-end></md-divider>
 		</md-list>
 	</md-content>
+	<md-toolbar layout="row" layout-align="center center">
+		<md-button class="md-raised md-accent" ng-if="!user" ui-sref="app.signup">Sign Up</md-button>
+		<div class="md-padding" ng-if="user">Hi, {{user.firstname}}</div>
+		<span flex></span>
+		<md-button class="md-raised" ng-if="!user" ui-sref="app.login">Login</md-button>
+		<md-button class="md-raised" ng-if="user" ng-click="appCtrl.logout()">Logout</md-button>
+	</md-toolbar>
 </md-sidenav>
 <div flex layout="column">
 	<md-toolbar>

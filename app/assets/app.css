@@ -6,6 +6,10 @@
 	text-align: center;
 }
 
+.full-width {
+	width: 100%;
+}
+
 .splash-container {
 	background-image: url('/images/hero.jpg');
 	background-size: cover;

@@ -29,6 +29,17 @@ angular.module('lilybook').config(function ($stateProvider, $urlRouterProvider) 
 			'': { templateUrl: 'views/pages/signup.html' }
 		}
 	})
+	.state('app.composers', {
+		url: '/composers',
+		views: {
+			'toolbar': { template: '<h2>Composers</h2>' },
+			'': { 
+				templateUrl: 'views/pages/composers.html',
+				controller: 'ComposersController',
+				controllerAs: 'composersCtrl'
+			}
+		}
+	})
 	.state('app.home', {
 		url: '/home',
 		templateUrl: 'views/pages/home.html'

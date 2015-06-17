@@ -15,6 +15,11 @@ angular.module('lilybook.composer', [
                 controller: 'ComposerController',
                 controllerAs: 'composerCtrl'
             }
+        },
+        resolve: {
+            composer: ['$stateParams', 'composerSvc', function ($stateParams, composerSvc) {
+                return composerSvc.getComposer($stateParams.vanity);
+            }]
         }
     });
 });

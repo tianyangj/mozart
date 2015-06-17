@@ -1,5 +1,4 @@
-angular.module('lilybook.composer').controller('ComposerToolbarController', function ($stateParams, composerSvc, compositionSvc) {
+angular.module('lilybook.composer').controller('ComposerToolbarController', function (composer) {
 
-	var self = this;
-
+	this.composer = composer;
 });

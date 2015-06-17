@@ -10,6 +10,10 @@
 	width: 100%;
 }
 
+.pointer {
+	cursor: pointer;
+}
+
 .splash-container {
 	background-image: url('/images/hero.jpg');
 	background-size: cover;

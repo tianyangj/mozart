@@ -3,5 +3,6 @@
 angular.module('lilybook', [
     'ngMaterial',
     'ngMdIcons',
-    'ui.router'
+    'ui.router',
+    'lilybook.composer'
 ]);

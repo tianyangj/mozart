@@ -1,12 +1,10 @@
-angular.module('lilybook').controller('ComposersController', function (composerSvc) {
+angular.module('lilybook').controller('ComposersController', function(composerSvc) {
 
-	var self = this;
-
-	composerSvc.getAllComposers().then(function (composers) {
-		self.composers = composers.filter(function (composer) {
+	composerSvc.getAllComposers().then(composers => {
+		this.composers = composers.filter(composer => {
 			return composer.image;
 		});
-		self.composers.forEach(function (composer) {
+		this.composers.forEach(composer => {
 			if (composer.vanity === 'chopin' || composer.vanity === 'liszt') {
 				composer.rowspan = composer.colspan = 2;
 			} else {

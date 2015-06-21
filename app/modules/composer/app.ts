@@ -1,7 +1,7 @@
 angular.module('lilybook.composer', [
     'ngMaterial',
     'ui.router'
-]).config(function ($stateProvider) {
+]).config(function($stateProvider) {
     $stateProvider.state('app.composer', {
         url: '/composer/:vanity',
         views: {
@@ -17,7 +17,7 @@ angular.module('lilybook.composer', [
             }
         },
         resolve: {
-            composer: ['$stateParams', 'composerSvc', function ($stateParams, composerSvc) {
+            composer: ['$stateParams', 'composerSvc', function($stateParams, composerSvc) {
                 return composerSvc.getComposer($stateParams.vanity);
             }]
         }

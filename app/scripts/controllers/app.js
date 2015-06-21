@@ -1,18 +1,18 @@
 angular.module('lilybook').controller('AppController', function ($rootScope, $state, $mdSidenav, $mdToast, menuSvc, userSvc) {
-    var self = this;
+    var _this = this;
     var getSimpleToast = function (message) {
         return $mdToast.simple().content(message).position('top right');
     };
     menuSvc.getSideNav().then(function (sidenav) {
-        self.sidenav = sidenav;
+        _this.sidenav = sidenav;
     });
     userSvc.current().then(function (user) {
         $rootScope.user = user;
     });
-    self.toggleSidenav = function (sidenavId) {
+    this.toggleSidenav = function (sidenavId) {
         $mdSidenav(sidenavId).toggle();
     };
-    self.signup = function (signupData) {
+    this.signup = function (signupData) {
         userSvc.signUp(signupData.email, signupData.password, signupData.firstname, signupData.lastname).then(function (user) {
             $rootScope.user = user;
             $state.go('app.home');
@@ -20,7 +20,7 @@ angular.module('lilybook').controller('AppController', function ($rootScope, $st
             $mdToast.show(getSimpleToast(error.message));
         });
     };
-    self.login = function (loginData) {
+    this.login = function (loginData) {
         userSvc.logIn(loginData.email, loginData.password).then(function (user) {
             $rootScope.user = user;
             $state.go('app.home');
@@ -28,7 +28,7 @@ angular.module('lilybook').controller('AppController', function ($rootScope, $st
             $mdToast.show(getSimpleToast(error.message));
         });
     };
-    self.logout = function () {
+    this.logout = function () {
         userSvc.logOut().then(function () {
             $rootScope.user = null;
             $state.go('app.splash');

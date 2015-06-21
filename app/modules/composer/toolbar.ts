@@ -1,4 +1,4 @@
-angular.module('lilybook.composer').controller('ComposerToolbarController', function (composer) {
+angular.module('lilybook.composer').controller('ComposerToolbarController', function(composer) {
 
 	this.composer = composer;
 });

@@ -1,6 +1,6 @@
 angular.module('lilybook.composer').controller('ComposerController', function (composer, compositionSvc) {
-    var self = this;
-    self.composer = composer;
+    var _this = this;
+    this.composer = composer;
     compositionSvc.getCompositionsByComposer(composer).then(function (compositions) {
         var compositionGroups = {};
         compositions.forEach(function (composition) {
@@ -9,6 +9,6 @@ angular.module('lilybook.composer').controller('ComposerController', function (c
             }
             compositionGroups[composition.type].push(composition);
         });
-        self.compositionGroups = compositionGroups;
+        _this.compositionGroups = compositionGroups;
     });
 });

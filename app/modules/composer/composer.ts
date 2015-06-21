@@ -1,17 +1,15 @@
-angular.module('lilybook.composer').controller('ComposerController', function (composer, compositionSvc) {
+angular.module('lilybook.composer').controller('ComposerController', function(composer, compositionSvc) {
 
-	var self = this;
+	this.composer = composer;
 
-	self.composer = composer;
-
-	compositionSvc.getCompositionsByComposer(composer).then(function (compositions) {
+	compositionSvc.getCompositionsByComposer(composer).then(compositions => {
 		var compositionGroups = {};
-		compositions.forEach(function (composition) {
+		compositions.forEach(composition => {
 			if (!compositionGroups[composition.type]) {
 				compositionGroups[composition.type] = [];
 			}
 			compositionGroups[composition.type].push(composition);
 		});
-		self.compositionGroups = compositionGroups;
+		this.compositionGroups = compositionGroups;
 	});
 });

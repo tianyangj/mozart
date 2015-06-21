@@ -18,8 +18,8 @@ angular.module('lilybook.composer', [
         },
         resolve: {
             composer: ['$stateParams', 'composerSvc', function ($stateParams, composerSvc) {
-                    return composerSvc.getComposer($stateParams.vanity);
-                }]
+                return composerSvc.getComposer($stateParams.vanity);
+            }]
         }
     });
 });

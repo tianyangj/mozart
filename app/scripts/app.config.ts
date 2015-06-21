@@ -1,12 +1,19 @@
-angular.module('lilybook').config(function($locationProvider, $mdThemingProvider, $mdIconProvider) {
+module lilybook {
+    'use strict';
 
-    $locationProvider.html5Mode(false).hashPrefix('!');
+    lilybook.main.config(($locationProvider, $mdThemingProvider, $mdIconProvider) => {
 
-    $mdIconProvider
-        .icon("music_library", "./assets/svg/ic_library_music_black_48px.svg", 24)
-        .icon("arrow_right", "./assets/svg/ic_chevron_right_black_48px.svg", 24);
+        $locationProvider
+            .html5Mode(false)
+            .hashPrefix('!');
 
-    $mdThemingProvider.theme('default')
-        .primaryPalette('blue');
+        $mdIconProvider
+            .icon("music_library", "./assets/svg/ic_library_music_black_48px.svg", 24)
+            .icon("arrow_right", "./assets/svg/ic_chevron_right_black_48px.svg", 24);
 
-});
+        $mdThemingProvider
+            .theme('default')
+            .primaryPalette('blue')
+            .accentPalette('green');
+    });
+}

@@ -1,50 +1,77 @@
-angular.module('lilybook').controller('AppController', function($rootScope, $state, $mdSidenav, $mdToast, menuSvc, userSvc) {
+module lilybook {
+	'use strict';
 
-	var getSimpleToast = function(message) {
-		return $mdToast.simple().content(message).position('top right');
-	};
+	class AppController {
 
-	menuSvc.getSideNav().then(sidenav => {
-		this.sidenav = sidenav;
-	});
+		public static $inject = [
+			'$rootScope',
+			'$state',
+			'$mdSidenav',
+			'$mdToast',
+			'menuSvc',
+			'userSvc',
+		];
 
-	userSvc.current().then(function(user) {
-		$rootScope.user = user;
-	});
-
-	this.toggleSidenav = function(sidenavId) {
-		$mdSidenav(sidenavId).toggle();
-	};
-
-	this.signup = function(signupData) {
-		userSvc.signUp(signupData.email, signupData.password, signupData.firstname, signupData.lastname).then(function(user) {
-			$rootScope.user = user;
-			$state.go('app.home');
-		}, function(error) {
-			$mdToast.show(getSimpleToast(error.message));
-		});
-	};
-
-	this.login = function(loginData) {
-		userSvc.logIn(loginData.email, loginData.password).then(function(user) {
-			$rootScope.user = user;
-			$state.go('app.home');
-		}, function(error) {
-			$mdToast.show(getSimpleToast(error.message));
-		});
-	};
-
-	this.logout = function() {
-		userSvc.logOut().then(function() {
-			$rootScope.user = null;
-			$state.go('app.splash');
-		});
-	};
-
-	$rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
-		console.log('$stateChangeError', arguments);
-		if (error === 'AUTH_REQUIRED') {
-			$state.go('app.login');
+		constructor(
+			private $rootScope: any,
+			private $state: angular.ui.IStateService,
+			private $mdSidenav: any,
+			private $mdToast: any,
+			private menuSvc: any,
+			private userSvc: any
+			) {
+			this.menuSvc.getSideNav().then((sidenav) => {
+				this.sidenav = sidenav;
+			});
+			this.userSvc.current().then((user) => {
+				this.$rootScope.user = user;
+			});
+			this.$rootScope.$on('$stateChangeError', (event, toState, toParams, fromState, fromParams, error) => {
+				console.log('$stateChangeError', error);
+				if (error === 'AUTH_REQUIRED') {
+					this.$state.go('app.login');
+				}
+			});
 		}
-	});
-});
+
+		public sidenav: any[];
+
+		private getSimpleToast = (message: string) => {
+			return this.$mdToast
+				.simple()
+				.content(message)
+				.position('top right');
+		};
+
+		toggleSidenav = (sidenavId: string) => {
+			this.$mdSidenav(sidenavId).toggle();
+		}
+
+		signup = (signupData: any) => {
+			this.userSvc.signUp(signupData.email, signupData.password, signupData.firstname, signupData.lastname).then((user) => {
+				this.$rootScope.user = user;
+				this.$state.go('app.home');
+			}, (error) => {
+				this.$mdToast.show(this.getSimpleToast(error.message));
+			});
+		};
+
+		login = (loginData: any) => {
+			this.userSvc.logIn(loginData.email, loginData.password).then((user) => {
+				this.$rootScope.user = user;
+				this.$state.go('app.home');
+			}, (error) => {
+				this.$mdToast.show(this.getSimpleToast(error.message));
+			});
+		};
+
+		logout = () => {
+			this.userSvc.logOut().then(() => {
+				this.$rootScope.user = null;
+				this.$state.go('app.splash');
+			});
+		};
+	}
+
+	lilybook.main.controller('AppController', AppController);
+}

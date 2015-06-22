@@ -6,7 +6,8 @@ var lilybook;
         'ui.router'
     ]);
     lilybook.composer.config(function ($stateProvider) {
-        $stateProvider.state('app.composer', {
+        $stateProvider
+            .state('app.composer', {
             url: '/composer/:vanity',
             views: {
                 'toolbar': {
@@ -24,6 +25,17 @@ var lilybook;
                 composer: ['$stateParams', 'composerSvc', function ($stateParams, composerSvc) {
                         return composerSvc.getComposer($stateParams.vanity);
                     }]
+            }
+        })
+            .state('app.composers', {
+            url: '/composers',
+            views: {
+                'toolbar': { template: '<h2>Composers</h2>' },
+                '': {
+                    templateUrl: 'modules/composer/views/composers.html',
+                    controller: 'ComposersController',
+                    controllerAs: 'composersCtrl'
+                }
             }
         });
     });

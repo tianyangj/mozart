@@ -1,4 +1,12 @@
-angular.module('lilybook.composer').controller('ComposerToolbarController', function(composer) {
+module lilybook {
+	'use strict';
 
-	this.composer = composer;
-});
+	class ComposerToolbarController {
+
+		public static $inject = ['composer'];
+
+		constructor(public composer: any) { }
+	}
+
+	lilybook.composer.controller('ComposerToolbarController', ComposerToolbarController);
+}

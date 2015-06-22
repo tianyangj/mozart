@@ -1,15 +1,31 @@
-angular.module('lilybook.composer').controller('ComposerController', function(composer, compositionSvc) {
+module lilybook {
+    'use strict';
 
-	this.composer = composer;
+	class ComposerController {
 
-	compositionSvc.getCompositionsByComposer(composer).then(compositions => {
-		var compositionGroups = {};
-		compositions.forEach(composition => {
-			if (!compositionGroups[composition.type]) {
-				compositionGroups[composition.type] = [];
-			}
-			compositionGroups[composition.type].push(composition);
-		});
-		this.compositionGroups = compositionGroups;
-	});
-});
+		public static $inject = [
+			'composer',
+			'compositionSvc'
+		];
+
+		constructor(
+			public composer: any,
+			private compositionSvc: any
+			) {
+			this.compositionSvc.getCompositionsByComposer(composer).then(compositions => {
+				var compositionGroups = {};
+				compositions.forEach(composition => {
+					if (!compositionGroups[composition.type]) {
+						compositionGroups[composition.type] = [];
+					}
+					compositionGroups[composition.type].push(composition);
+				});
+				this.compositionGroups = compositionGroups;
+			});
+		}
+
+		public compositionGroups: any;
+	}
+
+	lilybook.composer.controller('ComposerController', ComposerController);
+}

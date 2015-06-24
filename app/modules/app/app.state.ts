@@ -31,10 +31,6 @@ module lilybook.app {
 					'toolbar': { template: '<h2>Sign Up</h2>' },
 					'': { templateUrl: 'modules/app/views/signup.html' }
 				}
-			})
-			.state('app.home', {
-				url: '/home',
-				templateUrl: 'views/pages/home.html'
 			});
 
 		$urlRouterProvider.otherwise('/');

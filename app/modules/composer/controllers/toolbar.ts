@@ -1,12 +1,12 @@
-module lilybook {
+module lilybook.composer {
 	'use strict';
 
-	class ComposerToolbarController {
+	export class ComposerToolbarController {
 
 		public static $inject = ['composer'];
 
 		constructor(public composer: any) { }
 	}
 
-	lilybook.composer.controller('ComposerToolbarController', ComposerToolbarController);
+	lilybook.composer.module.controller('ComposerToolbarController', ComposerToolbarController);
 }

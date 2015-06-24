@@ -1,12 +1,12 @@
-module lilybook {
+module lilybook.composer {
     'use strict';
 
-    export var composer = angular.module('lilybook.composer', [
+    export var module = angular.module('lilybook.composer', [
         'ngMaterial',
         'ui.router'
     ]);
 
-    composer.config(($stateProvider) => {
+    module.config(($stateProvider) => {
         $stateProvider
             .state('app.composer', {
                 url: '/composer/:vanity',

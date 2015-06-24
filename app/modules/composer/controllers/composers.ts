@@ -1,7 +1,7 @@
-module lilybook {
+module lilybook.composer {
     'use strict';
 
-	class ComposersController {
+	export class ComposersController {
 
 		public static $inject = ['composerSvc'];
 
@@ -25,5 +25,5 @@ module lilybook {
 		public composers: any[];
 	}
 
-	lilybook.composer.controller('ComposersController', ComposersController);
+	lilybook.composer.module.controller('ComposersController', ComposersController);
 }

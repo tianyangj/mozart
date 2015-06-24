@@ -1,7 +1,7 @@
-module lilybook {
+module lilybook.app {
 	'use strict';
 
-	class AppController {
+	export class AppController {
 
 		public static $inject = [
 			'$rootScope',
@@ -73,5 +73,5 @@ module lilybook {
 		};
 	}
 
-	lilybook.main.controller('AppController', AppController);
+	lilybook.app.module.controller('AppController', AppController);
 }

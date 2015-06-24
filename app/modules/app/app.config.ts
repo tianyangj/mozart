@@ -1,7 +1,7 @@
-module lilybook {
+module lilybook.app {
     'use strict';
 
-    lilybook.main.config(($locationProvider, $mdThemingProvider, $mdIconProvider) => {
+    lilybook.app.module.config(($locationProvider, $mdThemingProvider, $mdIconProvider) => {
 
         $locationProvider
             .html5Mode(false)

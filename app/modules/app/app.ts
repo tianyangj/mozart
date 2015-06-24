@@ -1,7 +1,7 @@
-module lilybook {
+module lilybook.app {
     'use strict';
 
-    export var main = angular.module('lilybook', [
+    export var module = angular.module('lilybook', [
         'ngMaterial',
         'ngMdIcons',
         'ui.router',

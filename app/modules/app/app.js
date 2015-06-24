@@ -1,10 +1,13 @@
 var lilybook;
 (function (lilybook) {
-    'use strict';
-    lilybook.main = angular.module('lilybook', [
-        'ngMaterial',
-        'ngMdIcons',
-        'ui.router',
-        'lilybook.composer'
-    ]);
+    var app;
+    (function (app) {
+        'use strict';
+        app.module = angular.module('lilybook', [
+            'ngMaterial',
+            'ngMdIcons',
+            'ui.router',
+            'lilybook.composer'
+        ]);
+    })(app = lilybook.app || (lilybook.app = {}));
 })(lilybook || (lilybook = {}));

@@ -7,7 +7,7 @@ module lilybook.app {
 			.state('app', {
 				abstract: true,
 				url: '',
-				templateUrl: 'views/layout.html',
+				templateUrl: 'layout.html',
 				controller: 'AppController',
 				controllerAs: 'appCtrl'
 			})
@@ -15,21 +15,21 @@ module lilybook.app {
 				url: '/',
 				views: {
 					'toolbar': { template: '<h2>Splash</h2>' },
-					'': { templateUrl: 'views/pages/splash.html' }
+					'': { templateUrl: 'modules/app/views/splash.html' }
 				}
 			})
 			.state('app.login', {
 				url: '/login',
 				views: {
 					'toolbar': { template: '<h2>Login</h2>' },
-					'': { templateUrl: 'views/pages/login.html' }
+					'': { templateUrl: 'modules/app/views/login.html' }
 				}
 			})
 			.state('app.signup', {
 				url: '/signup',
 				views: {
 					'toolbar': { template: '<h2>Sign Up</h2>' },
-					'': { templateUrl: 'views/pages/signup.html' }
+					'': { templateUrl: 'modules/app/views/signup.html' }
 				}
 			})
 			.state('app.home', {

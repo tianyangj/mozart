@@ -1,8 +1,28 @@
-'use strict';
+module lilybook.data {
+	'use strict';
 
-angular.module('lilybook').factory('mapperSvc', function () {
+	export interface IMapperSvc {
+		composerMapper(composer: Parse.Object): IComposer
+	}
 
-	var compositionMapper = function (composition) {
+	export class MapperSvc implements IMapperSvc {
+		composerMapper(composer: Parse.Object) {
+			return {
+				base: composer,
+				id: composer.id,
+				fullname: composer.get('fullName'),
+				shortname: composer.get('shortName'),
+				bio: composer.get('description'),
+				vanity: composer.get('vanity'),
+				image: composer.get('image') ? composer.get('image').url() : null
+			};
+		}
+	}
+}
+
+angular.module('lilybook').factory('mapperSvc', function() {
+
+	var compositionMapper = function(composition) {
 		return {
 			base: composition,
 			id: composition.id,
@@ -22,7 +42,7 @@ angular.module('lilybook').factory('mapperSvc', function () {
 		};
 	};
 
-	var composerMapper = function (composer) {
+	var composerMapper = function(composer) {
 		return {
 			base: composer,
 			id: composer.id,
@@ -34,7 +54,7 @@ angular.module('lilybook').factory('mapperSvc', function () {
 		};
 	};
 
-	var videoMapper = function (video) {
+	var videoMapper = function(video) {
 		return {
 			base: video,
 			id: video.id,
@@ -44,7 +64,7 @@ angular.module('lilybook').factory('mapperSvc', function () {
 		};
 	};
 
-	var sheetMapper = function (sheet) {
+	var sheetMapper = function(sheet) {
 		return {
 			base: sheet,
 			id: sheet.id,

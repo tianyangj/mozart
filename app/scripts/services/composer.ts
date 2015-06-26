@@ -1,3 +1,50 @@
+module lilybook.data {
+	'use strict';
+
+	export interface IComposer {
+		base: Parse.Object,
+		id: string,
+		fullname: string,
+		shortname: string,
+		bio: string,
+		vanity: string,
+		image?: string
+	}
+
+	export interface IComposerSvc {
+		getComposer(vanity: string): ng.IPromise<IComposer>
+	}
+
+	export class ComposerSvc implements IComposerSvc {
+
+		private ComposerDB: Parse.Object;
+		private mapperSvc: IMapperSvc;
+
+		static $inject = ['$q'];
+
+		constructor(private $q: ng.IQService) {
+			this.ComposerDB = Parse.Object.extend('Composer');
+			this.mapperSvc = new MapperSvc();
+		};
+
+		getComposer(vanity: string) {
+			var defer = this.$q.defer();
+			var query = new Parse.Query(this.ComposerDB);
+			query.equalTo('vanity', vanity);
+			query.first().then((composer: Parse.Object) => {
+				if (composer) {
+					defer.resolve(<IComposer>this.mapperSvc.composerMapper(composer));
+				} else {
+					defer.reject('NOT_FOUND');
+				}
+			}, (error) => {
+				defer.reject(error);
+			});
+			return defer.promise;
+		}
+	}
+}
+
 angular.module('lilybook').factory('composerSvc', function($q, mapperSvc) {
 
 	var Composer = Parse.Object.extend('Composer');
@@ -39,7 +86,7 @@ angular.module('lilybook').factory('composerSvc', function($q, mapperSvc) {
 		var query = new Parse.Query(Composer);
 		query.skip(skip || 0);
 		query.limit(limit || 10);
-		query.find().then(function(results : any[]) {
+		query.find().then(function(results: any[]) {
 			defer.resolve(results.map(mapperSvc.composerMapper));
 		}, function(error) {
 			defer.reject(error);
@@ -53,7 +100,7 @@ angular.module('lilybook').factory('composerSvc', function($q, mapperSvc) {
 		query.exists('image');
 		query.ascending('vanity');
 		query.limit(3);
-		query.find().then(function(results : any[]) {
+		query.find().then(function(results: any[]) {
 			defer.resolve(results.map(mapperSvc.composerMapper));
 		}, function(error) {
 			defer.reject(error);
@@ -64,7 +111,7 @@ angular.module('lilybook').factory('composerSvc', function($q, mapperSvc) {
 	var getAllComposers = function() {
 		var defer = $q.defer();
 		var query = new Parse.Query(Composer);
-		query.find().then(function(results : any[]) {
+		query.find().then(function(results: any[]) {
 			defer.resolve(results.map(mapperSvc.composerMapper));
 		}, function(error) {
 			defer.reject(error);

@@ -1,4 +1,27 @@
-'use strict';
+var lilybook;
+(function (lilybook) {
+    var data;
+    (function (data) {
+        'use strict';
+        var MapperSvc = (function () {
+            function MapperSvc() {
+            }
+            MapperSvc.prototype.composerMapper = function (composer) {
+                return {
+                    base: composer,
+                    id: composer.id,
+                    fullname: composer.get('fullName'),
+                    shortname: composer.get('shortName'),
+                    bio: composer.get('description'),
+                    vanity: composer.get('vanity'),
+                    image: composer.get('image') ? composer.get('image').url() : null
+                };
+            };
+            return MapperSvc;
+        })();
+        data.MapperSvc = MapperSvc;
+    })(data = lilybook.data || (lilybook.data = {}));
+})(lilybook || (lilybook = {}));
 angular.module('lilybook').factory('mapperSvc', function () {
     var compositionMapper = function (composition) {
         return {

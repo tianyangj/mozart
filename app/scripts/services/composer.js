@@ -1,3 +1,38 @@
+var lilybook;
+(function (lilybook) {
+    var data;
+    (function (data) {
+        'use strict';
+        var ComposerSvc = (function () {
+            function ComposerSvc($q) {
+                this.$q = $q;
+                this.ComposerDB = Parse.Object.extend('Composer');
+                this.mapperSvc = new data.MapperSvc();
+            }
+            ;
+            ComposerSvc.prototype.getComposer = function (vanity) {
+                var _this = this;
+                var defer = this.$q.defer();
+                var query = new Parse.Query(this.ComposerDB);
+                query.equalTo('vanity', vanity);
+                query.first().then(function (composer) {
+                    if (composer) {
+                        defer.resolve(_this.mapperSvc.composerMapper(composer));
+                    }
+                    else {
+                        defer.reject('NOT_FOUND');
+                    }
+                }, function (error) {
+                    defer.reject(error);
+                });
+                return defer.promise;
+            };
+            ComposerSvc.$inject = ['$q'];
+            return ComposerSvc;
+        })();
+        data.ComposerSvc = ComposerSvc;
+    })(data = lilybook.data || (lilybook.data = {}));
+})(lilybook || (lilybook = {}));
 angular.module('lilybook').factory('composerSvc', function ($q, mapperSvc) {
     var Composer = Parse.Object.extend('Composer');
     var createComposer = function (composer) {

@@ -5,6 +5,8 @@ module lilybook.app {
         'ngMaterial',
         'ngMdIcons',
         'ui.router',
-        'lilybook.composer'
+        'lilybook.composer',
+        'lilybook.data',
+        'lilybook.home'
     ]);
 }

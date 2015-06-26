@@ -7,7 +7,9 @@ var lilybook;
             'ngMaterial',
             'ngMdIcons',
             'ui.router',
-            'lilybook.composer'
+            'lilybook.composer',
+            'lilybook.data',
+            'lilybook.home'
         ]);
     })(app = lilybook.app || (lilybook.app = {}));
 })(lilybook || (lilybook = {}));

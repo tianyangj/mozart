@@ -12,7 +12,8 @@ module lilybook.data {
 	}
 
 	export interface IComposerSvc {
-		getComposer(vanity: string): ng.IPromise<IComposer>
+		getComposer(vanity: string): ng.IPromise<IComposer>,
+		getComposers(skip?: number, limit?: number): ng.IPromise<IComposer[]>
 	}
 
 	export class ComposerSvc implements IComposerSvc {
@@ -31,9 +32,11 @@ module lilybook.data {
 			var defer = this.$q.defer();
 			var query = new Parse.Query(this.ComposerDB);
 			query.equalTo('vanity', vanity);
-			query.first().then((composer: Parse.Object) => {
-				if (composer) {
-					defer.resolve(<IComposer>this.mapperSvc.composerMapper(composer));
+			query.first().then((response: Parse.Object) => {
+				if (response) {
+					var composer: IComposer;
+					composer = this.mapperSvc.composerMapper(response);
+					defer.resolve(composer);
 				} else {
 					defer.reject('NOT_FOUND');
 				}
@@ -42,10 +45,27 @@ module lilybook.data {
 			});
 			return defer.promise;
 		}
+
+		getComposers(skip = 0, limit = 10) {
+			var defer = this.$q.defer();
+			var query = new Parse.Query(this.ComposerDB);
+			query.skip(skip);
+			query.limit(limit);
+			query.find().then((response: Parse.Object[]) => {
+				var composers: IComposer[];
+				composers = response.map(this.mapperSvc.composerMapper);
+				defer.resolve(composers);
+			}, (error) => {
+				defer.reject(error);
+			});
+			return defer.promise;
+		}
 	}
+
+	lilybook.data.module.service('composerSvc', ComposerSvc);
 }
 
-angular.module('lilybook').factory('composerSvc', function($q, mapperSvc) {
+/*angular.module('lilybook').factory('composerSvc', function($q, mapperSvc) {
 
 	var Composer = Parse.Object.extend('Composer');
 
@@ -127,4 +147,4 @@ angular.module('lilybook').factory('composerSvc', function($q, mapperSvc) {
 		getAllComposers: getAllComposers
 	};
 
-});
+});*/

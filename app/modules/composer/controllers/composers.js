@@ -7,9 +7,9 @@ var lilybook;
             function ComposersController(composerSvc) {
                 var _this = this;
                 this.composerSvc = composerSvc;
-                this.composerSvc.getAllComposers().then(function (composers) {
+                this.composerSvc.getComposers(0, 100).then(function (composers) {
                     _this.composers = composers.filter(function (composer) {
-                        return composer.image;
+                        return composer.image !== null;
                     });
                     _this.composers.forEach(function (composer) {
                         if (composer.vanity === 'chopin' || composer.vanity === 'liszt') {

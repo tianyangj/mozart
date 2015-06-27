@@ -3,14 +3,14 @@ module lilybook.composer {
 
 	export class ComposersController {
 
-		public static $inject = ['composerSvc'];
+		static $inject = ['composerSvc'];
 
 		constructor(
-			private composerSvc: any
+			private composerSvc: lilybook.data.IComposerSvc
 			) {
-			this.composerSvc.getAllComposers().then(composers => {
+			this.composerSvc.getComposers(0, 100).then(composers => {
 				this.composers = composers.filter(composer => {
-					return composer.image;
+					return composer.image !== null;
 				});
 				this.composers.forEach(composer => {
 					if (composer.vanity === 'chopin' || composer.vanity === 'liszt') {
@@ -22,7 +22,7 @@ module lilybook.composer {
 			});
 		}
 
-		public composers: any[];
+		composers: any[];
 	}
 
 	lilybook.composer.module.controller('ComposersController', ComposersController);

@@ -2,41 +2,25 @@ module lilybook.data {
   'use strict';
 
   export interface IUser {
-    uid: any,
+    uid: string,
     email: string,
     firstname: string,
     lastname: string
   }
 
   export interface IUserSvc {
-    current(): ng.IPromise<IUser>,
     signUp(email: string, password: string, firstname: string, lastname: string): ng.IPromise<IUser>,
     logIn(email: string, password: string): ng.IPromise<IUser>,
     logOut(): ng.IPromise<any>,
+    current(): IUser,
     isAuthenticated(): boolean
   }
 
-  export class UserSvc implements IUserSvc {
+  class UserSvc implements IUserSvc {
 
     static $inject = ['$q'];
 
     constructor(private $q: ng.IQService) { };
-
-    current() {
-      var defer = this.$q.defer();
-      var user = Parse.User.current();
-      if (user) {
-        defer.resolve(<IUser>{
-          uid: user.id,
-          email: user.get('email'),
-          firstname: user.get('firstname'),
-          lastname: user.get('lastname')
-        });
-      } else {
-        defer.resolve(null);
-      }
-      return defer.promise;
-    }
 
     signUp(email: string, password: string, firstname: string, lastname: string) {
       var defer = this.$q.defer();
@@ -45,12 +29,7 @@ module lilybook.data {
         firstname: firstname,
         lastname: lastname
       }).then((user: Parse.User) => {
-        defer.resolve(<IUser>{
-          uid: user.id,
-          email: user.get('email'),
-          firstname: user.get('firstname'),
-          lastname: user.get('lastname')
-        });
+        defer.resolve(MapperSvc.userMapper(user));
       }, (error) => {
         defer.reject(error);
       });
@@ -59,27 +38,31 @@ module lilybook.data {
 
     logIn(email: string, password: string) {
       var defer = this.$q.defer();
-      Parse.User.logIn(email, password).then((user: Parse.User) => {
-        defer.resolve(<IUser>{
-          uid: user.id,
-          email: user.get('email'),
-          firstname: user.get('firstname'),
-          lastname: user.get('lastname')
+      Parse.User.logIn(email, password)
+        .then((user: Parse.User) => {
+          defer.resolve(MapperSvc.userMapper(user));
+        }, (error) => {
+          defer.reject(error);
         });
-      }, (error) => {
-        defer.reject(error);
-      });
       return defer.promise;
     }
 
     logOut() {
       var defer = this.$q.defer();
       Parse.User.logOut().then(() => {
-        defer.resolve();
+        defer.resolve(null);
       }, (error) => {
         defer.reject(error);
       });
       return defer.promise;
+    }
+
+    current() {
+      var user = Parse.User.current();
+      if (user) {
+        return MapperSvc.userMapper(user);
+      }
+      return null;
     }
 
     isAuthenticated() {

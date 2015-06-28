@@ -8,22 +8,6 @@ var lilybook;
                 this.$q = $q;
             }
             ;
-            UserSvc.prototype.current = function () {
-                var defer = this.$q.defer();
-                var user = Parse.User.current();
-                if (user) {
-                    defer.resolve({
-                        uid: user.id,
-                        email: user.get('email'),
-                        firstname: user.get('firstname'),
-                        lastname: user.get('lastname')
-                    });
-                }
-                else {
-                    defer.resolve(null);
-                }
-                return defer.promise;
-            };
             UserSvc.prototype.signUp = function (email, password, firstname, lastname) {
                 var defer = this.$q.defer();
                 Parse.User.signUp(email, password, {
@@ -31,12 +15,7 @@ var lilybook;
                     firstname: firstname,
                     lastname: lastname
                 }).then(function (user) {
-                    defer.resolve({
-                        uid: user.id,
-                        email: user.get('email'),
-                        firstname: user.get('firstname'),
-                        lastname: user.get('lastname')
-                    });
+                    defer.resolve(data.MapperSvc.userMapper(user));
                 }, function (error) {
                     defer.reject(error);
                 });
@@ -44,13 +23,9 @@ var lilybook;
             };
             UserSvc.prototype.logIn = function (email, password) {
                 var defer = this.$q.defer();
-                Parse.User.logIn(email, password).then(function (user) {
-                    defer.resolve({
-                        uid: user.id,
-                        email: user.get('email'),
-                        firstname: user.get('firstname'),
-                        lastname: user.get('lastname')
-                    });
+                Parse.User.logIn(email, password)
+                    .then(function (user) {
+                    defer.resolve(data.MapperSvc.userMapper(user));
                 }, function (error) {
                     defer.reject(error);
                 });
@@ -59,11 +34,18 @@ var lilybook;
             UserSvc.prototype.logOut = function () {
                 var defer = this.$q.defer();
                 Parse.User.logOut().then(function () {
-                    defer.resolve();
+                    defer.resolve(null);
                 }, function (error) {
                     defer.reject(error);
                 });
                 return defer.promise;
+            };
+            UserSvc.prototype.current = function () {
+                var user = Parse.User.current();
+                if (user) {
+                    return data.MapperSvc.userMapper(user);
+                }
+                return null;
             };
             UserSvc.prototype.isAuthenticated = function () {
                 return Parse.User.current().authenticated();
@@ -71,7 +53,6 @@ var lilybook;
             UserSvc.$inject = ['$q'];
             return UserSvc;
         })();
-        data.UserSvc = UserSvc;
         lilybook.data.module.service('userSvc', UserSvc);
     })(data = lilybook.data || (lilybook.data = {}));
 })(lilybook || (lilybook = {}));

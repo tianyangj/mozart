@@ -40,7 +40,6 @@ var lilybook;
             MenuSvc.$inject = ['$q'];
             return MenuSvc;
         })();
-        data.MenuSvc = MenuSvc;
         lilybook.data.module.service('menuSvc', MenuSvc);
     })(data = lilybook.data || (lilybook.data = {}));
 })(lilybook || (lilybook = {}));

@@ -16,7 +16,7 @@ module lilybook.data {
 		getComposers(skip?: number, limit?: number): ng.IPromise<IComposer[]>
 	}
 
-	export class ComposerSvc implements IComposerSvc {
+	class ComposerSvc implements IComposerSvc {
 
 		private ComposerDB: Parse.Object;
 

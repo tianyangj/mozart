@@ -36,6 +36,14 @@ var lilybook;
                     henle: composition.get('henle') ? composition.get('henle').get('name') : null
                 };
             };
+            MapperSvc.userMapper = function (user) {
+                return {
+                    uid: user.id,
+                    email: user.get('email'),
+                    firstname: user.get('firstname'),
+                    lastname: user.get('lastname')
+                };
+            };
             return MapperSvc;
         })();
         data.MapperSvc = MapperSvc;

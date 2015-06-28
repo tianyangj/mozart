@@ -46,7 +46,6 @@ var lilybook;
             ComposerSvc.$inject = ['$q'];
             return ComposerSvc;
         })();
-        data.ComposerSvc = ComposerSvc;
         lilybook.data.module.service('composerSvc', ComposerSvc);
     })(data = lilybook.data || (lilybook.data = {}));
 })(lilybook || (lilybook = {}));

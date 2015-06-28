@@ -15,7 +15,7 @@ module lilybook.data {
 		getSideNav(): ng.IPromise<ISideNavGroup[]>
 	}
 
-	export class MenuSvc implements IMenuSvc {
+	class MenuSvc implements IMenuSvc {
 
 		static $inject = ['$q'];
 

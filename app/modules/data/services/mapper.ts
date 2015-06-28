@@ -34,6 +34,15 @@ module lilybook.data {
 				henle: composition.get('henle') ? composition.get('henle').get('name') : null
 			};
 		}
+
+		static userMapper(user: Parse.User) {
+			return <IUser>{
+				uid: user.id,
+				email: user.get('email'),
+				firstname: user.get('firstname'),
+				lastname: user.get('lastname')
+			};
+		}
 	}
 }
 

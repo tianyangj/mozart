@@ -1,15 +1,15 @@
 module lilybook.composer {
     'use strict';
 
-	export class ComposerController {
+	class ComposerController {
 
-		public static $inject = [
+		static $inject = [
 			'composer',
 			'compositionSvc'
 		];
 
 		constructor(
-			public composer: any,
+			public composer: lilybook.data.IComposer,
 			private compositionSvc: lilybook.data.ICompositionSvc
 			) {
 			this.compositionSvc.getCompositions(composer).then(compositions => {
@@ -24,7 +24,7 @@ module lilybook.composer {
 			});
 		}
 
-		public compositionGroups: any;
+		compositionGroups: any;
 	}
 
 	lilybook.composer.module.controller('ComposerController', ComposerController);

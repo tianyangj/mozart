@@ -5,7 +5,7 @@ module lilybook.composer {
 
 		public static $inject = ['composer'];
 
-		constructor(public composer: any) { }
+		constructor(public composer) { }
 	}
 
 	lilybook.composer.module.controller('ComposerToolbarController', ComposerToolbarController);

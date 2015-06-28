@@ -25,7 +25,6 @@ var lilybook;
             ];
             return ComposerController;
         })();
-        composer_1.ComposerController = ComposerController;
         lilybook.composer.module.controller('ComposerController', ComposerController);
     })(composer = lilybook.composer || (lilybook.composer = {}));
 })(lilybook || (lilybook = {}));

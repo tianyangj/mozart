@@ -24,5 +24,6 @@ var lilybook;
             VideoSvc.$inject = ['$q'];
             return VideoSvc;
         })();
+        data.module.service('videoSvc', VideoSvc);
     })(data = lilybook.data || (lilybook.data = {}));
 })(lilybook || (lilybook = {}));

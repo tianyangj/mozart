@@ -50,6 +50,7 @@ var lilybook;
                     id: video.id,
                     embed: video.get('embed'),
                     source: video.get('source'),
+                    sourceId: video.get('sourceId'),
                     title: video.get('title')
                 };
             };

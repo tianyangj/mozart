@@ -6,6 +6,7 @@ module lilybook.data {
 		id: string,
 		title: string,
 		embed: string,
+		sourceId: string,
 		source?: string
 	}
 
@@ -37,4 +38,6 @@ module lilybook.data {
 			return defer.promise;
 		}
 	}
+
+	module.service('videoSvc', VideoSvc);
 }

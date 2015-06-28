@@ -8,6 +8,7 @@ var lilybook;
             'ngMdIcons',
             'ui.router',
             'lilybook.composer',
+            'lilybook.composition',
             'lilybook.data',
             'lilybook.home'
         ]);

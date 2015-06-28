@@ -1,9 +1,9 @@
 module lilybook.composer {
 	'use strict';
 
-	export class ComposerToolbarController {
+	class ComposerToolbarController {
 
-		public static $inject = ['composer'];
+		static $inject = ['composer'];
 
 		constructor(public composer) { }
 	}

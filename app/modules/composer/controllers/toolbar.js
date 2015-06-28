@@ -10,7 +10,6 @@ var lilybook;
             ComposerToolbarController.$inject = ['composer'];
             return ComposerToolbarController;
         })();
-        composer_1.ComposerToolbarController = ComposerToolbarController;
         lilybook.composer.module.controller('ComposerToolbarController', ComposerToolbarController);
     })(composer = lilybook.composer || (lilybook.composer = {}));
 })(lilybook || (lilybook = {}));

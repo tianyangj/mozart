@@ -5,7 +5,7 @@
   <md-whiteframe class="md-whiteframe-z1" layout>
     <md-list flex>
       <md-subheader ng-repeat-start="(compositionType, compositions) in composerCtrl.compositionGroups">{{compositionType}}</md-subheader>
-      <md-list-item class="md-2-line" ng-repeat="composition in compositions" md-ink-ripple>
+      <md-list-item class="md-2-line" ng-repeat="composition in compositions" ng-click="$state.go('app.composition',{vanity:composition.vanity,id:composition.id})">
         <md-icon class="md-avatar" md-svg-icon="music_library" aria-label="Composition"></md-icon>
         <div class="md-list-item-text">
           <h3>{{composition.title}}</h3>

@@ -1,7 +1,7 @@
 module lilybook.app {
 	'use strict';
 
-	lilybook.app.module.config(($stateProvider, $urlRouterProvider) => {
+	module.config(($stateProvider, $urlRouterProvider) => {
 
 		$stateProvider
 			.state('app', {

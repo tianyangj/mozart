@@ -3,7 +3,7 @@ module lilybook.app {
 
 	export class AppController {
 
-		public static $inject = [
+		static $inject = [
 			'$rootScope',
 			'$state',
 			'$mdSidenav',
@@ -13,19 +13,17 @@ module lilybook.app {
 		];
 
 		constructor(
-			private $rootScope: any,
+			private $rootScope: ng.IRootScopeService,
 			private $state: angular.ui.IStateService,
 			private $mdSidenav: any,
 			private $mdToast: any,
-			private menuSvc: any,
-			private userSvc: any
+			private menuSvc: lilybook.data.IMenuSvc,
+			private userSvc: lilybook.data.IUserSvc
 			) {
 			this.menuSvc.getSideNav().then((sidenav) => {
 				this.sidenav = sidenav;
 			});
-			this.userSvc.current().then((user) => {
-				this.$rootScope.user = user;
-			});
+			this.$rootScope['user'] = this.userSvc.current();
 			this.$rootScope.$on('$stateChangeError', (event, toState, toParams, fromState, fromParams, error) => {
 				console.log('$stateChangeError', error);
 				if (error === 'AUTH_REQUIRED') {
@@ -34,8 +32,6 @@ module lilybook.app {
 			});
 		}
 
-		public sidenav: any[];
-
 		private getSimpleToast = (message: string) => {
 			return this.$mdToast
 				.simple()
@@ -43,33 +39,38 @@ module lilybook.app {
 				.position('top right');
 		};
 
+		sidenav: any[];
+
 		toggleSidenav = (sidenavId: string) => {
 			this.$mdSidenav(sidenavId).toggle();
 		}
 
 		signup = (signupData: any) => {
-			this.userSvc.signUp(signupData.email, signupData.password, signupData.firstname, signupData.lastname).then((user) => {
-				this.$rootScope.user = user;
-				this.$state.go('app.home');
-			}, (error) => {
-				this.$mdToast.show(this.getSimpleToast(error.message));
-			});
+			this.userSvc.signUp(signupData.email, signupData.password, signupData.firstname, signupData.lastname)
+				.then((user) => {
+					this.$rootScope['user'] = user;
+					this.$state.go('app.home');
+				}, (error) => {
+					this.$mdToast.show(this.getSimpleToast(error.message));
+				});
 		};
 
 		login = (loginData: any) => {
-			this.userSvc.logIn(loginData.email, loginData.password).then((user) => {
-				this.$rootScope.user = user;
-				this.$state.go('app.home');
-			}, (error) => {
-				this.$mdToast.show(this.getSimpleToast(error.message));
-			});
+			this.userSvc.logIn(loginData.email, loginData.password)
+				.then((user) => {
+					this.$rootScope['user'] = user;
+					this.$state.go('app.home');
+				}, (error) => {
+					this.$mdToast.show(this.getSimpleToast(error.message));
+				});
 		};
 
 		logout = () => {
-			this.userSvc.logOut().then(() => {
-				this.$rootScope.user = null;
-				this.$state.go('app.splash');
-			});
+			this.userSvc.logOut()
+				.then(() => {
+					this.$rootScope['user'] = null;
+					this.$state.go('app.splash');
+				});
 		};
 	}
 

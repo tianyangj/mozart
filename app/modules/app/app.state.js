@@ -3,7 +3,7 @@ var lilybook;
     var app;
     (function (app) {
         'use strict';
-        lilybook.app.module.config(function ($stateProvider, $urlRouterProvider) {
+        app.module.config(function ($stateProvider, $urlRouterProvider) {
             $stateProvider
                 .state('app', {
                 abstract: true,

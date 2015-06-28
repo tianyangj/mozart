@@ -3,7 +3,7 @@ var lilybook;
     var app;
     (function (app) {
         'use strict';
-        lilybook.app.module.config(function ($locationProvider, $mdThemingProvider, $mdIconProvider) {
+        app.module.config(function ($locationProvider, $mdThemingProvider, $mdIconProvider) {
             $locationProvider
                 .html5Mode(false)
                 .hashPrefix('!');

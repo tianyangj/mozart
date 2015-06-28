@@ -7,18 +7,16 @@ var lilybook;
             function ComposerSvc($q) {
                 this.$q = $q;
                 this.ComposerDB = Parse.Object.extend('Composer');
-                this.mapperSvc = new data.MapperSvc();
             }
             ;
             ComposerSvc.prototype.getComposer = function (vanity) {
-                var _this = this;
                 var defer = this.$q.defer();
                 var query = new Parse.Query(this.ComposerDB);
                 query.equalTo('vanity', vanity);
                 query.first().then(function (response) {
                     if (response) {
                         var composer;
-                        composer = _this.mapperSvc.composerMapper(response);
+                        composer = data.MapperSvc.composerMapper(response);
                         defer.resolve(composer);
                     }
                     else {
@@ -30,7 +28,6 @@ var lilybook;
                 return defer.promise;
             };
             ComposerSvc.prototype.getComposers = function (skip, limit) {
-                var _this = this;
                 if (skip === void 0) { skip = 0; }
                 if (limit === void 0) { limit = 10; }
                 var defer = this.$q.defer();
@@ -39,7 +36,7 @@ var lilybook;
                 query.limit(limit);
                 query.find().then(function (response) {
                     var composers;
-                    composers = response.map(_this.mapperSvc.composerMapper);
+                    composers = response.map(data.MapperSvc.composerMapper);
                     defer.resolve(composers);
                 }, function (error) {
                     defer.reject(error);

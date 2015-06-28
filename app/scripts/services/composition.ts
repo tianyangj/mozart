@@ -1,7 +1,86 @@
-/// <reference path="../../../typings/angularjs/angular.d.ts" />
-/// <reference path="../../../typings/parse/parse.d.ts" />
+module lilybook.data {
+	'use strict';
 
-angular.module('lilybook').factory('compositionSvc', function($q, mapperSvc) {
+	export interface IComposition {
+		base: Parse.Object,
+		id: string,
+		title: string,
+		vanity: string,
+		opus: number,
+		number: number,
+		key: string,
+		instrumentation: string,
+		type: string,
+		wikipedia: string,
+		imslp: string,
+		composer: IComposer,
+		rcm?: string,
+		abrsm?: string,
+		henle?: string
+	}
+
+	export interface ICompositionSvc {
+		getComposition(compositionId: string): ng.IPromise<IComposition>,
+		getCompositions(composer: IComposer): ng.IPromise<IComposition[]>
+	}
+
+	class CompositionSvc implements ICompositionSvc {
+
+		private CompositionDB: Parse.Object;
+
+		static $inject = ['$q'];
+
+		constructor(private $q: ng.IQService) {
+			this.CompositionDB = Parse.Object.extend('Composition');
+		};
+
+		getComposition(compositionId: string) {
+			var defer = this.$q.defer();
+			var query = new Parse.Query(this.CompositionDB);
+			query.equalTo('objectId', compositionId);
+			query.include('key');
+			query.include('instrumentation');
+			query.include('type');
+			query.include('rcm');
+			query.include('abrsm');
+			query.include('henle');
+			query.include('composer');
+			query.first().then((response: Parse.Object) => {
+				if (response) {
+					var composition: IComposition;
+					composition = MapperSvc.compositionMapper(response);
+					defer.resolve(composition);
+				} else {
+					defer.reject('NOT_FOUND');
+				}
+			}, (error) => {
+				defer.reject(error);
+			});
+			return defer.promise;
+		}
+
+		getCompositions(composer: IComposer) {
+			var defer = this.$q.defer();
+			var query = new Parse.Query(this.CompositionDB);
+			query.equalTo('composer', composer.base);
+			query.include('key');
+			query.include('instrumentation');
+			query.include('type');
+			query.find().then((response: Parse.Object[]) => {
+				var compositions: IComposition[];
+				compositions = response.map(MapperSvc.compositionMapper);
+				defer.resolve(compositions);
+			}, (error) => {
+				defer.reject(error);
+			});
+			return defer.promise;
+		}
+	}
+
+	lilybook.data.module.service('compositionSvc', CompositionSvc);
+}
+
+/*angular.module('lilybook').factory('compositionSvc', function($q, mapperSvc) {
 
 	var Composition = Parse.Object.extend('Composition');
 
@@ -83,7 +162,7 @@ angular.module('lilybook').factory('compositionSvc', function($q, mapperSvc) {
 		var defer = $q.defer();
 		var query = new Parse.Query(Composition);
 		query.equalTo('objectId', composition.id);
-		query.first().then(function(_composition : any) {
+		query.first().then(function(_composition: any) {
 			_composition.save({
 				title: composition.title,
 				vanity: buildVanity(composition.title),
@@ -114,4 +193,4 @@ angular.module('lilybook').factory('compositionSvc', function($q, mapperSvc) {
 		updateComposition: updateComposition
 	};
 
-});
+});*/

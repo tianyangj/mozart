@@ -10,9 +10,9 @@ module lilybook.composer {
 
 		constructor(
 			public composer: any,
-			private compositionSvc: any
+			private compositionSvc: lilybook.data.ICompositionSvc
 			) {
-			this.compositionSvc.getCompositionsByComposer(composer).then(compositions => {
+			this.compositionSvc.getCompositions(composer).then(compositions => {
 				var compositionGroups = {};
 				compositions.forEach(composition => {
 					if (!compositionGroups[composition.type]) {

@@ -1,13 +1,10 @@
 module lilybook.data {
 	'use strict';
 
-	export interface IMapperSvc {
-		composerMapper(composer: Parse.Object): IComposer
-	}
+	export class MapperSvc {
 
-	export class MapperSvc implements IMapperSvc {
-		composerMapper(composer: Parse.Object) {
-			return {
+		static composerMapper(composer: Parse.Object) {
+			return <IComposer>{
 				base: composer,
 				id: composer.id,
 				fullname: composer.get('fullName'),
@@ -17,10 +14,30 @@ module lilybook.data {
 				image: composer.get('image') ? composer.get('image').url() : null
 			};
 		}
+
+		static compositionMapper(composition: Parse.Object) {
+			return <IComposition>{
+				base: composition,
+				id: composition.id,
+				title: composition.get('title'),
+				vanity: composition.get('vanity'),
+				opus: composition.get('opus'),
+				number: composition.get('number'),
+				key: composition.get('key').get('name'),
+				instrumentation: composition.get('instrumentation').get('name'),
+				type: composition.get('type').get('name'),
+				wikipedia: composition.get('wikipedia'),
+				imslp: composition.get('imslp'),
+				composer: composition.get('composer') ? MapperSvc.composerMapper(composition.get('composer')) : null,
+				rcm: composition.get('rcm') ? composition.get('rcm').get('name') : null,
+				abrsm: composition.get('abrsm') ? composition.get('abrsm').get('name') : null,
+				henle: composition.get('henle') ? composition.get('henle').get('name') : null
+			};
+		}
 	}
 }
 
-angular.module('lilybook').factory('mapperSvc', function() {
+/*angular.module('lilybook').factory('mapperSvc', function() {
 
 	var compositionMapper = function(composition) {
 		return {
@@ -81,4 +98,4 @@ angular.module('lilybook').factory('mapperSvc', function() {
 		sheetMapper: sheetMapper
 	};
 
-});
+});*/

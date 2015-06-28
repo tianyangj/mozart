@@ -19,13 +19,11 @@ module lilybook.data {
 	export class ComposerSvc implements IComposerSvc {
 
 		private ComposerDB: Parse.Object;
-		private mapperSvc: IMapperSvc;
 
 		static $inject = ['$q'];
 
 		constructor(private $q: ng.IQService) {
 			this.ComposerDB = Parse.Object.extend('Composer');
-			this.mapperSvc = new MapperSvc();
 		};
 
 		getComposer(vanity: string) {
@@ -35,7 +33,7 @@ module lilybook.data {
 			query.first().then((response: Parse.Object) => {
 				if (response) {
 					var composer: IComposer;
-					composer = this.mapperSvc.composerMapper(response);
+					composer = MapperSvc.composerMapper(response);
 					defer.resolve(composer);
 				} else {
 					defer.reject('NOT_FOUND');
@@ -53,7 +51,7 @@ module lilybook.data {
 			query.limit(limit);
 			query.find().then((response: Parse.Object[]) => {
 				var composers: IComposer[];
-				composers = response.map(this.mapperSvc.composerMapper);
+				composers = response.map(MapperSvc.composerMapper);
 				defer.resolve(composers);
 			}, (error) => {
 				defer.reject(error);

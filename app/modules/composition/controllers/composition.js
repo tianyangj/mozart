@@ -4,12 +4,24 @@ var lilybook;
     (function (composition_1) {
         'use strict';
         var CompositionController = (function () {
-            function CompositionController(composition, compositionSvc, videoSvc, sheetSvc) {
+            function CompositionController(composition, compositionSvc, videoSvc, sheetSvc, $mdDialog) {
                 var _this = this;
                 this.composition = composition;
                 this.compositionSvc = compositionSvc;
                 this.videoSvc = videoSvc;
                 this.sheetSvc = sheetSvc;
+                this.$mdDialog = $mdDialog;
+                this.openVideo = function (event, video, composition) {
+                    _this.$mdDialog.show({
+                        templateUrl: 'modules/composition/dialogs/video.html',
+                        parent: angular.element(document.body),
+                        targetEvent: event,
+                        clickOutsideToClose: true,
+                        locals: { video: video, composition: composition },
+                        controller: DialogVideoController,
+                        controllerAs: 'dialogVideoCtrl'
+                    });
+                };
                 this.videoSvc.getVideos(this.composition)
                     .then(function (videos) {
                     _this.videos = videos;
@@ -26,9 +38,27 @@ var lilybook;
                 'composition',
                 'compositionSvc',
                 'videoSvc',
-                'sheetSvc'
+                'sheetSvc',
+                '$mdDialog'
             ];
             return CompositionController;
+        })();
+        var DialogVideoController = (function () {
+            function DialogVideoController($mdDialog, video, composition) {
+                var _this = this;
+                this.$mdDialog = $mdDialog;
+                this.video = video;
+                this.composition = composition;
+                this.close = function () {
+                    _this.$mdDialog.hide();
+                };
+            }
+            DialogVideoController.$inject = [
+                '$mdDialog',
+                'video',
+                'composition'
+            ];
+            return DialogVideoController;
         })();
         composition_1.module.controller('CompositionController', CompositionController);
     })(composition = lilybook.composition || (lilybook.composition = {}));

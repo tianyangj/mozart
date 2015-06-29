@@ -5,6 +5,7 @@ module lilybook.app {
         'ngMaterial',
         'ngMdIcons',
         'ui.router',
+        'youtube-embed',
         'lilybook.composer',
         'lilybook.composition',
         'lilybook.data',

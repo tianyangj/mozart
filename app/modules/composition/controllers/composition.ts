@@ -7,14 +7,16 @@ module lilybook.composition {
 			'composition',
 			'compositionSvc',
 			'videoSvc',
-			'sheetSvc'
+			'sheetSvc',
+			'$mdDialog'
 		];
 
 		constructor(
 			public composition: lilybook.data.IComposition,
 			private compositionSvc: lilybook.data.ICompositionSvc,
 			private videoSvc: lilybook.data.IVideoSvc,
-			private sheetSvc: lilybook.data.ISheetSvc
+			private sheetSvc: lilybook.data.ISheetSvc,
+			private $mdDialog: any
 			) {
 			this.videoSvc.getVideos(this.composition)
 				.then(videos => {
@@ -31,6 +33,36 @@ module lilybook.composition {
 
 		videos: any[];
 		sheet: any;
+
+		openVideo = (event, video, composition) => {
+			this.$mdDialog.show({
+				templateUrl: 'modules/composition/dialogs/video.html',
+				parent: angular.element(document.body),
+				targetEvent: event,
+				clickOutsideToClose: true,
+				locals: { video, composition },
+				controller: DialogVideoController,
+				controllerAs: 'dialogVideoCtrl'
+			});
+		};
+	}
+
+	class DialogVideoController {
+
+		static $inject = [
+			'$mdDialog',
+			'video',
+			'composition'
+		];
+
+		constructor(
+			private $mdDialog: any,
+			public video: lilybook.data.IVideo,
+			public composition: lilybook.data.IComposition) { }
+
+		close = () => {
+			this.$mdDialog.hide();
+		};
 	}
 
 	module.controller('CompositionController', CompositionController);

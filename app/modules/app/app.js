@@ -7,6 +7,7 @@ var lilybook;
             'ngMaterial',
             'ngMdIcons',
             'ui.router',
+            'youtube-embed',
             'lilybook.composer',
             'lilybook.composition',
             'lilybook.data',

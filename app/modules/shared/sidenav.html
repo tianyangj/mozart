@@ -1,0 +1,23 @@
+<md-sidenav layout="column" class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')">
+	<md-toolbar class="md-tall md-hue-2" layout="column" layout-align="center center">
+		<h1>LilyBook</h1>
+	</md-toolbar>
+	<md-content flex>
+		<md-list>
+			<md-subheader ng-repeat-start="group in appCtrl.sidenav">{{group.subheader}}</md-subheader>
+			<md-list-item layout="row" layout-align="start center" ng-repeat="item in group.items"
+			ng-click="$state.go('app.composers')">
+				<ng-md-icon class="inset" icon="{{item.icon}}"></ng-md-icon>
+				<div flex class="inset">{{item.title}}</div>
+			</md-list-item>
+			<md-divider ng-hide="$last" ng-repeat-end></md-divider>
+		</md-list>
+	</md-content>
+	<md-toolbar layout="row" layout-align="center center">
+		<md-button class="md-raised md-accent" ng-if="!user" ui-sref="app.signup">Sign Up</md-button>
+		<div class="md-padding" ng-if="user">Hi, {{user.firstname}}</div>
+		<span flex></span>
+		<md-button class="md-raised" ng-if="!user" ui-sref="app.login">Login</md-button>
+		<md-button class="md-raised" ng-if="user" ng-click="appCtrl.logout()">Logout</md-button>
+	</md-toolbar>
+</md-sidenav>

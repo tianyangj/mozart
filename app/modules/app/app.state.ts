@@ -7,7 +7,7 @@ module lilybook.app {
 			.state('app', {
 				abstract: true,
 				url: '',
-				templateUrl: 'layout.html',
+				templateUrl: 'layout-web.html',
 				controller: 'AppController',
 				controllerAs: 'appCtrl'
 			})

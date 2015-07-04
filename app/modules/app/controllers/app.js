@@ -4,7 +4,7 @@ var lilybook;
     (function (app) {
         'use strict';
         var AppController = (function () {
-            function AppController($rootScope, $state, $mdSidenav, $mdToast, menuSvc, userSvc) {
+            function AppController($rootScope, $state, $mdSidenav, $mdToast, menuSvc, userSvc, searchSvc) {
                 var _this = this;
                 this.$rootScope = $rootScope;
                 this.$state = $state;
@@ -12,6 +12,7 @@ var lilybook;
                 this.$mdToast = $mdToast;
                 this.menuSvc = menuSvc;
                 this.userSvc = userSvc;
+                this.searchSvc = searchSvc;
                 this.getSimpleToast = function (message) {
                     return _this.$mdToast
                         .simple()
@@ -46,6 +47,12 @@ var lilybook;
                         _this.$state.go('app.splash');
                     });
                 };
+                this.search = function (query) {
+                    return _this.searchSvc.search(query)
+                        .then(function (results) {
+                        return results;
+                    });
+                };
                 this.menuSvc.getSideNav().then(function (sidenav) {
                     _this.sidenav = sidenav;
                 });
@@ -64,6 +71,7 @@ var lilybook;
                 '$mdToast',
                 'menuSvc',
                 'userSvc',
+                'searchSvc'
             ];
             return AppController;
         })();

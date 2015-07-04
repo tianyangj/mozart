@@ -10,6 +10,7 @@ module lilybook.app {
 			'$mdToast',
 			'menuSvc',
 			'userSvc',
+			'searchSvc'
 		];
 
 		constructor(
@@ -18,7 +19,8 @@ module lilybook.app {
 			private $mdSidenav: any,
 			private $mdToast: any,
 			private menuSvc: lilybook.data.IMenuSvc,
-			private userSvc: lilybook.data.IUserSvc
+			private userSvc: lilybook.data.IUserSvc,
+			private searchSvc: lilybook.data.ISearchSvc
 			) {
 			this.menuSvc.getSideNav().then((sidenav) => {
 				this.sidenav = sidenav;
@@ -70,6 +72,13 @@ module lilybook.app {
 				.then(() => {
 					this.$rootScope['user'] = null;
 					this.$state.go('app.splash');
+				});
+		};
+
+		search = (query) => {
+			return this.searchSvc.search(query)
+				.then((results) => {
+					return results;
 				});
 		};
 	}

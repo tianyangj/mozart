@@ -19,3 +19,7 @@
 	background-size: cover;
 	background-position: center center;
 }
+
+.header md-autocomplete {
+	margin: 0 20px;
+}

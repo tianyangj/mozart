@@ -9,6 +9,7 @@ module lilybook.app {
         'lilybook.composer',
         'lilybook.composition',
         'lilybook.data',
+        'lilybook.discovery',
         'lilybook.home'
     ]);
 }

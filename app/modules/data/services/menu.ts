@@ -35,8 +35,8 @@ module lilybook.data {
 			}, {
 					subheader: 'Discovery',
 					items: [
-						{ icon: 'home', title: 'Recommendations' },
-						{ icon: 'portrait', title: 'Composers' },
+						{ icon: 'home', title: 'Recommendations', state: 'app.discovery' },
+						{ icon: 'portrait', title: 'Composers', state: 'app.composers' },
 						{ icon: 'group', title: 'Compositions' }
 					]
 				}, {

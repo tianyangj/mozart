@@ -11,6 +11,7 @@ var lilybook;
             'lilybook.composer',
             'lilybook.composition',
             'lilybook.data',
+            'lilybook.discovery',
             'lilybook.home'
         ]);
     })(app = lilybook.app || (lilybook.app = {}));

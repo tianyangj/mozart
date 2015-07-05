@@ -19,19 +19,28 @@ module lilybook.data {
 		henle?: string
 	}
 
+	export interface ICompositionType {
+		base: Parse.Object,
+		id: string,
+		name: string
+	}
+
 	export interface ICompositionSvc {
 		getComposition(compositionId: string): ng.IPromise<IComposition>,
-		getCompositions(composer: IComposer): ng.IPromise<IComposition[]>
+		getCompositions(composer: IComposer): ng.IPromise<IComposition[]>,
+		getCompositionTypes(featured?: boolean): ng.IPromise<ICompositionType[]>
 	}
 
 	class CompositionSvc implements ICompositionSvc {
 
 		private CompositionDB: Parse.Object;
+		private CompositionTypeDB: Parse.Object;
 
 		static $inject = ['$q'];
 
 		constructor(private $q: ng.IQService) {
 			this.CompositionDB = Parse.Object.extend('Composition');
+			this.CompositionTypeDB = Parse.Object.extend('CompositionType');
 		};
 
 		getComposition(compositionId: string) {
@@ -70,6 +79,28 @@ module lilybook.data {
 				var compositions: IComposition[];
 				compositions = response.map(MapperSvc.compositionMapper);
 				defer.resolve(compositions);
+			}, (error) => {
+				defer.reject(error);
+			});
+			return defer.promise;
+		}
+
+		getCompositionTypes(featured = false) {
+			var defer = this.$q.defer();
+			var query = new Parse.Query(this.CompositionTypeDB);
+			if (featured) {
+				query.equalTo('featured', featured);
+			}
+			query.find().then((response: Parse.Object[]) => {
+				var compositionTypes: ICompositionType[];
+				compositionTypes = response.map((compositionType) => {
+					return <ICompositionType> {
+						base: compositionType,
+						id: compositionType.id,
+						name: compositionType.get('name')
+					};
+				});
+				defer.resolve(compositionTypes);
 			}, (error) => {
 				defer.reject(error);
 			});

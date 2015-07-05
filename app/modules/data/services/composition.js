@@ -7,6 +7,7 @@ var lilybook;
             function CompositionSvc($q) {
                 this.$q = $q;
                 this.CompositionDB = Parse.Object.extend('Composition');
+                this.CompositionTypeDB = Parse.Object.extend('CompositionType');
             }
             ;
             CompositionSvc.prototype.getComposition = function (compositionId) {
@@ -45,6 +46,28 @@ var lilybook;
                     var compositions;
                     compositions = response.map(data.MapperSvc.compositionMapper);
                     defer.resolve(compositions);
+                }, function (error) {
+                    defer.reject(error);
+                });
+                return defer.promise;
+            };
+            CompositionSvc.prototype.getCompositionTypes = function (featured) {
+                if (featured === void 0) { featured = false; }
+                var defer = this.$q.defer();
+                var query = new Parse.Query(this.CompositionTypeDB);
+                if (featured) {
+                    query.equalTo('featured', featured);
+                }
+                query.find().then(function (response) {
+                    var compositionTypes;
+                    compositionTypes = response.map(function (compositionType) {
+                        return {
+                            base: compositionType,
+                            id: compositionType.id,
+                            name: compositionType.get('name')
+                        };
+                    });
+                    defer.resolve(compositionTypes);
                 }, function (error) {
                     defer.reject(error);
                 });

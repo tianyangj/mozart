@@ -36,7 +36,7 @@
   </div>
   <div class="popular">
     <h3>Most Popular</h3>
-    <div layout="row">
+    <!--<div layout="row">
       <md-card flex ng-repeat="composition in composerCtrl.compositions">
         <img src="http://placehold.it/200x200" class="md-card-image">
         <md-card-content>
@@ -47,14 +47,19 @@
           <md-button>Action 2</md-button>
         </div>
       </md-card>
-    </div>
-    <!--<md-grid-list md-cols-sm="2" md-cols-md="4" md-cols-lg="6" md-cols-gt-lg="8" md-row-height="2:3" md-gutter="5px">
+    </div>-->
+    <md-grid-list md-cols-sm="2" md-cols-md="4" md-cols-lg="6" md-cols-gt-lg="8" md-row-height="2:3" md-gutter="5px">
       <md-grid-tile ng-repeat="composition in composerCtrl.compositions">
+        <md-grid-tile-header layout="row" layout-align="end center">
+          <md-button class="md-icon-button md-accent" aria-label="Favorite">
+            <md-icon md-svg-icon="assets/svg/ic_favorite.svg"></md-icon>
+          </md-button>
+        </md-grid-tile-header>
         <img class="full-width" src="http://placehold.it/200x300">
-        <md-grid-tile-footer class="pointer" md-ink-ripple>
+        <md-grid-tile-footer>
           <h4>{{composition.title}}</h4>
         </md-grid-tile-footer>
       </md-grid-tile>
-    </md-grid-list>-->
+    </md-grid-list>
   </div>
 </md-content>

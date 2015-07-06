@@ -13,6 +13,7 @@ module lilybook.composer {
 			private compositionSvc: lilybook.data.ICompositionSvc
 			) {
 			this.compositionSvc.getCompositions(composer).then(compositions => {
+				this.compositions = compositions;
 				var compositionGroups = {};
 				compositions.forEach(composition => {
 					if (!compositionGroups[composition.type]) {
@@ -24,6 +25,7 @@ module lilybook.composer {
 			});
 		}
 
+		compositions: any;
 		compositionGroups: any;
 	}
 

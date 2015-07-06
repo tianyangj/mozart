@@ -23,3 +23,29 @@
 .header md-autocomplete {
 	margin: 0 20px;
 }
+
+.hero-background {
+	width: 100%;
+	height: 480px;
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center center;
+}
+
+.composer .featured {
+	position: absolute;
+	top: 60px;
+	left: 0;
+	right: 0;
+	margin: 40px;
+	padding: 0 20px;
+	background-color: #fff;
+}
+
+.composer .featured .md-list-item-text {
+	padding: 5px !important;
+}
+
+.composer .popular {
+	margin: 20px 40px;
+}

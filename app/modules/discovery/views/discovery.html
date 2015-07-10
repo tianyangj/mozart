@@ -1,22 +1,21 @@
 <md-content layout-padding>
 	<h3>Play music for...</h3>
-	<div layout="row">
-		<md-card flex ng-repeat="type in discoveryCtrl.compositionTypes">
-			<img src="http://placehold.it/200x150" class="md-card-image ">
-			<md-card-content>
-				<p>{{type.name}}</p>
-			</md-card-content>
-		</md-card>
+	<div layout="row" layout-wrap layout-align="center center">
+		<div flex-sm="50" flex-lg="20" ng-repeat="type in discoveryCtrl.compositionTypes">
+			<md-card lb-hover="4">
+				<img src="http://placehold.it/200x200" class="md-card-image ">
+				<md-card-content>
+					<p>{{type.name}}</p>
+				</md-card-content>
+			</md-card>
+		</div>
+		<div flex-sm="50" flex-lg="20" ng-repeat="composer in discoveryCtrl.composers">
+			<md-card lb-hover="4">
+				<img ng-src="{{composer.image}}" class="md-card-image ">
+				<md-card-content>
+					<p>{{composer.fullname}}</p>
+				</md-card-content>
+			</md-card>
+		</div>
 	</div>
-	<h3>Recommended for you</h3>
-	<md-grid-list md-cols-sm="1" md-cols-md="2" md-cols-gt-md="4" md-row-height="1:1" md-gutter="8px"
-	md-gutter-gt-sm="4px">
-		<md-grid-tile ng-repeat="composer in discoveryCtrl.composers" md-rowspan="{{composer.rowspan}}" md-colspan="{{composer.colspan}}"
-		md-colspan-sm="1" md-rowspan-sm="1">
-			<img class="full-width" ng-src="{{composer.image}}" />
-			<md-grid-tile-footer class="pointer" md-ink-ripple ng-click="$state.go('app.composer',{vanity:composer.vanity})">
-				<h3>{{composer.fullname}}</h3>
-			</md-grid-tile-footer>
-		</md-grid-tile>
-	</md-grid-list>
 </md-content>

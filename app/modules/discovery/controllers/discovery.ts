@@ -12,7 +12,7 @@ module lilybook.discovery {
 			private compositionSvc: lilybook.data.ICompositionSvc,
 			private composerSvc: lilybook.data.IComposerSvc
 			) {
-			this.compositionSvc.getCompositionTypes(true)
+			this.compositionSvc.getCompositionTypes()
 				.then((compositionTypes) => {
 					this.compositionTypes = compositionTypes;
 				});

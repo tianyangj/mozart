@@ -8,7 +8,7 @@ var lilybook;
                 var _this = this;
                 this.compositionSvc = compositionSvc;
                 this.composerSvc = composerSvc;
-                this.compositionSvc.getCompositionTypes(true)
+                this.compositionSvc.getCompositionTypes()
                     .then(function (compositionTypes) {
                     _this.compositionTypes = compositionTypes;
                 });

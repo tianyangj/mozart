@@ -4,18 +4,18 @@
 		<div flex-sm="50" flex-lg="20" ng-repeat="type in discoveryCtrl.compositionTypes">
 			<md-card lb-hover="4">
 				<img src="http://placehold.it/200x200" class="md-card-image ">
-				<md-card-content>
-					<p>{{type.name}}</p>
-				</md-card-content>
+				<md-card-content class="ellipsis">{{type.name}}</md-card-content>
 			</md-card>
 		</div>
 		<div flex-sm="50" flex-lg="20" ng-repeat="composer in discoveryCtrl.composers">
-			<md-card lb-hover="4">
-				<img ng-src="{{composer.image}}" class="md-card-image ">
-				<md-card-content>
-					<p>{{composer.fullname}}</p>
-				</md-card-content>
-			</md-card>
+			<a ui-sref="app.composer({vanity:composer.vanity})">
+				<md-card lb-hover="4">
+					<img ng-src="{{composer.image}}" class="md-card-image ">
+					<md-card-content class="ellipsis">
+						{{composer.fullname}}
+					</md-card-content>
+				</md-card>
+			</a>
 		</div>
 	</div>
 </md-content>

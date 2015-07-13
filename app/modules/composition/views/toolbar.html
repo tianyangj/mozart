@@ -1,1 +1,5 @@
-<h2>{{toolbarCtrl.composition.title}}</h2>
+<h2>
+	<a ui-sref="app.composer({vanity:toolbarCtrl.composition.composer.vanity})">{{toolbarCtrl.composition.composer.shortname}}</a>
+	<md-icon md-svg-icon="assets/svg/ic_chevron_right.svg"></md-icon>
+	{{toolbarCtrl.composition.title}}
+</h2>

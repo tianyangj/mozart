@@ -20,6 +20,7 @@ module lilybook.data {
 				base: composition,
 				id: composition.id,
 				title: composition.get('title'),
+				description: composition.get('description'),
 				vanity: composition.get('vanity'),
 				opus: composition.get('opus'),
 				number: composition.get('number'),

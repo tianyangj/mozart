@@ -5,6 +5,7 @@ module lilybook.data {
 		base: Parse.Object,
 		id: string,
 		title: string,
+		description: string,
 		vanity: string,
 		opus: number,
 		number: number,

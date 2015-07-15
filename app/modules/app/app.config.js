@@ -14,7 +14,7 @@ var lilybook;
             $mdThemingProvider
                 .theme('default')
                 .primaryPalette('blue')
-                .accentPalette('green');
+                .accentPalette('pink');
         });
     })(app = lilybook.app || (lilybook.app = {}));
 })(lilybook || (lilybook = {}));

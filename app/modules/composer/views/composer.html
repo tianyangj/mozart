@@ -1,26 +1,39 @@
-<md-content class="md-padding">
-  <div layout="row">
-    <div flex="33" class="md-padding" style="text-align:center;">
-      <img ng-src="{{composerCtrl.composer.image}}" style="width:80%;border-radius:50%;" />
-    </div>
-    <div flex="66">
+<md-content>
+  <div class="hero-composer" style="background-image:url(images/hero.jpg);"></div>
+  <div class="md-whiteframe-z1" layout="row" layout-align="center center" style="position:absolute;top:160px;left:100px;right:100px;background-color:#fff;height:300px;">
+    <img class="md-padding" ng-src="{{composerCtrl.composer.image}}" style="width:270px;border-radius:50%;" />
+    <div flex class="md-padding">
       <h1 class="md-display-1">{{composerCtrl.composer.fullname}}</h1>
       <p class="md-body-1">{{composerCtrl.composer.bio}}</p>
+      <div layout="row">
+        <md-button class="md-icon-button md-warn" aria-label="Favorite">
+          <md-icon md-svg-icon="assets/svg/ic_favorite.svg"></md-icon>
+        </md-button>
+        <md-button class="md-icon-button md-primary" aria-label="Favorite">
+          <md-icon md-svg-icon="assets/svg/ic_share.svg"></md-icon>
+        </md-button>
+      </div>
     </div>
+    <md-button class="md-fab" aria-label="Play" style="position:absolute;top:-32px;right:32px;">
+      <md-icon md-svg-src="assets/svg/ic_play_arrow.svg"></md-icon>
+    </md-button>
   </div>
-  <md-whiteframe class="md-whiteframe-z1" layout>
+  <md-whiteframe class="md-whiteframe-z1" style="margin:20px 100px;" layout>
     <md-list flex>
-      <md-subheader ng-repeat-start="(compositionType, compositions) in composerCtrl.compositionGroups">{{compositionType}}</md-subheader>
-      <md-list-item class="md-2-line" ng-repeat="composition in compositions" ng-click="$state.go('app.composition',{vanity:composition.vanity,id:composition.id})">
-        <md-icon class="md-avatar" md-svg-icon="music_library" aria-label="Composition"></md-icon>
+      <md-subheader>Most Popular</md-subheader>
+      <md-list-item class="md-2-line" ng-repeat="composition in composerCtrl.compositions" ng-click="todo()">
+        <span class="md-avatar">{{$index+1}}</span>
         <div class="md-list-item-text">
           <h3>{{composition.title}}</h3>
           <p>{{composition.instrumentation}}</p>
-          <md-icon class="md-secondary" md-svg-icon="arrow_right" aria-label="Arrow Right"></md-icon>
+          <md-icon class="md-secondary md-warn" md-svg-icon="assets/svg/ic_favorite.svg" aria-label="Favorite"
+          ng-click="todo()"></md-icon>
         </div>
       </md-list-item>
-      <md-divider ng-hide="$last" ng-repeat-end></md-divider>
     </md-list>
+  </md-whiteframe>
+  <md-whiteframe class="md-whiteframe-z1 md-padding" style="margin:20px 100px;" layout>
+    md-table for all compositions
   </md-whiteframe>
 </md-content>
 <!--<md-content class="composer">

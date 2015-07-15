@@ -15,6 +15,6 @@ module lilybook.app {
         $mdThemingProvider
             .theme('default')
             .primaryPalette('blue')
-            .accentPalette('green');
+            .accentPalette('pink');
     });
 }

@@ -21,11 +21,10 @@
   <md-whiteframe class="md-whiteframe-z1" style="margin:20px 100px;" layout>
     <md-list flex>
       <md-subheader>Most Popular</md-subheader>
-      <md-list-item class="md-2-line" ng-repeat="composition in composerCtrl.compositions" ng-click="todo()">
-        <span class="md-avatar">{{$index+1}}</span>
+      <md-list-item ng-repeat="composition in composerCtrl.compositions" ng-click="todo()">
+        <span class="md-avatar" style="text-align:center;font-family:'Great Vibes',cursive;font-size:40px;">{{$index+1}}</span>
         <div class="md-list-item-text">
-          <h3>{{composition.title}}</h3>
-          <p>{{composition.instrumentation}}</p>
+          <h3>{{composition.title}}, {{composition.instrumentation}}</h3>
           <md-icon class="md-secondary md-warn" md-svg-icon="assets/svg/ic_favorite.svg" aria-label="Favorite"
           ng-click="todo()"></md-icon>
         </div>

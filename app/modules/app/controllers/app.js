@@ -57,6 +57,9 @@ var lilybook;
                     _this.sidenav = sidenav;
                 });
                 this.$rootScope['user'] = this.userSvc.current();
+                this.$rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
+                    _this.$mdSidenav('left').close();
+                });
                 this.$rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams, error) {
                     console.log('$stateChangeError', error);
                     if (error === 'AUTH_REQUIRED') {

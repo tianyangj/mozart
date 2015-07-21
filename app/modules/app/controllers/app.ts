@@ -26,6 +26,9 @@ module lilybook.app {
 				this.sidenav = sidenav;
 			});
 			this.$rootScope['user'] = this.userSvc.current();
+			this.$rootScope.$on('$stateChangeSuccess', (event, toState, toParams, fromState, fromParams) => {
+				this.$mdSidenav('left').close();
+			});
 			this.$rootScope.$on('$stateChangeError', (event, toState, toParams, fromState, fromParams, error) => {
 				console.log('$stateChangeError', error);
 				if (error === 'AUTH_REQUIRED') {

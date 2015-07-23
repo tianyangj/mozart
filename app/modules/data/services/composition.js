@@ -15,7 +15,6 @@ var lilybook;
                 var query = new Parse.Query(this.CompositionDB);
                 query.equalTo('objectId', compositionId);
                 query.include('key');
-                query.include('instrumentation');
                 query.include('type');
                 query.include('rcm');
                 query.include('abrsm');
@@ -40,7 +39,6 @@ var lilybook;
                 var query = new Parse.Query(this.CompositionDB);
                 query.equalTo('composer', composer.base);
                 query.include('key');
-                query.include('instrumentation');
                 query.include('type');
                 query.find().then(function (response) {
                     var compositions;

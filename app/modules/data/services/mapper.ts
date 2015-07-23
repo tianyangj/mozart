@@ -25,7 +25,7 @@ module lilybook.data {
 				opus: composition.get('opus'),
 				number: composition.get('number'),
 				key: composition.get('key') && composition.get('key').get('name'),
-				instrumentation: composition.get('instrumentation') && composition.get('instrumentation').get('name'),
+				instrumentation: composition.get('instrumentation'),
 				type: composition.get('type') && composition.get('type').get('name'),
 				wikipedia: composition.get('wikipedia'),
 				imslp: composition.get('imslp'),

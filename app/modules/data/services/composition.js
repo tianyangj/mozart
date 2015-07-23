@@ -16,9 +16,6 @@ var lilybook;
                 query.equalTo('objectId', compositionId);
                 query.include('key');
                 query.include('type');
-                query.include('rcm');
-                query.include('abrsm');
-                query.include('henle');
                 query.include('composer');
                 query.first().then(function (response) {
                     if (response) {

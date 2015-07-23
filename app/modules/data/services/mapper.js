@@ -26,15 +26,15 @@ var lilybook;
                     vanity: composition.get('vanity'),
                     opus: composition.get('opus'),
                     number: composition.get('number'),
-                    key: composition.get('key') && composition.get('key').get('name'),
                     instrumentation: composition.get('instrumentation'),
-                    type: composition.get('type') && composition.get('type').get('name'),
                     wikipedia: composition.get('wikipedia'),
                     imslp: composition.get('imslp'),
-                    composer: composition.get('composer') ? MapperSvc.composerMapper(composition.get('composer')) : null,
-                    rcm: composition.get('rcm') ? composition.get('rcm').get('name') : null,
-                    abrsm: composition.get('abrsm') ? composition.get('abrsm').get('name') : null,
-                    henle: composition.get('henle') ? composition.get('henle').get('name') : null
+                    rcm: composition.get('rcm'),
+                    abrsm: composition.get('abrsm'),
+                    henle: composition.get('henle'),
+                    key: composition.get('key') && composition.get('key').get('name'),
+                    type: composition.get('type') && composition.get('type').get('name'),
+                    composer: composition.get('composer') ? MapperSvc.composerMapper(composition.get('composer')) : null
                 };
             };
             MapperSvc.userMapper = function (user) {

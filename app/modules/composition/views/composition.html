@@ -1,77 +1,82 @@
-<md-content>
-	<md-tabs md-center-tabs="true" md-dynamic-height md-border-bottom>
-		<md-tab label="Details">
-			<md-content class="md-padding">
-				<h1>{{compositionCtrl.composition.title}}</h1>
-				<p>{{compositionCtrl.composition.description}}</p>
-				<div>
-					<div layout="row" layout-padding>
-						<label flex="20">Composer</label>
-						<div flex>{{compositionCtrl.composition.composer.fullname}}</div>
-					</div>
-					<div layout="row" layout-padding>
-						<label flex="20">Type</label>
-						<div flex>{{compositionCtrl.composition.type}}</div>
-					</div>
-					<div layout="row" layout-padding>
-						<label flex="20">Opus</label>
-						<div flex>{{compositionCtrl.composition.opus}}</div>
-					</div>
-					<div layout="row" layout-padding>
-						<label flex="20">Number</label>
-						<div flex>{{compositionCtrl.composition.number}}</div>
-					</div>
-					<div layout="row" layout-padding>
-						<label flex="20">Key</label>
-						<div flex>{{compositionCtrl.composition.key}}</div>
-					</div>
-					<div layout="row" layout-padding>
-						<label flex="20">Instrumentation</label>
-						<div flex>{{compositionCtrl.composition.instrumentation}}</div>
-					</div>
-					<div layout="row" layout-padding>
-						<label flex="20">Wikipedia</label>
-						<div flex>{{compositionCtrl.composition.wikipedia}}</div>
-					</div>
-					<div layout="row" layout-padding>
-						<label flex="20">IMSLP</label>
-						<div flex>{{compositionCtrl.composition.imslp}}</div>
-					</div>
-					<md-divider></md-divider>
+<md-toolbar class="md-tall md-hue-1">
+	<div class="md-toolbar-tools">
+		<span>Composition Hero</span>
+		<span flex></span>
+		<md-button>Right Bar Button</md-button>
+	</div>
+</md-toolbar>
+<md-tabs flex md-center-tabs="true" md-dynamic-height md-border-bottom>
+	<md-tab label="Details">
+		<div class="md-padding">
+			<h1>{{compositionCtrl.composition.title}}</h1>
+			<p>{{compositionCtrl.composition.description}}</p>
+			<div>
+				<div layout="row" layout-padding>
+					<label flex="20">Composer</label>
+					<div flex>{{compositionCtrl.composition.composer.fullname}}</div>
 				</div>
-				<div>
-					<md-subheader>Difficulty</md-subheader>
-					<div layout="row" layout-padding>
-						<label flex="20">RCM</label>
-						<div flex>{{compositionCtrl.composition.rcm}}</div>
-					</div>
-					<div layout="row" layout-padding>
-						<label flex="20">ABRSM</label>
-						<div flex>{{compositionCtrl.composition.abrsm}}</div>
-					</div>
-					<div layout="row" layout-padding>
-						<label flex="20">Henle</label>
-						<div flex>{{compositionCtrl.composition.henle}}</div>
-					</div>
+				<div layout="row" layout-padding>
+					<label flex="20">Type</label>
+					<div flex>{{compositionCtrl.composition.type}}</div>
 				</div>
-			</md-content>
-		</md-tab>
-		<md-tab label="Videos">
-			<md-content class="md-padding">
-				<md-grid-list md-cols-sm="1" md-cols-md="2" md-cols-gt-md="3" md-row-height="4:3" md-gutter="8px" md-gutter-gt-sm="4px">
-					<md-grid-tile ng-repeat="video in compositionCtrl.videos" md-rowspan="1" md-colspan="1" md-ink-ripple ng-click="compositionCtrl.openVideo($event, video, compositionCtrl.composition)">
-						<img class="full-width" ng-src="{{video.thumbnail}}" />
-						<md-grid-tile-footer>
-							<h3>{{video.title}}</h3>
-						</md-grid-tile-footer>
-					</md-grid-tile>
-				</md-grid-list>
-			</md-content>
-		</md-tab>
-		<md-tab label="Sheets">
-			<md-content class="md-padding">
-				<pre>{{compositionCtrl.sheet | json}}</pre>
-			</md-content>
-		</md-tab>
-	</md-tabs>
-</md-content>
+				<div layout="row" layout-padding>
+					<label flex="20">Opus</label>
+					<div flex>{{compositionCtrl.composition.opus}}</div>
+				</div>
+				<div layout="row" layout-padding>
+					<label flex="20">Number</label>
+					<div flex>{{compositionCtrl.composition.number}}</div>
+				</div>
+				<div layout="row" layout-padding>
+					<label flex="20">Key</label>
+					<div flex>{{compositionCtrl.composition.key}}</div>
+				</div>
+				<div layout="row" layout-padding>
+					<label flex="20">Instrumentation</label>
+					<div flex>{{compositionCtrl.composition.instrumentation}}</div>
+				</div>
+				<div layout="row" layout-padding>
+					<label flex="20">Wikipedia</label>
+					<div flex>{{compositionCtrl.composition.wikipedia}}</div>
+				</div>
+				<div layout="row" layout-padding>
+					<label flex="20">IMSLP</label>
+					<div flex>{{compositionCtrl.composition.imslp}}</div>
+				</div>
+				<md-divider></md-divider>
+			</div>
+			<div>
+				<md-subheader>Difficulty</md-subheader>
+				<div layout="row" layout-padding>
+					<label flex="20">RCM</label>
+					<div flex>{{compositionCtrl.composition.rcm}}</div>
+				</div>
+				<div layout="row" layout-padding>
+					<label flex="20">ABRSM</label>
+					<div flex>{{compositionCtrl.composition.abrsm}}</div>
+				</div>
+				<div layout="row" layout-padding>
+					<label flex="20">Henle</label>
+					<div flex>{{compositionCtrl.composition.henle}}</div>
+				</div>
+			</div>
+		</div>
+	</md-tab>
+	<md-tab label="Videos">
+		<md-content class="md-padding">
+			<md-grid-list md-cols-sm="1" md-cols-md="2" md-cols-gt-md="3" md-row-height="4:3" md-gutter="8px" md-gutter-gt-sm="4px">
+				<md-grid-tile ng-repeat="video in compositionCtrl.videos" md-rowspan="1" md-colspan="1" md-ink-ripple ng-click="compositionCtrl.openVideo($event, video, compositionCtrl.composition)">
+					<img class="full-width" ng-src="{{video.thumbnail}}" />
+					<md-grid-tile-footer>
+						<h3>{{video.title}}</h3>
+					</md-grid-tile-footer>
+				</md-grid-tile>
+			</md-grid-list>
+		</md-content>
+	</md-tab>
+	<md-tab label="Sheets">
+		<md-content class="md-padding">
+			<pre>{{compositionCtrl.sheet | json}}</pre>
+		</md-content>
+	</md-tab>
+</md-tabs>

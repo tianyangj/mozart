@@ -5,7 +5,6 @@ var lilybook;
         'use strict';
         app.module = angular.module('lilybook', [
             'ngMaterial',
-            'ngMdIcons',
             'ui.router',
             'youtube-embed',
             'lilybook.component',

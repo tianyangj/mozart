@@ -1,14 +1,23 @@
-<md-toolbar class="md-tall md-hue-1">
-	<div class="md-toolbar-tools">
-		<span>Composition Hero</span>
-		<span flex></span>
-		<md-button>Right Bar Button</md-button>
-	</div>
-</md-toolbar>
-<md-tabs md-center-tabs="true" md-dynamic-height md-border-bottom>
+<div class="hero-composition" style="background-image:url(images/sheet-music.jpg);"></div>
+<md-tabs md-center-tabs md-dynamic-height md-border-bottom md-swipe-content>
 	<md-tab label="Details">
 		<div class="md-padding">
-			<h1>{{compositionCtrl.composition.title}}</h1>
+			<div layout="row">
+				<h1 flex>{{compositionCtrl.composition.title}}</h1>
+				<md-menu md-position-mode="target-right target">
+					<md-button aria-label="More Menu" class="md-icon-button" ng-click="$mdOpenMenu($event)">
+						<md-icon md-svg-icon="assets/svg/ic_more_vert.svg"></md-icon>
+					</md-button>
+					<md-menu-content width="4">
+						<md-menu-item>
+							<md-button ng-href="{{compositionCtrl.composition.wikipedia}}" target="_blank">More detail on Wikipedia</md-button>
+						</md-menu-item>
+						<md-menu-item>
+							<md-button ng-href="{{compositionCtrl.composition.imslp}}" target="_blank">Sheet music on IMSLP</md-button>
+						</md-menu-item>
+					</md-menu-content>
+				</md-menu>
+			</div>
 			<p>{{compositionCtrl.composition.description}}</p>
 			<div>
 				<div layout="row" layout-padding>
@@ -16,7 +25,7 @@
 					<div flex>{{compositionCtrl.composition.composer.fullname}}</div>
 				</div>
 				<div layout="row" layout-padding>
-					<label flex="20">Type</label>
+					<label flex="20">Form</label>
 					<div flex>{{compositionCtrl.composition.type}}</div>
 				</div>
 				<div layout="row" layout-padding>
@@ -34,14 +43,6 @@
 				<div layout="row" layout-padding>
 					<label flex="20">Instrumentation</label>
 					<div flex>{{compositionCtrl.composition.instrumentation}}</div>
-				</div>
-				<div layout="row" layout-padding>
-					<label flex="20">Wikipedia</label>
-					<div flex>{{compositionCtrl.composition.wikipedia}}</div>
-				</div>
-				<div layout="row" layout-padding>
-					<label flex="20">IMSLP</label>
-					<div flex>{{compositionCtrl.composition.imslp}}</div>
 				</div>
 				<md-divider></md-divider>
 			</div>

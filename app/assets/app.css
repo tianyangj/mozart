@@ -46,6 +46,14 @@
 	background-position: center center;
 }
 
+.hero-composition {
+	height: 320px;
+	min-height: 320px;
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center center;
+}
+
 .composer .featured {
 	position: absolute;
 	top: 60px;

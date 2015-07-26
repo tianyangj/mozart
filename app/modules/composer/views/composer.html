@@ -24,7 +24,7 @@
       <md-list-item ng-repeat="composition in composerCtrl.compositions" ng-click="$state.go('app.composition',{vanity:composition.vanity,id:composition.id})">
         <span class="md-avatar" style="text-align:center;font-family:'Great Vibes',cursive;font-size:40px;">{{$index+1}}</span>
         <div class="md-list-item-text">
-          <h3>{{composition.title}}, {{composition.instrumentation}}</h3>
+          <h3>{{composition.title}}</h3>
           <md-icon class="md-secondary md-warn" md-svg-icon="assets/svg/ic_favorite.svg"
           aria-label="Favorite" ng-click="todo()"></md-icon>
         </div>

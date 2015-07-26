@@ -22,7 +22,7 @@ module lilybook.data {
 				title: composition.get('title'),
 				description: composition.get('description'),
 				vanity: composition.get('vanity'),
-				opus: composition.get('opus'),
+				catalogue: composition.get('catalogue'),
 				number: composition.get('number'),
 				instrumentation: composition.get('instrumentation'),
 				wikipedia: composition.get('wikipedia'),

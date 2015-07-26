@@ -29,10 +29,10 @@
 					<div flex>{{compositionCtrl.composition.type}}</div>
 				</div>
 				<div layout="row" layout-padding>
-					<label flex="20">Opus</label>
-					<div flex>{{compositionCtrl.composition.opus}}</div>
+					<label flex="20">Catalogue</label>
+					<div flex>{{compositionCtrl.composition.catalogue}}</div>
 				</div>
-				<div layout="row" layout-padding>
+				<div layout="row" layout-padding ng-if="compositionCtrl.composition.number">
 					<label flex="20">Number</label>
 					<div flex>{{compositionCtrl.composition.number}}</div>
 				</div>

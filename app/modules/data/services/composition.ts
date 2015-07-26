@@ -7,7 +7,7 @@ module lilybook.data {
 		title: string,
 		description: string,
 		vanity: string,
-		opus: number,
+		catalogue: string,
 		number: number,
 		key: string,
 		instrumentation: string,

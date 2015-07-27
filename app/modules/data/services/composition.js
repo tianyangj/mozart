@@ -37,6 +37,7 @@ var lilybook;
                 query.equalTo('composer', composer.base);
                 query.include('key');
                 query.include('type');
+                query.ascending('title');
                 query.find().then(function (response) {
                     var compositions;
                     compositions = response.map(data.MapperSvc.compositionMapper);

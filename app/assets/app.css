@@ -47,8 +47,8 @@
 }
 
 .hero-composition {
-	height: 320px;
-	min-height: 320px;
+	height: 240px;
+	min-height: 240px;
 	background-size: cover;
 	background-repeat: no-repeat;
 	background-position: center center;

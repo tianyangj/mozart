@@ -3,8 +3,14 @@
 	<md-tabs md-center-tabs md-dynamic-height md-border-bottom md-swipe-content>
 		<md-tab label="Details">
 			<div class="md-padding">
-				<div layout="row">
+				<div layout="row" layout-align="center center">
 					<h1 flex>{{compositionCtrl.composition.title}}</h1>
+					<md-button aria-label="Favorite" class="md-icon-button">
+						<md-icon class="md-warn" md-svg-icon="assets/svg/ic_favorite.svg" ng-click="todo()"></md-icon>
+					</md-button>
+					<md-button aria-label="Repertoire" class="md-icon-button">
+						<md-icon class="md-accent" md-svg-icon="assets/svg/ic_add_circle.svg" ng-click="todo()"></md-icon>
+					</md-button>
 					<md-menu md-position-mode="target-right target">
 						<md-button aria-label="More Menu" class="md-icon-button" ng-click="$mdOpenMenu($event)">
 							<md-icon md-svg-icon="assets/svg/ic_more_vert.svg"></md-icon>
@@ -20,46 +26,66 @@
 					</md-menu>
 				</div>
 				<p>{{compositionCtrl.composition.description}}</p>
-				<div>
-					<div layout="row" layout-padding>
-						<label flex="20">Composer</label>
-						<div flex>{{compositionCtrl.composition.composer.fullname}}</div>
+				<div layout="row">
+					<div flex>
+						<div layout="row" layout-padding>
+							<strong flex="33">Composer</strong>
+							<div flex>{{compositionCtrl.composition.composer.fullname}}</div>
+						</div>
+						<div layout="row" layout-padding>
+							<strong flex="33">Form</strong>
+							<div flex>{{compositionCtrl.composition.type}}</div>
+						</div>
+						<div layout="row" layout-padding>
+							<strong flex="33">Catalogue</strong>
+							<div flex>{{compositionCtrl.composition.catalogue}}</div>
+						</div>
+						<div layout="row" layout-padding ng-if="compositionCtrl.composition.number">
+							<strong flex="33">Number</strong>
+							<div flex>{{compositionCtrl.composition.number}}</div>
+						</div>
+						<div layout="row" layout-padding>
+							<strong flex="33">Key</strong>
+							<div flex>{{compositionCtrl.composition.key}}</div>
+						</div>
+						<div layout="row" layout-padding>
+							<strong flex="33">Instrumentation</strong>
+							<div flex>{{compositionCtrl.composition.instrumentation}}</div>
+						</div>
+						<div layout="row" layout-padding>
+							<strong flex="33">RCM</strong>
+							<div flex>{{compositionCtrl.composition.rcm || 'N/A'}}</div>
+						</div>
+						<div layout="row" layout-padding>
+							<strong flex="33">ABRSM</strong>
+							<div flex>{{compositionCtrl.composition.abrsm || 'N/A'}}</div>
+						</div>
+						<div layout="row" layout-padding>
+							<strong flex="33">Henle</strong>
+							<div flex>{{compositionCtrl.composition.henle || 'N/A'}}</div>
+						</div>
 					</div>
-					<div layout="row" layout-padding>
-						<label flex="20">Form</label>
-						<div flex>{{compositionCtrl.composition.type}}</div>
-					</div>
-					<div layout="row" layout-padding>
-						<label flex="20">Catalogue</label>
-						<div flex>{{compositionCtrl.composition.catalogue}}</div>
-					</div>
-					<div layout="row" layout-padding ng-if="compositionCtrl.composition.number">
-						<label flex="20">Number</label>
-						<div flex>{{compositionCtrl.composition.number}}</div>
-					</div>
-					<div layout="row" layout-padding>
-						<label flex="20">Key</label>
-						<div flex>{{compositionCtrl.composition.key}}</div>
-					</div>
-					<div layout="row" layout-padding>
-						<label flex="20">Instrumentation</label>
-						<div flex>{{compositionCtrl.composition.instrumentation}}</div>
-					</div>
-					<md-divider></md-divider>
-				</div>
-				<div>
-					<md-subheader>Difficulty</md-subheader>
-					<div layout="row" layout-padding>
-						<label flex="20">RCM</label>
-						<div flex>{{compositionCtrl.composition.rcm}}</div>
-					</div>
-					<div layout="row" layout-padding>
-						<label flex="20">ABRSM</label>
-						<div flex>{{compositionCtrl.composition.abrsm}}</div>
-					</div>
-					<div layout="row" layout-padding>
-						<label flex="20">Henle</label>
-						<div flex>{{compositionCtrl.composition.henle}}</div>
+					<div flex>
+						<div layout="row" layout-padding>
+							<strong flex="33">Likes</strong>
+							<div flex>##</div>
+						</div>
+						<div layout="row" layout-padding>
+							<strong flex="33">Repertoires</strong>
+							<div flex>##</div>
+						</div>
+						<div layout="row" layout-padding>
+							<strong flex="33">Videos</strong>
+							<div flex>##</div>
+						</div>
+						<div layout="row" layout-padding>
+							<strong flex="33">Q&As</strong>
+							<div flex>##</div>
+						</div>
+						<div layout="row" layout-padding>
+							<strong flex="33">Average Difficulty</strong>
+							<div flex>##</div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -80,6 +106,13 @@
 			<md-content class="md-padding">
 				<pre>{{compositionCtrl.sheet | json}}</pre>
 			</md-content>
+		</md-tab>
+		<md-tab label="Q & A">
+			<div class="md-padding">
+				<h3>On a scale of 1 to 10 (1 being easiest and 10 being hardest), how hard do you think this composition is?</h3>
+				<md-slider flex md-discrete ng-model="compositionCtrl.difficulty" step="1" min="1" max="10" aria-label="difficulty"></md-slider>
+				<div>list of questions and answers...</div>
+			</div>
 		</md-tab>
 	</md-tabs>
 </div>

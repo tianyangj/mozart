@@ -1,7 +1,7 @@
 <div flex layout="row">
 	<md-sidenav layout="column" class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-lg')">
 		<md-toolbar class="md-medium-tall md-whiteframe-z1" layout="column" layout-align="center center">
-			<span>LilyBook</span>
+			<a ui-sref="app.splash">LilyBook</a>
 		</md-toolbar>
 		<md-content flex>
 			<md-list>
@@ -49,6 +49,6 @@
 				</md-button>
 			</div>
 		</md-toolbar>
-		<md-content flex ui-view></md-content>
+		<md-content flex layout ui-view></md-content>
 	</div>
 </div>

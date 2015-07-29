@@ -1,83 +1,85 @@
-<div class="hero-composition" style="background-image:url(images/sheet-music.jpg);"></div>
-<md-tabs md-center-tabs md-dynamic-height md-border-bottom md-swipe-content>
-	<md-tab label="Details">
-		<div class="md-padding">
-			<div layout="row">
-				<h1 flex>{{compositionCtrl.composition.title}}</h1>
-				<md-menu md-position-mode="target-right target">
-					<md-button aria-label="More Menu" class="md-icon-button" ng-click="$mdOpenMenu($event)">
-						<md-icon md-svg-icon="assets/svg/ic_more_vert.svg"></md-icon>
-					</md-button>
-					<md-menu-content width="4">
-						<md-menu-item>
-							<md-button ng-href="{{compositionCtrl.composition.wikipedia}}" target="_blank">More detail on Wikipedia</md-button>
-						</md-menu-item>
-						<md-menu-item>
-							<md-button ng-href="{{compositionCtrl.composition.imslp}}" target="_blank">Sheet music on IMSLP</md-button>
-						</md-menu-item>
-					</md-menu-content>
-				</md-menu>
+<div flex>
+	<div class="hero-composition" style="background-image:url(images/sheet-music.jpg);"></div>
+	<md-tabs md-center-tabs md-dynamic-height md-border-bottom md-swipe-content>
+		<md-tab label="Details">
+			<div class="md-padding">
+				<div layout="row">
+					<h1 flex>{{compositionCtrl.composition.title}}</h1>
+					<md-menu md-position-mode="target-right target">
+						<md-button aria-label="More Menu" class="md-icon-button" ng-click="$mdOpenMenu($event)">
+							<md-icon md-svg-icon="assets/svg/ic_more_vert.svg"></md-icon>
+						</md-button>
+						<md-menu-content width="4">
+							<md-menu-item>
+								<md-button ng-href="{{compositionCtrl.composition.wikipedia}}" target="_blank">More detail on Wikipedia</md-button>
+							</md-menu-item>
+							<md-menu-item>
+								<md-button ng-href="{{compositionCtrl.composition.imslp}}" target="_blank">Sheet music on IMSLP</md-button>
+							</md-menu-item>
+						</md-menu-content>
+					</md-menu>
+				</div>
+				<p>{{compositionCtrl.composition.description}}</p>
+				<div>
+					<div layout="row" layout-padding>
+						<label flex="20">Composer</label>
+						<div flex>{{compositionCtrl.composition.composer.fullname}}</div>
+					</div>
+					<div layout="row" layout-padding>
+						<label flex="20">Form</label>
+						<div flex>{{compositionCtrl.composition.type}}</div>
+					</div>
+					<div layout="row" layout-padding>
+						<label flex="20">Catalogue</label>
+						<div flex>{{compositionCtrl.composition.catalogue}}</div>
+					</div>
+					<div layout="row" layout-padding ng-if="compositionCtrl.composition.number">
+						<label flex="20">Number</label>
+						<div flex>{{compositionCtrl.composition.number}}</div>
+					</div>
+					<div layout="row" layout-padding>
+						<label flex="20">Key</label>
+						<div flex>{{compositionCtrl.composition.key}}</div>
+					</div>
+					<div layout="row" layout-padding>
+						<label flex="20">Instrumentation</label>
+						<div flex>{{compositionCtrl.composition.instrumentation}}</div>
+					</div>
+					<md-divider></md-divider>
+				</div>
+				<div>
+					<md-subheader>Difficulty</md-subheader>
+					<div layout="row" layout-padding>
+						<label flex="20">RCM</label>
+						<div flex>{{compositionCtrl.composition.rcm}}</div>
+					</div>
+					<div layout="row" layout-padding>
+						<label flex="20">ABRSM</label>
+						<div flex>{{compositionCtrl.composition.abrsm}}</div>
+					</div>
+					<div layout="row" layout-padding>
+						<label flex="20">Henle</label>
+						<div flex>{{compositionCtrl.composition.henle}}</div>
+					</div>
+				</div>
 			</div>
-			<p>{{compositionCtrl.composition.description}}</p>
-			<div>
-				<div layout="row" layout-padding>
-					<label flex="20">Composer</label>
-					<div flex>{{compositionCtrl.composition.composer.fullname}}</div>
-				</div>
-				<div layout="row" layout-padding>
-					<label flex="20">Form</label>
-					<div flex>{{compositionCtrl.composition.type}}</div>
-				</div>
-				<div layout="row" layout-padding>
-					<label flex="20">Catalogue</label>
-					<div flex>{{compositionCtrl.composition.catalogue}}</div>
-				</div>
-				<div layout="row" layout-padding ng-if="compositionCtrl.composition.number">
-					<label flex="20">Number</label>
-					<div flex>{{compositionCtrl.composition.number}}</div>
-				</div>
-				<div layout="row" layout-padding>
-					<label flex="20">Key</label>
-					<div flex>{{compositionCtrl.composition.key}}</div>
-				</div>
-				<div layout="row" layout-padding>
-					<label flex="20">Instrumentation</label>
-					<div flex>{{compositionCtrl.composition.instrumentation}}</div>
-				</div>
-				<md-divider></md-divider>
-			</div>
-			<div>
-				<md-subheader>Difficulty</md-subheader>
-				<div layout="row" layout-padding>
-					<label flex="20">RCM</label>
-					<div flex>{{compositionCtrl.composition.rcm}}</div>
-				</div>
-				<div layout="row" layout-padding>
-					<label flex="20">ABRSM</label>
-					<div flex>{{compositionCtrl.composition.abrsm}}</div>
-				</div>
-				<div layout="row" layout-padding>
-					<label flex="20">Henle</label>
-					<div flex>{{compositionCtrl.composition.henle}}</div>
-				</div>
-			</div>
-		</div>
-	</md-tab>
-	<md-tab label="Videos">
-		<md-content class="md-padding">
-			<md-grid-list md-cols-sm="1" md-cols-md="2" md-cols-gt-md="3" md-row-height="4:3" md-gutter="8px" md-gutter-gt-sm="4px">
-				<md-grid-tile ng-repeat="video in compositionCtrl.videos" md-rowspan="1" md-colspan="1" md-ink-ripple ng-click="compositionCtrl.openVideo($event, video, compositionCtrl.composition)">
-					<img class="full-width" ng-src="{{video.thumbnail}}" />
-					<md-grid-tile-footer>
-						<h3>{{video.title}}</h3>
-					</md-grid-tile-footer>
-				</md-grid-tile>
-			</md-grid-list>
-		</md-content>
-	</md-tab>
-	<md-tab label="Sheets">
-		<md-content class="md-padding">
-			<pre>{{compositionCtrl.sheet | json}}</pre>
-		</md-content>
-	</md-tab>
-</md-tabs>
+		</md-tab>
+		<md-tab label="Videos">
+			<md-content class="md-padding">
+				<md-grid-list md-cols-sm="1" md-cols-md="2" md-cols-gt-md="3" md-row-height="4:3" md-gutter="8px" md-gutter-gt-sm="4px">
+					<md-grid-tile ng-repeat="video in compositionCtrl.videos" md-rowspan="1" md-colspan="1" md-ink-ripple ng-click="compositionCtrl.openVideo($event, video, compositionCtrl.composition)">
+						<img class="full-width" ng-src="{{video.thumbnail}}" />
+						<md-grid-tile-footer>
+							<h3>{{video.title}}</h3>
+						</md-grid-tile-footer>
+					</md-grid-tile>
+				</md-grid-list>
+			</md-content>
+		</md-tab>
+		<md-tab label="Sheets">
+			<md-content class="md-padding">
+				<pre>{{compositionCtrl.sheet | json}}</pre>
+			</md-content>
+		</md-tab>
+	</md-tabs>
+</div>

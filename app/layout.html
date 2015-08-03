@@ -31,7 +31,7 @@
 				<md-button class="md-icon-button" aria-label="Menu" hide-gt-lg ng-click="appCtrl.toggleSidenav('left')">
 					<md-icon md-svg-icon="assets/svg/menu.svg"></md-icon>
 				</md-button>
-				<div ui-view="toolbar"></div>
+				<div flex="40" ui-view="toolbar"></div>
 				<div flex>
 					<md-autocomplete md-autofocus="false" md-items="item in appCtrl.search(appCtrl.searchText)" md-search-text="appCtrl.searchText"
 					md-search-text-change="" placeholder="Search">

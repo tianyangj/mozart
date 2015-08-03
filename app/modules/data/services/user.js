@@ -48,7 +48,7 @@ var lilybook;
                 return null;
             };
             UserSvc.prototype.isAuthenticated = function () {
-                return Parse.User.current().authenticated();
+                return Parse.User.current() !== null;
             };
             UserSvc.$inject = ['$q'];
             return UserSvc;

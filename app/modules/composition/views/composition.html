@@ -5,9 +5,7 @@
 			<div class="md-padding">
 				<div layout="row" layout-align="center center">
 					<h1 flex>{{compositionCtrl.composition.title}}</h1>
-					<md-button aria-label="Favorite" class="md-icon-button">
-						<md-icon class="md-warn" md-svg-icon="assets/svg/ic_favorite.svg" ng-click="todo()"></md-icon>
-					</md-button>
+					<lb-like data="compositionCtrl.composition"></lb-like>
 					<md-button aria-label="Repertoire" class="md-icon-button">
 						<md-icon class="md-accent" md-svg-icon="assets/svg/ic_add_circle.svg" ng-click="todo()"></md-icon>
 					</md-button>

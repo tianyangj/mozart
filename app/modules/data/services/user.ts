@@ -66,7 +66,7 @@ module lilybook.data {
     }
 
     isAuthenticated() {
-      return Parse.User.current().authenticated();
+      return Parse.User.current() !== null;
     }
   }
 

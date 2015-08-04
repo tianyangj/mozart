@@ -38,7 +38,8 @@ module lilybook.data {
 
 		static userMapper(user: Parse.User) {
 			return <IUser>{
-				uid: user.id,
+				base: user,
+				id: user.id,
 				email: user.get('email'),
 				firstname: user.get('firstname'),
 				lastname: user.get('lastname')

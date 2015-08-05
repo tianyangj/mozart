@@ -21,6 +21,7 @@ module lilybook.data {
 		likeComposition(fromUser: IUser, composition: IComposition): ng.IPromise<Parse.Object>
 		unlikeComposition(fromUser: IUser, composition: IComposition): ng.IPromise<Parse.Object>
 		hasLikedComposition(fromUser: IUser, composition: IComposition): ng.IPromise<Parse.Object>
+		totalLikedComposition(composition: IComposition): ng.IPromise<number>
 	}
 
 	class ActivitySvc implements IActivitySvc {
@@ -88,6 +89,19 @@ module lilybook.data {
 			query.equalTo('composition', composition.base);
 			query.first().then((response: Parse.Object) => {
 				defer.resolve(response);
+			}, (error) => {
+				defer.reject(error);
+			});
+			return defer.promise;
+		}
+
+		totalLikedComposition(composition: IComposition) {
+			var defer = this.$q.defer();
+			var query = new Parse.Query(this.ActivityDB);
+			query.equalTo('type', ActivityType.LikeComposition);
+			query.equalTo('composition', composition.base);
+			query.count().then((count: number) => {
+				defer.resolve(count);
 			}, (error) => {
 				defer.reject(error);
 			});

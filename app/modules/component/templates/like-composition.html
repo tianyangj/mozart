@@ -1,4 +1,5 @@
-<md-button aria-label="Like" class="md-icon-button" ng-class="{'md-warn':liked}" ng-click="onClick()">
-	<md-tooltip md-direction="top" md-delay="0">{{tooltip}}</md-tooltip>
-	<md-icon md-svg-icon="assets/svg/ic_favorite.svg"></md-icon>
+<md-button aria-label="Like" class="md-icon-button" ng-class="{'md-accent':liked}" ng-click="onClick()" style="width:auto;padding-left:6px;">
+	<md-tooltip md-delay="0">{{tooltip}}</md-tooltip>
+	<md-icon class="md-36" md-svg-src="assets/svg/ic_thumb_up.svg"></md-icon>
+	<span>{{total}}</span>
 </md-button>

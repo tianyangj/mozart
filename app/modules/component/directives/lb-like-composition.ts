@@ -15,11 +15,13 @@ module lilybook.component {
 							activitySvc.unlikeComposition($rootScope.user, $scope.composition).then(() => {
 								$scope.liked = !$scope.liked;
 								$scope.tooltip = 'I like this';
+								$scope.total--;
 							});
 						} else {
 							activitySvc.likeComposition($rootScope.user, $scope.composition).then(() => {
 								$scope.liked = !$scope.liked;
 								$scope.tooltip = 'Unlike';
+								$scope.total++;
 							});
 						}
 					}
@@ -37,6 +39,9 @@ module lilybook.component {
 					} else {
 						$scope.tooltip = 'Login to Like';
 					}
+				});
+				activitySvc.totalLikedComposition($scope.composition).then((count) => {
+					$scope.total = count;
 				});
 			}]
 		};

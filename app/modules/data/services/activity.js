@@ -78,6 +78,18 @@ var lilybook;
                 });
                 return defer.promise;
             };
+            ActivitySvc.prototype.totalLikedComposition = function (composition) {
+                var defer = this.$q.defer();
+                var query = new Parse.Query(this.ActivityDB);
+                query.equalTo('type', ActivityType.LikeComposition);
+                query.equalTo('composition', composition.base);
+                query.count().then(function (count) {
+                    defer.resolve(count);
+                }, function (error) {
+                    defer.reject(error);
+                });
+                return defer.promise;
+            };
             ActivitySvc.$inject = ['$q'];
             return ActivitySvc;
         })();

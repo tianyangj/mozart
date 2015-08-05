@@ -17,12 +17,14 @@ var lilybook;
                                     activitySvc.unlikeComposition($rootScope.user, $scope.composition).then(function () {
                                         $scope.liked = !$scope.liked;
                                         $scope.tooltip = 'I like this';
+                                        $scope.total--;
                                     });
                                 }
                                 else {
                                     activitySvc.likeComposition($rootScope.user, $scope.composition).then(function () {
                                         $scope.liked = !$scope.liked;
                                         $scope.tooltip = 'Unlike';
+                                        $scope.total++;
                                     });
                                 }
                             }
@@ -42,6 +44,9 @@ var lilybook;
                             else {
                                 $scope.tooltip = 'Login to Like';
                             }
+                        });
+                        activitySvc.totalLikedComposition($scope.composition).then(function (count) {
+                            $scope.total = count;
                         });
                     }]
             };

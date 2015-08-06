@@ -30,11 +30,7 @@ module lilybook.component {
 					if (user) {
 						activitySvc.hasLikedComposition(user, $scope.composition).then((liked) => {
 							$scope.liked = liked;
-							if (liked) {
-								$scope.tooltip = 'Unlike';
-							} else {
-								$scope.tooltip = 'I like this';
-							}
+							$scope.tooltip = liked ? 'Unlike' : 'I like this';
 						});
 					} else {
 						$scope.tooltip = 'Login to Like';

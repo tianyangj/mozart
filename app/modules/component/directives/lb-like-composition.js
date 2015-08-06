@@ -33,12 +33,7 @@ var lilybook;
                             if (user) {
                                 activitySvc.hasLikedComposition(user, $scope.composition).then(function (liked) {
                                     $scope.liked = liked;
-                                    if (liked) {
-                                        $scope.tooltip = 'Unlike';
-                                    }
-                                    else {
-                                        $scope.tooltip = 'I like this';
-                                    }
+                                    $scope.tooltip = liked ? 'Unlike' : 'I like this';
                                 });
                             }
                             else {

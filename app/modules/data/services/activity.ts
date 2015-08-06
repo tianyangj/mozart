@@ -20,7 +20,7 @@ module lilybook.data {
 	export interface IActivitySvc {
 		likeComposition(fromUser: IUser, composition: IComposition): ng.IPromise<Parse.Object>
 		unlikeComposition(fromUser: IUser, composition: IComposition): ng.IPromise<Parse.Object>
-		hasLikedComposition(fromUser: IUser, composition: IComposition): ng.IPromise<Parse.Object>
+		hasLikedComposition(fromUser: IUser, composition: IComposition): ng.IPromise<boolean>
 		totalLikedComposition(composition: IComposition): ng.IPromise<number>
 	}
 
@@ -39,21 +39,14 @@ module lilybook.data {
 				return this.$q.reject('AUTH_REQUIRED');
 			}
 			var defer = this.$q.defer();
-			this.hasLikedComposition(fromUser, composition).then((liked) => {
-				if (!liked) {
-					var activity = new (<any>this.ActivityDB)();
-					activity.save({
-						type: ActivityType.LikeComposition,
-						fromUser: fromUser.base,
-						composition: composition.base
-					}).then((response: Parse.Object) => {
-						defer.resolve(response);
-					}, (error) => {
-						defer.reject(error);
-					})
-				} else {
-					defer.reject('ALREADY_LIKED');
-				}
+			Parse.Cloud.run('likeComposition', {
+				type: ActivityType.LikeComposition,
+				compositionId: composition.id
+			}).then((response: Parse.Object) => {
+				console.log('likeComposition', response)
+				defer.resolve(response);
+			}, (error) => {
+				defer.reject(error);
 			});
 			return defer.promise;
 		}
@@ -63,17 +56,14 @@ module lilybook.data {
 				return this.$q.reject('AUTH_REQUIRED');
 			}
 			var defer = this.$q.defer();
-			this.hasLikedComposition(fromUser, composition).then((liked) => {
-				if (liked) {
-					var activity = new (<any>this.ActivityDB)();
-					liked.destroy().then((response: Parse.Object) => {
-						defer.resolve(response);
-					}, (error) => {
-						defer.reject(error);
-					})
-				} else {
-					defer.reject('NOT_FOUND');
-				}
+			Parse.Cloud.run('unlikeComposition', {
+				type: ActivityType.LikeComposition,
+				compositionId: composition.id
+			}).then((response: Parse.Object) => {
+				console.log('unlikeComposition', response)
+				defer.resolve(response);
+			}, (error) => {
+				defer.reject(error);
 			});
 			return defer.promise;
 		}
@@ -88,7 +78,11 @@ module lilybook.data {
 			query.equalTo('fromUser', fromUser.base);
 			query.equalTo('composition', composition.base);
 			query.first().then((response: Parse.Object) => {
-				defer.resolve(response);
+				if (response) {
+					defer.resolve(true);
+				} else {
+					defer.resolve(false);
+				}
 			}, (error) => {
 				defer.reject(error);
 			});

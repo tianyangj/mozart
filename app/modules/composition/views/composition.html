@@ -6,9 +6,7 @@
 				<div layout="row" layout-align="center center">
 					<h1 flex>{{compositionCtrl.composition.title}}</h1>
 					<lb-like-composition composition="compositionCtrl.composition"></lb-like-composition>
-					<md-button aria-label="Repertoire" class="md-icon-button">
-						<md-icon class="md-accent" md-svg-icon="assets/svg/ic_add_circle.svg" ng-click="todo()"></md-icon>
-					</md-button>
+					<lb-repertoire composition="compositionCtrl.composition"></lb-repertoire>
 					<md-menu md-position-mode="target-right target">
 						<md-button aria-label="More Menu" class="md-icon-button" ng-click="$mdOpenMenu($event)">
 							<md-icon md-svg-icon="assets/svg/ic_more_vert.svg"></md-icon>

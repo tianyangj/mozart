@@ -46,9 +46,15 @@
 	background-position: center center;
 }
 
-.hero-composition {
+.hero-composition-video {
+	height: 360px;
+	min-height: 360px;
+}
+
+.hero-composition-image {
 	height: 240px;
 	min-height: 240px;
+	background-image: url(/images/sheet-music.jpg);
 	background-size: cover;
 	background-repeat: no-repeat;
 	background-position: center center;

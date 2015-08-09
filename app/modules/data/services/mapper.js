@@ -32,6 +32,7 @@ var lilybook;
                     rcm: composition.get('rcm'),
                     abrsm: composition.get('abrsm'),
                     henle: composition.get('henle'),
+                    video: composition.get('video'),
                     key: composition.get('key') && composition.get('key').get('name'),
                     type: composition.get('type') && composition.get('type').get('name'),
                     composer: composition.get('composer') ? MapperSvc.composerMapper(composition.get('composer')) : null

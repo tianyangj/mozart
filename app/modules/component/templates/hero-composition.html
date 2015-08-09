@@ -1,0 +1,4 @@
+<div ng-if="composition.video" class="hero-composition-video">
+	<youtube-video video-url="composition.video" player-width="'100%'" player-height="'360px'" player-vars="{autoplay:1,showinfo:0}"></youtube-video>
+</div>
+<div ng-if="!composition.video" class="hero-composition-image"></div>

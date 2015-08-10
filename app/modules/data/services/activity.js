@@ -8,6 +8,7 @@ var lilybook;
             ActivityType[ActivityType["Follow"] = 1] = "Follow";
             ActivityType[ActivityType["Comment"] = 2] = "Comment";
             ActivityType[ActivityType["Repertoire"] = 3] = "Repertoire";
+            ActivityType[ActivityType["Difficulty"] = 4] = "Difficulty";
         })(data.ActivityType || (data.ActivityType = {}));
         var ActivityType = data.ActivityType;
         var ActivitySvc = (function () {
@@ -76,6 +77,40 @@ var lilybook;
                 query.equalTo('composition', composition.base);
                 query.count().then(function (count) {
                     defer.resolve(count);
+                }, function (error) {
+                    defer.reject(error);
+                });
+                return defer.promise;
+            };
+            ActivitySvc.prototype.rateDifficulty = function (fromUser, composition, difficulty) {
+                if (!fromUser) {
+                    return this.$q.reject('AUTH_REQUIRED');
+                }
+                var defer = this.$q.defer();
+                Parse.Cloud.run('rateDifficulty', {
+                    type: ActivityType.Difficulty,
+                    compositionId: composition.id,
+                    difficulty: difficulty
+                }).then(function (response) {
+                    defer.resolve(data.MapperSvc.difficultyMapper(response));
+                }, function (error) {
+                    defer.reject(error);
+                });
+                return defer.promise;
+            };
+            ActivitySvc.prototype.getDifficulty = function (fromUser, composition) {
+                var defer = this.$q.defer();
+                Parse.Cloud.run('getDifficulty', {
+                    type: ActivityType.Difficulty,
+                    compositionId: composition.id
+                }).then(function (response) {
+                    var difficulties = response.map(data.MapperSvc.difficultyMapper);
+                    defer.resolve({
+                        mine: difficulties.filter(function (difficulty) {
+                            return difficulty.fromUserId === fromUser.id;
+                        })[0],
+                        all: difficulties
+                    });
                 }, function (error) {
                     defer.reject(error);
                 });

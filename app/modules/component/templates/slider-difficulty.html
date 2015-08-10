@@ -1,0 +1,7 @@
+<div>
+	<h4>On a scale of 1 to 10 (1 being easiest and 10 being hardest), how hard do you think this composition is?</h4>
+	<div layout="row" layout-align="center center">
+		<md-slider flex class="md-default" md-discrete ng-model="mine.difficulty" step="1" min="1" max="10" aria-label="difficulty"></md-slider>
+		<span class="md-padding" ng-if="mine.updatedAt">(rated on {{mine.updatedAt | date}})</span>
+	</div>
+</div>

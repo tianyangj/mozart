@@ -67,5 +67,15 @@ module lilybook.data {
 				pdfUrl: sheet.get('pdf') ? sheet.get('pdf').url() : null
 			};
 		}
+
+		static difficultyMapper(activity) {
+			return {
+				base: activity,
+				id: activity.id,
+				fromUserId: activity.get('fromUser').id,
+				difficulty: activity.get('difficulty'),
+				updatedAt: activity.updatedAt
+			};
+		}
 	}
 }

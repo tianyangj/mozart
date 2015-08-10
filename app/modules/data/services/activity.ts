@@ -5,7 +5,8 @@ module lilybook.data {
 		LikeComposition,
 		Follow,
 		Comment,
-		Repertoire
+		Repertoire,
+		Difficulty
 	}
 
 	export interface IActivity {
@@ -22,6 +23,8 @@ module lilybook.data {
 		unlikeComposition(fromUser: IUser, composition: IComposition): ng.IPromise<Parse.Object>
 		hasLikedComposition(fromUser: IUser, composition: IComposition): ng.IPromise<boolean>
 		totalLikedComposition(composition: IComposition): ng.IPromise<number>
+		rateDifficulty(fromUser: IUser, composition: IComposition, difficulty: number): ng.IPromise<any>
+		getDifficulty(fromUser: IUser, composition: IComposition): ng.IPromise<any>
 	}
 
 	class ActivitySvc implements IActivitySvc {
@@ -96,6 +99,42 @@ module lilybook.data {
 			query.equalTo('composition', composition.base);
 			query.count().then((count: number) => {
 				defer.resolve(count);
+			}, (error) => {
+				defer.reject(error);
+			});
+			return defer.promise;
+		}
+
+		rateDifficulty(fromUser: IUser, composition: IComposition, difficulty: number) {
+			if (!fromUser) {
+				return this.$q.reject('AUTH_REQUIRED');
+			}
+			var defer = this.$q.defer();
+			Parse.Cloud.run('rateDifficulty', {
+				type: ActivityType.Difficulty,
+				compositionId: composition.id,
+				difficulty: difficulty
+			}).then((response: Parse.Object) => {
+				defer.resolve(MapperSvc.difficultyMapper(response));
+			}, (error) => {
+				defer.reject(error);
+			});
+			return defer.promise;
+		}
+
+		getDifficulty(fromUser: IUser, composition: IComposition) {
+			var defer = this.$q.defer();
+			Parse.Cloud.run('getDifficulty', {
+				type: ActivityType.Difficulty,
+				compositionId: composition.id
+			}).then((response: Parse.Object[]) => {
+				var difficulties = response.map(MapperSvc.difficultyMapper);
+				defer.resolve({
+					mine: difficulties.filter((difficulty) => {
+						return difficulty.fromUserId === fromUser.id;
+					})[0],
+					all: difficulties
+				});
 			}, (error) => {
 				defer.reject(error);
 			});

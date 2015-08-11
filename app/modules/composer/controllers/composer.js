@@ -4,10 +4,12 @@ var lilybook;
     (function (composer_1) {
         'use strict';
         var ComposerController = (function () {
-            function ComposerController(composer, compositionSvc) {
+            function ComposerController(composer, compositionSvc, $scope, $state) {
                 var _this = this;
                 this.composer = composer;
                 this.compositionSvc = compositionSvc;
+                this.$scope = $scope;
+                this.$state = $state;
                 this.compositionSvc.getCompositions(composer).then(function (compositions) {
                     _this.compositions = compositions;
                     var compositionGroups = {};
@@ -19,10 +21,16 @@ var lilybook;
                     });
                     _this.compositionGroups = compositionGroups;
                 });
+                this.$scope.$emit('headerUpdateContext', {
+                    href: $state.href('app.composers'),
+                    name: 'Composers'
+                });
             }
             ComposerController.$inject = [
                 'composer',
-                'compositionSvc'
+                'compositionSvc',
+                '$scope',
+                '$state'
             ];
             return ComposerController;
         })();

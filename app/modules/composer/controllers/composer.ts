@@ -5,12 +5,16 @@ module lilybook.composer {
 
 		static $inject = [
 			'composer',
-			'compositionSvc'
+			'compositionSvc',
+			'$scope',
+			'$state'
 		];
 
 		constructor(
 			public composer: lilybook.data.IComposer,
-			private compositionSvc: lilybook.data.ICompositionSvc
+			private compositionSvc: lilybook.data.ICompositionSvc,
+			private $scope,
+			private $state
 			) {
 			this.compositionSvc.getCompositions(composer).then(compositions => {
 				this.compositions = compositions;
@@ -22,6 +26,10 @@ module lilybook.composer {
 					compositionGroups[composition.type].push(composition);
 				});
 				this.compositionGroups = compositionGroups;
+			});
+			this.$scope.$emit('headerUpdateContext', {
+				href: $state.href('app.composers'),
+				name: 'Composers'
 			});
 		}
 

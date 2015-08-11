@@ -9,8 +9,7 @@ module lilybook.app {
 			'$mdSidenav',
 			'$mdToast',
 			'menuSvc',
-			'userSvc',
-			'searchSvc'
+			'userSvc'
 		];
 
 		constructor(
@@ -19,14 +18,14 @@ module lilybook.app {
 			private $mdSidenav: any,
 			private $mdToast: any,
 			private menuSvc: lilybook.data.IMenuSvc,
-			private userSvc: lilybook.data.IUserSvc,
-			private searchSvc: lilybook.data.ISearchSvc
+			private userSvc: lilybook.data.IUserSvc
 			) {
 			this.menuSvc.getSideNav().then((sidenav) => {
 				this.sidenav = sidenav;
 			});
 			this.$rootScope['user'] = this.userSvc.current();
 			this.$rootScope.$on('$stateChangeSuccess', (event, toState, toParams, fromState, fromParams) => {
+				this.context = null;
 				this.$mdSidenav('left').close();
 			});
 			this.$rootScope.$on('$stateChangeError', (event, toState, toParams, fromState, fromParams, error) => {
@@ -34,6 +33,9 @@ module lilybook.app {
 				if (error === 'AUTH_REQUIRED') {
 					this.$state.go('app.login');
 				}
+			});
+			this.$rootScope.$on('headerUpdateContext', (event, context) => {
+				this.context = context;
 			});
 		}
 
@@ -45,10 +47,7 @@ module lilybook.app {
 		};
 
 		sidenav: any[];
-
-		toggleSidenav = (sidenavId: string) => {
-			this.$mdSidenav(sidenavId).toggle();
-		}
+		context;
 
 		signup = (signupData: any) => {
 			this.userSvc.signUp(signupData.email, signupData.password, signupData.firstname, signupData.lastname)
@@ -78,12 +77,6 @@ module lilybook.app {
 				});
 		};
 
-		search = (query) => {
-			return this.searchSvc.search(query)
-				.then((results) => {
-					return results;
-				});
-		};
 	}
 
 	lilybook.app.module.controller('AppController', AppController);

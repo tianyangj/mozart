@@ -26,29 +26,7 @@
 		</md-toolbar>
 	</md-sidenav>
 	<div flex layout="column">
-		<md-toolbar class="header">
-			<div class="md-toolbar-tools">
-				<md-button class="md-icon-button" aria-label="Menu" hide-gt-lg ng-click="appCtrl.toggleSidenav('left')">
-					<md-icon md-svg-icon="assets/svg/menu.svg"></md-icon>
-				</md-button>
-				<div flex="40" ui-view="toolbar"></div>
-				<div flex>
-					<md-autocomplete md-autofocus="false" md-items="item in appCtrl.search(appCtrl.searchText)" md-search-text="appCtrl.searchText"
-					md-search-text-change="" placeholder="Search">
-						<md-item-template>
-							<span md-highlight-text="appCtrl.searchText" md-highlight-flags="^i">{{item.display}}</span>
-						</md-item-template>
-						<md-not-found>No matches found.</md-not-found>
-					</md-autocomplete>
-				</div>
-				<md-button class="md-icon-button" aria-label="More">
-					<md-icon md-svg-icon="assets/svg/ic_more_horiz.svg"></md-icon>
-				</md-button>
-				<md-button class="md-icon-button" aria-label="Account">
-					<md-icon md-svg-icon="assets/svg/avatar-1.svg"></md-icon>
-				</md-button>
-			</div>
-		</md-toolbar>
+		<lb-header context="appCtrl.context"></lb-header>
 		<md-content flex layout ui-view></md-content>
 	</div>
 </div>

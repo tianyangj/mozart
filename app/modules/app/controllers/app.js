@@ -4,7 +4,7 @@ var lilybook;
     (function (app) {
         'use strict';
         var AppController = (function () {
-            function AppController($rootScope, $state, $mdSidenav, $mdToast, menuSvc, userSvc, searchSvc) {
+            function AppController($rootScope, $state, $mdSidenav, $mdToast, menuSvc, userSvc) {
                 var _this = this;
                 this.$rootScope = $rootScope;
                 this.$state = $state;
@@ -12,15 +12,11 @@ var lilybook;
                 this.$mdToast = $mdToast;
                 this.menuSvc = menuSvc;
                 this.userSvc = userSvc;
-                this.searchSvc = searchSvc;
                 this.getSimpleToast = function (message) {
                     return _this.$mdToast
                         .simple()
                         .content(message)
                         .position('top right');
-                };
-                this.toggleSidenav = function (sidenavId) {
-                    _this.$mdSidenav(sidenavId).toggle();
                 };
                 this.signup = function (signupData) {
                     _this.userSvc.signUp(signupData.email, signupData.password, signupData.firstname, signupData.lastname)
@@ -47,17 +43,12 @@ var lilybook;
                         _this.$state.go('app.splash');
                     });
                 };
-                this.search = function (query) {
-                    return _this.searchSvc.search(query)
-                        .then(function (results) {
-                        return results;
-                    });
-                };
                 this.menuSvc.getSideNav().then(function (sidenav) {
                     _this.sidenav = sidenav;
                 });
                 this.$rootScope['user'] = this.userSvc.current();
                 this.$rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
+                    _this.context = null;
                     _this.$mdSidenav('left').close();
                 });
                 this.$rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams, error) {
@@ -66,6 +57,9 @@ var lilybook;
                         _this.$state.go('app.login');
                     }
                 });
+                this.$rootScope.$on('headerUpdateContext', function (event, context) {
+                    _this.context = context;
+                });
             }
             AppController.$inject = [
                 '$rootScope',
@@ -73,8 +67,7 @@ var lilybook;
                 '$mdSidenav',
                 '$mdToast',
                 'menuSvc',
-                'userSvc',
-                'searchSvc'
+                'userSvc'
             ];
             return AppController;
         })();

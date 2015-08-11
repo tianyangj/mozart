@@ -4,13 +4,15 @@ var lilybook;
     (function (composition_1) {
         'use strict';
         var CompositionController = (function () {
-            function CompositionController(composition, compositionSvc, videoSvc, sheetSvc, $mdDialog) {
+            function CompositionController(composition, compositionSvc, videoSvc, sheetSvc, $mdDialog, $scope, $state) {
                 var _this = this;
                 this.composition = composition;
                 this.compositionSvc = compositionSvc;
                 this.videoSvc = videoSvc;
                 this.sheetSvc = sheetSvc;
                 this.$mdDialog = $mdDialog;
+                this.$scope = $scope;
+                this.$state = $state;
                 this.openVideo = function (event, video, composition) {
                     _this.$mdDialog.show({
                         templateUrl: 'modules/composition/dialogs/video.html',
@@ -33,13 +35,19 @@ var lilybook;
                     .then(function (sheet) {
                     _this.sheet = sheet;
                 });
+                this.$scope.$emit('headerUpdateContext', {
+                    href: $state.href('app.composer', { vanity: this.composition.composer.vanity }),
+                    name: this.composition.composer.shortname
+                });
             }
             CompositionController.$inject = [
                 'composition',
                 'compositionSvc',
                 'videoSvc',
                 'sheetSvc',
-                '$mdDialog'
+                '$mdDialog',
+                '$scope',
+                '$state'
             ];
             return CompositionController;
         })();

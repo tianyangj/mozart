@@ -8,7 +8,9 @@ module lilybook.composition {
 			'compositionSvc',
 			'videoSvc',
 			'sheetSvc',
-			'$mdDialog'
+			'$mdDialog',
+			'$scope',
+			'$state'
 		];
 
 		constructor(
@@ -16,7 +18,9 @@ module lilybook.composition {
 			private compositionSvc: lilybook.data.ICompositionSvc,
 			private videoSvc: lilybook.data.IVideoSvc,
 			private sheetSvc: lilybook.data.ISheetSvc,
-			private $mdDialog: any
+			private $mdDialog: any,
+			private $scope,
+			private $state
 			) {
 			this.videoSvc.getVideos(this.composition)
 				.then(videos => {
@@ -29,6 +33,10 @@ module lilybook.composition {
 				.then(sheet => {
 					this.sheet = sheet;
 				});
+			this.$scope.$emit('headerUpdateContext', {
+				href: $state.href('app.composer', { vanity: this.composition.composer.vanity }),
+				name: this.composition.composer.shortname
+			});
 		}
 
 		videos: any[];

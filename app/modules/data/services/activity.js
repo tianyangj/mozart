@@ -49,7 +49,7 @@ var lilybook;
             };
             ActivitySvc.prototype.hasLikedComposition = function (fromUser, composition) {
                 if (!fromUser) {
-                    return this.$q.when(null);
+                    return this.$q.when(false);
                 }
                 var defer = this.$q.defer();
                 var query = new Parse.Query(this.ActivityDB);
@@ -105,7 +105,7 @@ var lilybook;
                     var difficulties = response.map(data.MapperSvc.difficultyMapper);
                     defer.resolve({
                         mine: difficulties.filter(function (difficulty) {
-                            return difficulty.fromUserId === fromUser.id;
+                            return difficulty.fromUser.id === fromUser.id;
                         })[0],
                         all: difficulties
                     });

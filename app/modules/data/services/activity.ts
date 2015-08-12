@@ -9,12 +9,21 @@ module lilybook.data {
 		Difficulty
 	}
 
-	export interface IActivityLikeComposition {
+	export interface IActivity {
 		base: Parse.Object,
 		id: string,
 		type: ActivityType,
-		fromUser: IUser,
+		fromUser: IUser
+	}
+
+	export interface IActivityLikeComposition extends IActivity {
 		composition: IComposition
+	}
+
+	export interface IActivityDifficulty extends IActivity {
+		composition: IComposition,
+		difficulty: number,
+		updatedAt: Date
 	}
 
 	export interface IActivitySvc {
@@ -22,8 +31,8 @@ module lilybook.data {
 		unlikeComposition(fromUser: IUser, composition: IComposition): ng.IPromise<IActivityLikeComposition>
 		hasLikedComposition(fromUser: IUser, composition: IComposition): ng.IPromise<boolean>
 		totalLikedComposition(composition: IComposition): ng.IPromise<number>
-		rateDifficulty(fromUser: IUser, composition: IComposition, difficulty: number): ng.IPromise<any>
-		getDifficulty(fromUser: IUser, composition: IComposition): ng.IPromise<any>
+		rateDifficulty(fromUser: IUser, composition: IComposition, difficulty: number): ng.IPromise<IActivityDifficulty>
+		getDifficulty(fromUser: IUser, composition: IComposition): ng.IPromise<{ mine: IActivityDifficulty, all: IActivityDifficulty[] }>
 	}
 
 	class ActivitySvc implements IActivitySvc {
@@ -70,9 +79,9 @@ module lilybook.data {
 
 		hasLikedComposition(fromUser: IUser, composition: IComposition) {
 			if (!fromUser) {
-				return this.$q.when(null);
+				return this.$q.when<boolean>(false);
 			}
-			var defer = this.$q.defer();
+			var defer = this.$q.defer<boolean>();
 			var query = new Parse.Query(this.ActivityDB);
 			query.equalTo('type', ActivityType.LikeComposition);
 			query.equalTo('fromUser', fromUser.base);
@@ -90,7 +99,7 @@ module lilybook.data {
 		}
 
 		totalLikedComposition(composition: IComposition) {
-			var defer = this.$q.defer();
+			var defer = this.$q.defer<number>();
 			var query = new Parse.Query(this.ActivityDB);
 			query.equalTo('type', ActivityType.LikeComposition);
 			query.equalTo('composition', composition.base);
@@ -106,7 +115,7 @@ module lilybook.data {
 			if (!fromUser) {
 				return this.$q.reject('AUTH_REQUIRED');
 			}
-			var defer = this.$q.defer();
+			var defer = this.$q.defer<IActivityDifficulty>();
 			Parse.Cloud.run('rateDifficulty', {
 				type: ActivityType.Difficulty,
 				compositionId: composition.id,
@@ -120,7 +129,7 @@ module lilybook.data {
 		}
 
 		getDifficulty(fromUser: IUser, composition: IComposition) {
-			var defer = this.$q.defer();
+			var defer = this.$q.defer<{ mine: IActivityDifficulty, all: IActivityDifficulty[] }>();
 			Parse.Cloud.run('getDifficulty', {
 				type: ActivityType.Difficulty,
 				compositionId: composition.id
@@ -128,7 +137,7 @@ module lilybook.data {
 				var difficulties = response.map(MapperSvc.difficultyMapper);
 				defer.resolve({
 					mine: difficulties.filter((difficulty) => {
-						return difficulty.fromUserId === fromUser.id;
+						return difficulty.fromUser.id === fromUser.id;
 					})[0],
 					all: difficulties
 				});

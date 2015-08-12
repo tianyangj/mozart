@@ -78,11 +78,13 @@ module lilybook.data {
 			};
 		}
 
-		static difficultyMapper(activity) {
+		static difficultyMapper(activity: any): IActivityDifficulty {
 			return {
 				base: activity,
 				id: activity.id,
-				fromUserId: activity.get('fromUser').id,
+				type: ActivityType.Difficulty,
+				fromUser: activity.get('fromUser'),
+				composition: activity.get('composition'),
 				difficulty: activity.get('difficulty'),
 				updatedAt: activity.updatedAt
 			};

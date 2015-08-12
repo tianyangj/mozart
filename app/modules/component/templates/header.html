@@ -1,15 +1,14 @@
 <md-toolbar class="header">
 	<div class="md-toolbar-tools">
 		<md-button class="md-icon-button" aria-label="Menu" hide-gt-lg ng-click="toggleSidenav('left')">
-			<md-icon md-svg-icon="assets/svg/menu.svg"></md-icon>
+			<md-icon class="md-36" md-svg-icon="assets/svg/menu.svg"></md-icon>
 		</md-button>
-		<div>
+		<div flex style="white-space:nowrap;">
 			<a class="brand" ui-sref="app.splash">LilyBook</a>
 			<md-icon ng-if="context" md-svg-icon="assets/svg/ic_chevron_right.svg"></md-icon>
 			<a ng-if="context" ng-href="{{context.href}}">{{context.name}}</a>
 		</div>
-		<!--<div flex="40" ui-view="toolbar"></div>-->
-		<div flex>
+		<div flex="50">
 			<md-autocomplete md-autofocus="false" md-items="item in search(searchText)" md-search-text="searchText"
 			md-search-text-change="" placeholder="Search">
 				<md-item-template>
@@ -18,8 +17,8 @@
 				<md-not-found>No matches found.</md-not-found>
 			</md-autocomplete>
 		</div>
-		<md-button class="md-icon-button" aria-label="More">
-			<md-icon md-svg-icon="assets/svg/ic_more_horiz.svg"></md-icon>
+		<md-button class="md-icon-button" aria-label="Search">
+			<md-icon class="md-36" md-svg-icon="assets/svg/ic_search.svg"></md-icon>
 		</md-button>
 		<md-button class="md-icon-button" aria-label="Account">
 			<md-icon md-svg-icon="assets/svg/avatar-1.svg"></md-icon>

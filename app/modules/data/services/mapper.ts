@@ -3,8 +3,8 @@ module lilybook.data {
 
 	export class MapperSvc {
 
-		static composerMapper(composer: Parse.Object) {
-			return <IComposer>{
+		static composerMapper(composer: Parse.Object): IComposer {
+			return {
 				base: composer,
 				id: composer.id,
 				fullname: composer.get('fullName'),
@@ -15,8 +15,8 @@ module lilybook.data {
 			};
 		}
 
-		static compositionMapper(composition: Parse.Object) {
-			return <IComposition>{
+		static compositionMapper(composition: Parse.Object): IComposition {
+			return {
 				base: composition,
 				id: composition.id,
 				title: composition.get('title'),
@@ -37,8 +37,8 @@ module lilybook.data {
 			};
 		}
 
-		static userMapper(user: Parse.User) {
-			return <IUser>{
+		static userMapper(user: Parse.User): IUser {
+			return {
 				base: user,
 				id: user.id,
 				email: user.get('email'),
@@ -47,8 +47,8 @@ module lilybook.data {
 			};
 		}
 
-		static videoMapper(video: Parse.Object) {
-			return <IVideo>{
+		static videoMapper(video: Parse.Object): IVideo {
+			return {
 				base: video,
 				id: video.id,
 				embed: video.get('embed'),
@@ -58,13 +58,23 @@ module lilybook.data {
 			};
 		}
 
-		static sheetMapper(sheet: Parse.Object) {
-			return <ISheet>{
+		static sheetMapper(sheet: Parse.Object): ISheet {
+			return {
 				base: sheet,
 				id: sheet.id,
 				firstPage: sheet.get('firstPage'),
 				lastPage: sheet.get('lastPage'),
 				pdfUrl: sheet.get('pdf') ? sheet.get('pdf').url() : null
+			};
+		}
+
+		static likeCompositionMapper(activity: Parse.Object): IActivityLikeComposition {
+			return {
+				base: activity,
+				id: activity.id,
+				type: ActivityType.LikeComposition,
+				fromUser: activity.get('fromUser'),
+				composition: activity.get('composition')
 			};
 		}
 

@@ -66,6 +66,15 @@ var lilybook;
                     pdfUrl: sheet.get('pdf') ? sheet.get('pdf').url() : null
                 };
             };
+            MapperSvc.likeCompositionMapper = function (activity) {
+                return {
+                    base: activity,
+                    id: activity.id,
+                    type: data.ActivityType.LikeComposition,
+                    fromUser: activity.get('fromUser'),
+                    composition: activity.get('composition')
+                };
+            };
             MapperSvc.difficultyMapper = function (activity) {
                 return {
                     base: activity,

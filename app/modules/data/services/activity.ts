@@ -9,18 +9,17 @@ module lilybook.data {
 		Difficulty
 	}
 
-	export interface IActivity {
+	export interface IActivityLikeComposition {
+		base: Parse.Object,
 		id: string,
 		type: ActivityType,
 		fromUser: IUser,
-		toUser?: IUser,
-		content?: string,
-		composition?: IComposition
+		composition: IComposition
 	}
 
 	export interface IActivitySvc {
-		likeComposition(fromUser: IUser, composition: IComposition): ng.IPromise<Parse.Object>
-		unlikeComposition(fromUser: IUser, composition: IComposition): ng.IPromise<Parse.Object>
+		likeComposition(fromUser: IUser, composition: IComposition): ng.IPromise<IActivityLikeComposition>
+		unlikeComposition(fromUser: IUser, composition: IComposition): ng.IPromise<IActivityLikeComposition>
 		hasLikedComposition(fromUser: IUser, composition: IComposition): ng.IPromise<boolean>
 		totalLikedComposition(composition: IComposition): ng.IPromise<number>
 		rateDifficulty(fromUser: IUser, composition: IComposition, difficulty: number): ng.IPromise<any>
@@ -41,13 +40,12 @@ module lilybook.data {
 			if (!fromUser) {
 				return this.$q.reject('AUTH_REQUIRED');
 			}
-			var defer = this.$q.defer();
+			var defer = this.$q.defer<IActivityLikeComposition>();
 			Parse.Cloud.run('likeComposition', {
 				type: ActivityType.LikeComposition,
 				compositionId: composition.id
 			}).then((response: Parse.Object) => {
-				console.log('likeComposition', response)
-				defer.resolve(response);
+				defer.resolve(MapperSvc.likeCompositionMapper(response));
 			}, (error) => {
 				defer.reject(error);
 			});
@@ -58,13 +56,12 @@ module lilybook.data {
 			if (!fromUser) {
 				return this.$q.reject('AUTH_REQUIRED');
 			}
-			var defer = this.$q.defer();
+			var defer = this.$q.defer<IActivityLikeComposition>();
 			Parse.Cloud.run('unlikeComposition', {
 				type: ActivityType.LikeComposition,
 				compositionId: composition.id
 			}).then((response: Parse.Object) => {
-				console.log('unlikeComposition', response)
-				defer.resolve(response);
+				defer.resolve(MapperSvc.likeCompositionMapper(response));
 			}, (error) => {
 				defer.reject(error);
 			});

@@ -26,8 +26,7 @@ var lilybook;
                     type: ActivityType.LikeComposition,
                     compositionId: composition.id
                 }).then(function (response) {
-                    console.log('likeComposition', response);
-                    defer.resolve(response);
+                    defer.resolve(data.MapperSvc.likeCompositionMapper(response));
                 }, function (error) {
                     defer.reject(error);
                 });
@@ -42,8 +41,7 @@ var lilybook;
                     type: ActivityType.LikeComposition,
                     compositionId: composition.id
                 }).then(function (response) {
-                    console.log('unlikeComposition', response);
-                    defer.resolve(response);
+                    defer.resolve(data.MapperSvc.likeCompositionMapper(response));
                 }, function (error) {
                     defer.reject(error);
                 });

@@ -136,9 +136,9 @@ module lilybook.data {
 			}).then((response: Parse.Object[]) => {
 				var difficulties = response.map(MapperSvc.difficultyMapper);
 				defer.resolve({
-					mine: difficulties.filter((difficulty) => {
+					mine: fromUser ? difficulties.filter((difficulty) => {
 						return difficulty.fromUser.id === fromUser.id;
-					})[0],
+					})[0] : null,
 					all: difficulties
 				});
 			}, (error) => {

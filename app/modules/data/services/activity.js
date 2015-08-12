@@ -104,9 +104,9 @@ var lilybook;
                 }).then(function (response) {
                     var difficulties = response.map(data.MapperSvc.difficultyMapper);
                     defer.resolve({
-                        mine: difficulties.filter(function (difficulty) {
+                        mine: fromUser ? difficulties.filter(function (difficulty) {
                             return difficulty.fromUser.id === fromUser.id;
-                        })[0],
+                        })[0] : null,
                         all: difficulties
                     });
                 }, function (error) {

@@ -2,7 +2,7 @@ module lilybook.data {
   'use strict';
 
   export interface IUser {
-    base: Parse.Object,
+    base: Parse.User,
     id: string,
     email: string,
     firstname: string,

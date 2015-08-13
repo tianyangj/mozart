@@ -25,12 +25,11 @@ module lilybook.data {
 		}
 
 		getVideos(composition: IComposition) {
-			var defer = this.$q.defer();
+			var defer = this.$q.defer<IVideo[]>();
 			var query = new Parse.Query(this.VideoDB);
 			query.equalTo('composition', composition.base);
 			query.find().then((response: Parse.Object[]) => {
-				var videos: IVideo[];
-				videos = response.map(MapperSvc.videoMapper);
+				var videos = response.map(MapperSvc.videoMapper);
 				defer.resolve(videos);
 			}, (error) => {
 				defer.reject(error);

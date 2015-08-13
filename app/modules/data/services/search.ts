@@ -7,7 +7,7 @@ module lilybook.data {
 	}
 
 	export interface ISearchSvc {
-		search(term: string): ng.IPromise<ISearch>
+		search(term: string): ng.IPromise<ISearch[]>
 	}
 
 	class SearchSvc implements ISearchSvc {
@@ -21,13 +21,12 @@ module lilybook.data {
 		};
 
 		search(term: string) {
-			var defer = this.$q.defer();
+			var defer = this.$q.defer<ISearch[]>();
 			var query = new Parse.Query(this.ComposerDB);
 			query.matches('fullName', new RegExp(term), 'i');
 			query.find().then((response: Parse.Object[]) => {
-				var results: ISearch[];
-				results = response.map((result) => {
-					return {
+				var results = response.map((result) => {
+					return <ISearch>{
 						value: result.get('vanity'),
 						display: result.get('fullName')
 					};

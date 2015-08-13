@@ -38,6 +38,13 @@ var lilybook;
                     composer: composition.get('composer') ? MapperSvc.composerMapper(composition.get('composer')) : null
                 };
             };
+            MapperSvc.compositionTypeMapper = function (compositionType) {
+                return {
+                    base: compositionType,
+                    id: compositionType.id,
+                    name: compositionType.get('name')
+                };
+            };
             MapperSvc.userMapper = function (user) {
                 return {
                     base: user,

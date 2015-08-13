@@ -27,13 +27,12 @@ module lilybook.data {
 		};
 
 		getComposer(vanity: string) {
-			var defer = this.$q.defer();
+			var defer = this.$q.defer<IComposer>();
 			var query = new Parse.Query(this.ComposerDB);
 			query.equalTo('vanity', vanity);
 			query.first().then((response: Parse.Object) => {
 				if (response) {
-					var composer: IComposer;
-					composer = MapperSvc.composerMapper(response);
+					var composer = MapperSvc.composerMapper(response);
 					defer.resolve(composer);
 				} else {
 					defer.reject('NOT_FOUND');
@@ -45,13 +44,12 @@ module lilybook.data {
 		}
 
 		getComposers(skip = 0, limit = 10) {
-			var defer = this.$q.defer();
+			var defer = this.$q.defer<IComposer[]>();
 			var query = new Parse.Query(this.ComposerDB);
 			query.skip(skip);
 			query.limit(limit);
 			query.find().then((response: Parse.Object[]) => {
-				var composers: IComposer[];
-				composers = response.map(MapperSvc.composerMapper);
+				var composers = response.map(MapperSvc.composerMapper);
 				defer.resolve(composers);
 			}, (error) => {
 				defer.reject(error);

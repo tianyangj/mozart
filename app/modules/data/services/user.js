@@ -34,7 +34,7 @@ var lilybook;
             UserSvc.prototype.logOut = function () {
                 var defer = this.$q.defer();
                 Parse.User.logOut().then(function () {
-                    defer.resolve(null);
+                    defer.resolve();
                 }, function (error) {
                     defer.reject(error);
                 });

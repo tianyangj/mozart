@@ -24,13 +24,12 @@ module lilybook.data {
 		}
 
 		getSheet(composition: IComposition) {
-			var defer = this.$q.defer();
+			var defer = this.$q.defer<ISheet>();
 			var query = new Parse.Query(this.SheetDB);
 			query.equalTo('composition', composition.base);
 			query.first().then((response: Parse.Object) => {
 				if (response) {
-					var sheet: ISheet;
-					sheet = MapperSvc.sheetMapper(response);
+					var sheet = MapperSvc.sheetMapper(response);
 					defer.resolve(sheet);
 				} else {
 					defer.reject('NOT_FOUND');

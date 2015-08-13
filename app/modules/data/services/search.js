@@ -14,8 +14,7 @@ var lilybook;
                 var query = new Parse.Query(this.ComposerDB);
                 query.matches('fullName', new RegExp(term), 'i');
                 query.find().then(function (response) {
-                    var results;
-                    results = response.map(function (result) {
+                    var results = response.map(function (result) {
                         return {
                             value: result.get('vanity'),
                             display: result.get('fullName')

@@ -2,7 +2,7 @@ module lilybook.data {
   'use strict';
 
   export interface IUser {
-    base: Parse.Object,
+    base: Parse.User,
     id: string,
     email: string,
     firstname: string,
@@ -24,7 +24,7 @@ module lilybook.data {
     constructor(private $q: ng.IQService) { };
 
     signUp(email: string, password: string, firstname: string, lastname: string) {
-      var defer = this.$q.defer();
+      var defer = this.$q.defer<IUser>();
       Parse.User.signUp(email, password, {
         email: email,
         firstname: firstname,
@@ -38,7 +38,7 @@ module lilybook.data {
     }
 
     logIn(email: string, password: string) {
-      var defer = this.$q.defer();
+      var defer = this.$q.defer<IUser>();
       Parse.User.logIn(email, password)
         .then((user: Parse.User) => {
           defer.resolve(MapperSvc.userMapper(user));
@@ -51,7 +51,7 @@ module lilybook.data {
     logOut() {
       var defer = this.$q.defer();
       Parse.User.logOut().then(() => {
-        defer.resolve(null);
+        defer.resolve();
       }, (error) => {
         defer.reject(error);
       });

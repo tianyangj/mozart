@@ -19,8 +19,7 @@ var lilybook;
                 query.include('composer');
                 query.first().then(function (response) {
                     if (response) {
-                        var composition;
-                        composition = data.MapperSvc.compositionMapper(response);
+                        var composition = data.MapperSvc.compositionMapper(response);
                         defer.resolve(composition);
                     }
                     else {
@@ -39,8 +38,7 @@ var lilybook;
                 query.include('type');
                 query.ascending('title');
                 query.find().then(function (response) {
-                    var compositions;
-                    compositions = response.map(data.MapperSvc.compositionMapper);
+                    var compositions = response.map(data.MapperSvc.compositionMapper);
                     defer.resolve(compositions);
                 }, function (error) {
                     defer.reject(error);
@@ -55,14 +53,7 @@ var lilybook;
                     query.equalTo('featured', featured);
                 }
                 query.find().then(function (response) {
-                    var compositionTypes;
-                    compositionTypes = response.map(function (compositionType) {
-                        return {
-                            base: compositionType,
-                            id: compositionType.id,
-                            name: compositionType.get('name')
-                        };
-                    });
+                    var compositionTypes = response.map(data.MapperSvc.compositionTypeMapper);
                     defer.resolve(compositionTypes);
                 }, function (error) {
                     defer.reject(error);

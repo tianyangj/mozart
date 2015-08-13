@@ -13,8 +13,7 @@ var lilybook;
                 var query = new Parse.Query(this.VideoDB);
                 query.equalTo('composition', composition.base);
                 query.find().then(function (response) {
-                    var videos;
-                    videos = response.map(data.MapperSvc.videoMapper);
+                    var videos = response.map(data.MapperSvc.videoMapper);
                     defer.resolve(videos);
                 }, function (error) {
                     defer.reject(error);

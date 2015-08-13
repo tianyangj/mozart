@@ -45,7 +45,7 @@ module lilybook.data {
 		};
 
 		getComposition(compositionId: string) {
-			var defer = this.$q.defer();
+			var defer = this.$q.defer<IComposition>();
 			var query = new Parse.Query(this.CompositionDB);
 			query.equalTo('objectId', compositionId);
 			query.include('key');
@@ -53,8 +53,7 @@ module lilybook.data {
 			query.include('composer');
 			query.first().then((response: Parse.Object) => {
 				if (response) {
-					var composition: IComposition;
-					composition = MapperSvc.compositionMapper(response);
+					var composition = MapperSvc.compositionMapper(response);
 					defer.resolve(composition);
 				} else {
 					defer.reject('NOT_FOUND');
@@ -66,15 +65,14 @@ module lilybook.data {
 		}
 
 		getCompositions(composer: IComposer) {
-			var defer = this.$q.defer();
+			var defer = this.$q.defer<IComposition[]>();
 			var query = new Parse.Query(this.CompositionDB);
 			query.equalTo('composer', composer.base);
 			query.include('key');
 			query.include('type');
 			query.ascending('title');
 			query.find().then((response: Parse.Object[]) => {
-				var compositions: IComposition[];
-				compositions = response.map(MapperSvc.compositionMapper);
+				var compositions = response.map(MapperSvc.compositionMapper);
 				defer.resolve(compositions);
 			}, (error) => {
 				defer.reject(error);
@@ -83,20 +81,13 @@ module lilybook.data {
 		}
 
 		getCompositionTypes(featured = false) {
-			var defer = this.$q.defer();
+			var defer = this.$q.defer<ICompositionType[]>();
 			var query = new Parse.Query(this.CompositionTypeDB);
 			if (featured) {
 				query.equalTo('featured', featured);
 			}
 			query.find().then((response: Parse.Object[]) => {
-				var compositionTypes: ICompositionType[];
-				compositionTypes = response.map((compositionType) => {
-					return <ICompositionType> {
-						base: compositionType,
-						id: compositionType.id,
-						name: compositionType.get('name')
-					};
-				});
+				var compositionTypes = response.map(MapperSvc.compositionTypeMapper);
 				defer.resolve(compositionTypes);
 			}, (error) => {
 				defer.reject(error);

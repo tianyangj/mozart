@@ -14,8 +14,7 @@ var lilybook;
                 query.equalTo('composition', composition.base);
                 query.first().then(function (response) {
                     if (response) {
-                        var sheet;
-                        sheet = data.MapperSvc.sheetMapper(response);
+                        var sheet = data.MapperSvc.sheetMapper(response);
                         defer.resolve(sheet);
                     }
                     else {

@@ -15,8 +15,7 @@ var lilybook;
                 query.equalTo('vanity', vanity);
                 query.first().then(function (response) {
                     if (response) {
-                        var composer;
-                        composer = data.MapperSvc.composerMapper(response);
+                        var composer = data.MapperSvc.composerMapper(response);
                         defer.resolve(composer);
                     }
                     else {
@@ -35,8 +34,7 @@ var lilybook;
                 query.skip(skip);
                 query.limit(limit);
                 query.find().then(function (response) {
-                    var composers;
-                    composers = response.map(data.MapperSvc.composerMapper);
+                    var composers = response.map(data.MapperSvc.composerMapper);
                     defer.resolve(composers);
                 }, function (error) {
                     defer.reject(error);

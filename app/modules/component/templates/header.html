@@ -17,11 +17,12 @@
 				<md-not-found>No matches found.</md-not-found>
 			</md-autocomplete>
 		</div>
-		<md-button class="md-icon-button" aria-label="Search">
+		<!--<md-button class="md-icon-button" aria-label="Search">
 			<md-icon class="md-36" md-svg-icon="assets/svg/ic_search.svg"></md-icon>
-		</md-button>
-		<md-button class="md-icon-button" aria-label="Account">
+		</md-button>-->
+		<md-button class="md-icon-button" aria-label="Account" ng-if="$root.user">
 			<md-icon md-svg-icon="assets/svg/avatar-1.svg"></md-icon>
 		</md-button>
+		<a ui-sref="app.login" ng-if="!$root.user"><md-button>Login</md-button></a>
 	</div>
 </md-toolbar>

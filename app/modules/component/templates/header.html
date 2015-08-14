@@ -9,20 +9,31 @@
 			<a ng-if="context" ng-href="{{context.href}}">{{context.name}}</a>
 		</div>
 		<div flex="50">
-			<md-autocomplete md-autofocus="false" md-items="item in search(searchText)" md-search-text="searchText"
-			md-search-text-change="" placeholder="Search">
+			<md-autocomplete md-autofocus="false" md-items="item in search(searchText)" md-search-text="searchText" md-search-text-change=""
+			placeholder="Search">
 				<md-item-template>
 					<span md-highlight-text="searchText" md-highlight-flags="^i">{{item.display}}</span>
 				</md-item-template>
 				<md-not-found>No matches found.</md-not-found>
 			</md-autocomplete>
 		</div>
-		<!--<md-button class="md-icon-button" aria-label="Search">
-			<md-icon class="md-36" md-svg-icon="assets/svg/ic_search.svg"></md-icon>
-		</md-button>-->
-		<md-button class="md-icon-button" aria-label="Account" ng-if="$root.user">
-			<md-icon md-svg-icon="assets/svg/avatar-1.svg"></md-icon>
-		</md-button>
+		<md-menu md-position-mode="target-right target" md-offset="0 64" ng-if="$root.user">
+			<md-button md-menu-origin class="md-icon-button" aria-label="Open account menu" ng-click="$mdOpenMenu($event)">
+				<md-icon md-svg-icon="assets/svg/avatar-1.svg"></md-icon>
+			</md-button>
+			<md-menu-content width="3">
+				<md-menu-item>
+					<md-button ng-click="todo()">Home</md-button>
+				</md-menu-item>
+				<md-menu-item>
+					<md-button ng-click="todo()">Profile</md-button>
+				</md-menu-item>
+				<md-divider></md-divider>
+				<md-menu-item>
+					<md-button ng-click="todo()">Account</md-button>
+				</md-menu-item>
+			</md-menu-content>
+		</md-menu>
 		<a ui-sref="app.login" ng-if="!$root.user"><md-button>Login</md-button></a>
 	</div>
 </md-toolbar>

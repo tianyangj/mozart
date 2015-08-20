@@ -6,13 +6,17 @@
 		<md-content flex>
 			<md-list>
 				<md-subheader>Discovery</md-subheader>
+				 <md-list-item layout="row" layout-align="start center" ng-click="$state.go('app.browse')">
+					<md-icon md-svg-icon="assets/svg/ic_library_music.svg"></md-icon>
+					<div flex class="inset">Browse</div>
+				</md-list-item>
 				<md-list-item layout="row" layout-align="start center" ng-click="$state.go('app.discovery')">
 					<md-icon md-svg-icon="assets/svg/ic_library_music.svg"></md-icon>
 					<div flex class="inset">Discovery</div>
 				</md-list-item>
 				<md-list-item layout="row" layout-align="start center" ng-click="$state.go('app.composers')">
 					<md-icon md-svg-icon="assets/svg/ic_list.svg"></md-icon>
-					<div flex class="inset">Browse</div>
+					<div flex class="inset">Composers</div>
 				</md-list-item>
 				<md-divider></md-divider>
 			</md-list>

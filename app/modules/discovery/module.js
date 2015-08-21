@@ -8,7 +8,9 @@ var lilybook;
             $stateProvider
                 .state('app.browse', {
                 url: '/browse',
-                templateUrl: 'modules/discovery/views/browse.html'
+                templateUrl: 'modules/discovery/views/browse.html',
+                controller: 'BrowseController',
+                controllerAs: 'browseCtrl'
             })
                 .state('app.discovery', {
                 url: '/discovery',

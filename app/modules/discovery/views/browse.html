@@ -1,58 +1,29 @@
 <div flex>
 	<h1>Browse</h1>
-	<md-tabs md-dynamic-height md-border-bottom>
-		<md-tab label="Overview">
-			<md-content class="md-padding">
-				<h1 class="md-display-2">Tab One</h1>
-				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla venenatis ante augue. Phasellus volutpat neque ac dui
-					mattis vulputate. Etiam consequat aliquam cursus. In sodales pretium ultrices. Maecenas lectus est, sollicitudin consectetur
-					felis nec, feugiat ultricies mi.</p>
-			</md-content>
-		</md-tab>
-		<md-tab label="Charts">
-			<md-content class="md-padding">
-				<h1 class="md-display-2">Tab Two</h1>
-				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla venenatis ante augue. Phasellus volutpat neque ac dui
-					mattis vulputate. Etiam consequat aliquam cursus. In sodales pretium ultrices. Maecenas lectus est, sollicitudin consectetur
-					felis nec, feugiat ultricies mi. Aliquam erat volutpat. Nam placerat, tortor in ultrices porttitor, orci enim rutrum
-					enim, vel tempor sapien arcu a tellus. Vivamus convallis sodales ante varius gravida. Curabitur a purus vel augue ultrices
-					ultricies id a nisl. Nullam malesuada consequat diam, a facilisis tortor volutpat et. Sed urna dolor, aliquet vitae
-					posuere vulputate, euismod ac lorem. Sed felis risus, pulvinar at interdum quis, vehicula sed odio. Phasellus in enim
-					venenatis, iaculis tortor eu, bibendum ante. Donec ac tellus dictum neque volutpat blandit. Praesent efficitur faucibus
-					risus, ac auctor purus porttitor vitae. Phasellus ornare dui nec orci posuere, nec luctus mauris semper.</p>
-				<p>Morbi viverra, ante vel aliquet tincidunt, leo dolor pharetra quam, at semper massa orci nec magna. Donec posuere nec
-					sapien sed laoreet. Etiam cursus nunc in condimentum facilisis. Etiam in tempor tortor. Vivamus faucibus egestas enim,
-					at convallis diam pulvinar vel. Cras ac orci eget nisi maximus cursus. Nunc urna libero, viverra sit amet nisl at, hendrerit
-					tempor turpis. Maecenas facilisis convallis mi vel tempor. Nullam vitae nunc leo. Cras sed nisl consectetur, rhoncus
-					sapien sit amet, tempus sapien.</p>
-				<p>Integer turpis erat, porttitor vitae mi faucibus, laoreet interdum tellus. Curabitur posuere molestie dictum. Morbi eget
-					congue risus, quis rhoncus quam. Suspendisse vitae hendrerit erat, at posuere mi. Cras eu fermentum nunc. Sed id ante
-					eu orci commodo volutpat non ac est. Praesent ligula diam, congue eu enim scelerisque, finibus commodo lectus.</p>
-			</md-content>
-		</md-tab>
-		<md-tab label="Genres & Forms">
-			<md-content class="md-padding">
-				<h1 class="md-display-2">Tab Three</h1>
-				<p>Integer turpis erat, porttitor vitae mi faucibus, laoreet interdum tellus. Curabitur posuere molestie dictum. Morbi eget
-					congue risus, quis rhoncus quam. Suspendisse vitae hendrerit erat, at posuere mi. Cras eu fermentum nunc. Sed id ante
-					eu orci commodo volutpat non ac est. Praesent ligula diam, congue eu enim scelerisque, finibus commodo lectus.</p>
-			</md-content>
-		</md-tab>
-		<md-tab label="New Releases">
-			<md-content class="md-padding">
-				<h1 class="md-display-2">Tab Three</h1>
-				<p>Integer turpis erat, porttitor vitae mi faucibus, laoreet interdum tellus. Curabitur posuere molestie dictum. Morbi eget
-					congue risus, quis rhoncus quam. Suspendisse vitae hendrerit erat, at posuere mi. Cras eu fermentum nunc. Sed id ante
-					eu orci commodo volutpat non ac est. Praesent ligula diam, congue eu enim scelerisque, finibus commodo lectus.</p>
-			</md-content>
-		</md-tab>
-		<md-tab label="Discover">
-			<md-content class="md-padding">
-				<h1 class="md-display-2">Tab Three</h1>
-				<p>Integer turpis erat, porttitor vitae mi faucibus, laoreet interdum tellus. Curabitur posuere molestie dictum. Morbi eget
-					congue risus, quis rhoncus quam. Suspendisse vitae hendrerit erat, at posuere mi. Cras eu fermentum nunc. Sed id ante
-					eu orci commodo volutpat non ac est. Praesent ligula diam, congue eu enim scelerisque, finibus commodo lectus.</p>
-			</md-content>
-		</md-tab>
-	</md-tabs>
+	<section>
+		<md-subheader>Featured</md-subheader>
+		<md-divider></md-divider>
+		<div layout="row">
+			<md-card flex="20" ng-repeat="composer in browseCtrl.composers" lb-hover="4" ng-click="$state.go('app.composer',{vanity:composer.vanity})">
+				<img ng-src="{{composer.image}}" class="md-card-image">
+				<md-card-content>
+					<h2 class="md-title">{{composer.fullname}}</h2>
+					<p class="ellipsis-3">{{composer.bio}}</p>
+				</md-card-content>
+			</md-card>
+		</div>
+		<md-divider></md-divider>
+	</section>
+	<section>
+		<md-subheader>Genres & Forms</md-subheader>
+		<md-divider></md-divider>
+		<md-grid-list md-cols-sm="2" md-cols-md="4" md-cols-gt-md="6" md-row-height="1:1" md-gutter="5px">
+			<md-grid-tile ng-repeat="form in browseCtrl.forms">
+				<img class="full-width" src="http://placehold.it/200x200" lb-hover="4" />
+				<md-grid-tile-footer>
+					<h3>{{form.name}}</h3>
+				</md-grid-tile-footer>
+			</md-grid-tile>
+		</md-grid-list>
+	</section>
 </div>

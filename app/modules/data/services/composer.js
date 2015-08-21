@@ -41,6 +41,19 @@ var lilybook;
                 });
                 return defer.promise;
             };
+            ComposerSvc.prototype.getFeaturedComposers = function () {
+                var defer = this.$q.defer();
+                var query = new Parse.Query(this.ComposerDB);
+                query.exists('image');
+                query.ascending('vanity');
+                query.find().then(function (response) {
+                    var composers = response.map(data.MapperSvc.composerMapper);
+                    defer.resolve(composers);
+                }, function (error) {
+                    defer.reject(error);
+                });
+                return defer.promise;
+            };
             ComposerSvc.$inject = ['$q'];
             return ComposerSvc;
         })();

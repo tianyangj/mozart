@@ -6,9 +6,11 @@ module lilybook.discovery {
     module.config(($stateProvider) => {
         $stateProvider
             .state('app.browse', {
-				url: '/browse',
-				templateUrl: 'modules/discovery/views/browse.html'
-			})
+                url: '/browse',
+                templateUrl: 'modules/discovery/views/browse.html',
+                controller: 'BrowseController',
+                controllerAs: 'browseCtrl'
+            })
             .state('app.discovery', {
                 url: '/discovery',
                 templateUrl: 'modules/discovery/views/discovery.html',

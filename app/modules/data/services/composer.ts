@@ -13,7 +13,8 @@ module lilybook.data {
 
 	export interface IComposerSvc {
 		getComposer(vanity: string): ng.IPromise<IComposer>,
-		getComposers(skip?: number, limit?: number): ng.IPromise<IComposer[]>
+		getComposers(skip?: number, limit?: number): ng.IPromise<IComposer[]>,
+		getFeaturedComposers(): ng.IPromise<IComposer[]>
 	}
 
 	class ComposerSvc implements IComposerSvc {
@@ -48,6 +49,20 @@ module lilybook.data {
 			var query = new Parse.Query(this.ComposerDB);
 			query.skip(skip);
 			query.limit(limit);
+			query.find().then((response: Parse.Object[]) => {
+				var composers = response.map(MapperSvc.composerMapper);
+				defer.resolve(composers);
+			}, (error) => {
+				defer.reject(error);
+			});
+			return defer.promise;
+		}
+
+		getFeaturedComposers() {
+			var defer = this.$q.defer<IComposer[]>();
+			var query = new Parse.Query(this.ComposerDB);
+			query.exists('image');
+			query.ascending('vanity');
 			query.find().then((response: Parse.Object[]) => {
 				var composers = response.map(MapperSvc.composerMapper);
 				defer.resolve(composers);

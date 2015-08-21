@@ -8,6 +8,7 @@ module lilybook.component {
 				z: '@lbHover'
 			},
 			link: (scope: any, element) => {
+				element.addClass('pointer');
 				element.on('mouseenter', () => {
 					element.addClass('md-whiteframe-z' + scope.z);
 				}).on('mouseleave', () => {

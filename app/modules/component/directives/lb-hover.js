@@ -10,6 +10,7 @@ var lilybook;
                     z: '@lbHover'
                 },
                 link: function (scope, element) {
+                    element.addClass('pointer');
                     element.on('mouseenter', function () {
                         element.addClass('md-whiteframe-z' + scope.z);
                     }).on('mouseleave', function () {

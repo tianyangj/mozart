@@ -14,7 +14,7 @@ var lilybook;
                 });
                 this.composerSvc.getFeaturedComposers()
                     .then(function (composers) {
-                    _this.composers = composers;
+                    _this.composers = composers.slice(0, 4);
                 });
             }
             BrowseController.$inject = [

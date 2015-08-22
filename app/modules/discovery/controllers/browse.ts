@@ -18,7 +18,7 @@ module lilybook.discovery {
 				});
 			this.composerSvc.getFeaturedComposers()
 				.then((composers) => {
-					this.composers = composers;
+					this.composers = composers.slice(0, 4);
 				});
 		}
 

@@ -1,11 +1,11 @@
 <div flex>
 	<h1>Browse</h1>
+	<md-divider></md-divider>
 	<section>
 		<md-subheader>Featured</md-subheader>
-		<md-divider></md-divider>
-		<div layout="row">
-			<div flex="25" ng-repeat="composer in browseCtrl.composers" lb-hover="4">
-				<md-card ng-click="$state.go('app.composer',{vanity:composer.vanity})">
+		<div layout-sm="column" layout-gt-sm="row">
+			<div flex-sm="100" flex-md="50" flex-gt-md="25" ng-repeat="composer in browseCtrl.composers">
+				<md-card ng-click="$state.go('app.composer',{vanity:composer.vanity})" lb-hover="4">
 					<img ng-src="{{composer.image}}" class="md-card-image">
 					<md-card-content>
 						<h2 class="md-title">{{composer.fullname}}</h2>
@@ -14,10 +14,9 @@
 				</md-card>
 			</div>
 		</div>
-		<md-divider></md-divider>
 	</section>
+	<md-divider></md-divider>
 	<section>
-		<md-divider></md-divider>
 		<div layout-sm="column" layout-gt-sm="row" layout-padding>
 			<div flex-sm="100" flex-gt-sm="33" class="text-center">
 				<img class="full-width" src="http://placehold.it/400x200" />
@@ -35,11 +34,10 @@
 				<p class="ellipsis">Recommended for you</p>
 			</div>
 		</div>
-		<md-divider></md-divider>
 	</section>
+	<md-divider></md-divider>
 	<section>
 		<md-subheader>Genres & Forms</md-subheader>
-		<md-divider></md-divider>
 		<md-grid-list md-cols-sm="2" md-cols-md="4" md-cols-gt-md="6" md-row-height="1:1" md-gutter="5px">
 			<md-grid-tile ng-repeat="form in browseCtrl.forms">
 				<img class="full-width" src="http://placehold.it/200x200" lb-hover="4" />

@@ -1,14 +1,13 @@
-<div flex>
-	<h1>Browse</h1>
-	<md-divider></md-divider>
-	<section>
-		<md-subheader>Featured</md-subheader>
+<div flex class="md-padding">
+	<h1 class="md-display-3" style="margin-bottom:0;">Browse</h1>
+	<section class="md-padding">
+		<h3 class="md-headline">Featured Composers</h3>
 		<div layout-sm="column" layout-gt-sm="row">
 			<div flex-sm="100" flex-md="50" flex-gt-md="25" ng-repeat="composer in browseCtrl.composers">
 				<md-card ng-click="$state.go('app.composer',{vanity:composer.vanity})" lb-hover="4">
 					<img ng-src="{{composer.image}}" class="md-card-image">
 					<md-card-content>
-						<h2 class="md-title">{{composer.fullname}}</h2>
+						<h4 class="md-title ellipsis" style="margin:16px 0;">{{composer.fullname}}</h4>
 						<p class="ellipsis-3">{{composer.bio}}</p>
 					</md-card-content>
 				</md-card>
@@ -16,35 +15,43 @@
 		</div>
 	</section>
 	<md-divider></md-divider>
-	<section>
-		<div layout-sm="column" layout-gt-sm="row" layout-padding>
+	<section class="md-padding">
+		<div layout-sm="column" layout-gt-sm="row" layout-padding class="padding-none">
 			<div flex-sm="100" flex-gt-sm="33" class="text-center">
-				<img class="full-width" src="http://placehold.it/400x200" />
-				<h3>Charts</h3>
-				<p class="ellipsis">Top 50 compositions by likes</p>
+				<div style="background-color:#eee;">
+					<img class="full-width" src="http://placehold.it/400x200" />
+					<h4 class="md-title ellipsis" style="margin:8px 0;">Charts</h4>
+					<p class="ellipsis margin-none" style="padding:0 8px 16px 8px;">Top 50 compositions by likes</p>
+				</div>
 			</div>
 			<div flex-sm="100" flex-gt-sm="33" class="text-center">
-				<img class="full-width" src="http://placehold.it/400x200" />
-				<h3>New Additions</h3>
-				<p class="ellipsis">The latest additions to existing our catalog</p>
+				<div style="background-color:#eee;">
+					<img class="full-width" src="http://placehold.it/400x200" />
+					<h4 class="md-title ellipsis" style="margin:8px 0;">New Additions</h4>
+					<p class="ellipsis margin-none" style="padding:0 8px 16px 8px;">The latest additions to existing our catalog</p>
+				</div>
 			</div>
 			<div flex-sm="100" flex-gt-sm="33" class="text-center">
-				<img class="full-width" src="http://placehold.it/400x200" />
-				<h3>Discover</h3>
-				<p class="ellipsis">Recommended for you</p>
+				<div style="background-color:#eee;">
+					<img class="full-width" src="http://placehold.it/400x200" />
+					<h4 class="md-title ellipsis" style="margin:8px 0;">Discover</h4>
+					<p class="ellipsis margin-none" style="padding:0 8px 16px 8px;">Recommended for you</p>
+				</div>
 			</div>
 		</div>
 	</section>
 	<md-divider></md-divider>
-	<section>
-		<md-subheader>Genres & Forms</md-subheader>
-		<md-grid-list md-cols-sm="2" md-cols-md="4" md-cols-gt-md="6" md-row-height="1:1" md-gutter="5px">
-			<md-grid-tile ng-repeat="form in browseCtrl.forms">
-				<img class="full-width" src="http://placehold.it/200x200" lb-hover="4" />
-				<md-grid-tile-footer>
-					<h3>{{form.name}}</h3>
-				</md-grid-tile-footer>
-			</md-grid-tile>
-		</md-grid-list>
+	<section class="md-padding">
+		<h3 class="md-headline">Genres & Forms</h3>
+		<div style="padding:8px;">
+			<md-grid-list md-cols-sm="2" md-cols-md="4" md-cols-gt-md="6" md-row-height="1:1" md-gutter="8px">
+				<md-grid-tile ng-repeat="form in browseCtrl.forms">
+					<img class="full-width" src="http://placehold.it/200x200" lb-hover="4" />
+					<md-grid-tile-footer>
+						<h4 class="md-subhead ellipsis">{{form.name}}</h4>
+					</md-grid-tile-footer>
+				</md-grid-tile>
+			</md-grid-list>
+		</div>
 	</section>
 </div>

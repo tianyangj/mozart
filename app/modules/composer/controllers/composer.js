@@ -21,6 +21,15 @@ var lilybook;
                     });
                     _this.compositionGroups = compositionGroups;
                 });
+                this.compositionSvc.getCompositionTypes()
+                    .then(function (compositionTypes) {
+                    _this.forms = compositionTypes;
+                });
+                this.sorts = [
+                    { id: 0, name: 'Alphabetical' },
+                    { id: 1, name: 'Difficulties / Grades' },
+                    { id: 2, name: 'Popularity' }
+                ];
                 this.$scope.$emit('headerUpdateContext', {
                     href: $state.href('app.composers'),
                     name: 'Composers'

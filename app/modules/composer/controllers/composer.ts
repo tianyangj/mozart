@@ -27,6 +27,15 @@ module lilybook.composer {
 				});
 				this.compositionGroups = compositionGroups;
 			});
+			this.compositionSvc.getCompositionTypes()
+				.then((compositionTypes) => {
+					this.forms = compositionTypes;
+				});
+			this.sorts = [
+				{ id: 0, name: 'Alphabetical' },
+				{ id: 1, name: 'Difficulties / Grades' },
+				{ id: 2, name: 'Popularity' }
+			];
 			this.$scope.$emit('headerUpdateContext', {
 				href: $state.href('app.composers'),
 				name: 'Composers'
@@ -35,6 +44,8 @@ module lilybook.composer {
 
 		compositions: any;
 		compositionGroups: any;
+		forms: data.ICompositionType[];
+		sorts;
 	}
 
 	lilybook.composer.module.controller('ComposerController', ComposerController);

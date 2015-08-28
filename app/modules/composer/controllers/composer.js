@@ -34,6 +34,15 @@ var lilybook;
                     href: $state.href('app.composers'),
                     name: 'Composers'
                 });
+                this.$scope.$watch(function () {
+                    return _this.selectedForm;
+                }, function (newVal, oldVal) {
+                    if (newVal !== oldVal) {
+                        _this.compositionSvc.getCompositions(composer, newVal).then(function (compositions) {
+                            _this.compositions = compositions;
+                        });
+                    }
+                });
             }
             ComposerController.$inject = [
                 'composer',

@@ -28,7 +28,7 @@ module lilybook.data {
 
 	export interface ICompositionSvc {
 		getComposition(compositionId: string): ng.IPromise<IComposition>,
-		getCompositions(composer: IComposer): ng.IPromise<IComposition[]>,
+		getCompositions(composer: IComposer, typeId?: string, sortId?: string): ng.IPromise<IComposition[]>,
 		getCompositionTypes(featured?: boolean): ng.IPromise<ICompositionType[]>
 	}
 
@@ -64,13 +64,22 @@ module lilybook.data {
 			return defer.promise;
 		}
 
-		getCompositions(composer: IComposer) {
+		getCompositions(composer: IComposer, typeId?: string, sortId?: string) {
 			var defer = this.$q.defer<IComposition[]>();
 			var query = new Parse.Query(this.CompositionDB);
 			query.equalTo('composer', composer.base);
+			if (typeId) {
+				var type = new Parse.Object('CompositionType');
+				type.id = typeId;
+				query.equalTo('type', type);
+			}
 			query.include('key');
 			query.include('type');
-			query.ascending('title');
+			if (sortId) {
+
+			} else {
+				query.ascending('title');
+			}
 			query.find().then((response: Parse.Object[]) => {
 				var compositions = response.map(MapperSvc.compositionMapper);
 				defer.resolve(compositions);

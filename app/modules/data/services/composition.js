@@ -30,13 +30,22 @@ var lilybook;
                 });
                 return defer.promise;
             };
-            CompositionSvc.prototype.getCompositions = function (composer) {
+            CompositionSvc.prototype.getCompositions = function (composer, typeId, sortId) {
                 var defer = this.$q.defer();
                 var query = new Parse.Query(this.CompositionDB);
                 query.equalTo('composer', composer.base);
+                if (typeId) {
+                    var type = new Parse.Object('CompositionType');
+                    type.id = typeId;
+                    query.equalTo('type', type);
+                }
                 query.include('key');
                 query.include('type');
-                query.ascending('title');
+                if (sortId) {
+                }
+                else {
+                    query.ascending('title');
+                }
                 query.find().then(function (response) {
                     var compositions = response.map(data.MapperSvc.compositionMapper);
                     defer.resolve(compositions);

@@ -40,12 +40,23 @@ module lilybook.composer {
 				href: $state.href('app.composers'),
 				name: 'Composers'
 			});
+			this.$scope.$watch(() => {
+				return this.selectedForm;
+			}, (newVal, oldVal) => {
+				if (newVal !== oldVal) {
+					this.compositionSvc.getCompositions(composer, newVal).then(compositions => {
+						this.compositions = compositions;
+					});
+				}
+			});
 		}
 
 		compositions: any;
 		compositionGroups: any;
 		forms: data.ICompositionType[];
 		sorts;
+		selectedForm;
+		selectedSort;
 	}
 
 	lilybook.composer.module.controller('ComposerController', ComposerController);

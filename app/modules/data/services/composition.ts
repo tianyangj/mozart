@@ -68,6 +68,7 @@ module lilybook.data {
 			var defer = this.$q.defer<IComposition[]>();
 			var query = new Parse.Query(this.CompositionDB);
 			query.equalTo('composer', composer.base);
+			query.equalTo('published', true);
 			if (typeId) {
 				var type = new Parse.Object('CompositionType');
 				type.id = typeId;

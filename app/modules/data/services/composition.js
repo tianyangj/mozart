@@ -31,6 +31,7 @@ var lilybook;
                 return defer.promise;
             };
             CompositionSvc.prototype.getCompositions = function (composer, typeId, sortId) {
+                if (sortId === void 0) { sortId = '0'; }
                 var defer = this.$q.defer();
                 var query = new Parse.Query(this.CompositionDB);
                 query.equalTo('composer', composer.base);
@@ -42,10 +43,13 @@ var lilybook;
                 }
                 query.include('key');
                 query.include('type');
-                if (sortId) {
-                }
-                else {
-                    query.ascending('title');
+                switch (sortId) {
+                    case '1':
+                        query.ascending(['rcm', 'order']);
+                        break;
+                    case '2':
+                    default:
+                        query.ascending(['order', 'title']);
                 }
                 query.find().then(function (response) {
                     var compositions = response.map(data.MapperSvc.compositionMapper);
@@ -62,6 +66,7 @@ var lilybook;
                 if (featured) {
                     query.equalTo('featured', featured);
                 }
+                query.ascending('order');
                 query.find().then(function (response) {
                     var compositionTypes = response.map(data.MapperSvc.compositionTypeMapper);
                     defer.resolve(compositionTypes);

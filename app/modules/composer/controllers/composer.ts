@@ -33,7 +33,7 @@ module lilybook.composer {
 				});
 			this.sorts = [
 				{ id: 0, name: 'Alphabetical' },
-				{ id: 1, name: 'Difficulties / Grades' },
+				{ id: 1, name: 'Grade Level' },
 				{ id: 2, name: 'Popularity' }
 			];
 			this.$scope.$emit('headerUpdateContext', {
@@ -44,7 +44,16 @@ module lilybook.composer {
 				return this.selectedForm;
 			}, (newVal, oldVal) => {
 				if (newVal !== oldVal) {
-					this.compositionSvc.getCompositions(composer, newVal).then(compositions => {
+					this.compositionSvc.getCompositions(composer, newVal, this.selectedSort).then(compositions => {
+						this.compositions = compositions;
+					});
+				}
+			});
+			this.$scope.$watch(() => {
+				return this.selectedSort;
+			}, (newVal, oldVal) => {
+				if (newVal !== oldVal) {
+					this.compositionSvc.getCompositions(composer, this.selectedForm, newVal).then(compositions => {
 						this.compositions = compositions;
 					});
 				}

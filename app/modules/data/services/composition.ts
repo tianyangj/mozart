@@ -64,7 +64,7 @@ module lilybook.data {
 			return defer.promise;
 		}
 
-		getCompositions(composer: IComposer, typeId?: string, sortId?: string) {
+		getCompositions(composer: IComposer, typeId?: string, sortId = '0') {
 			var defer = this.$q.defer<IComposition[]>();
 			var query = new Parse.Query(this.CompositionDB);
 			query.equalTo('composer', composer.base);
@@ -76,10 +76,13 @@ module lilybook.data {
 			}
 			query.include('key');
 			query.include('type');
-			if (sortId) {
-
-			} else {
-				query.ascending('title');
+			switch (sortId) {
+				case '1':
+					query.ascending(['rcm', 'order']);
+					break;
+				case '2':
+				default:
+					query.ascending(['order', 'title']);
 			}
 			query.find().then((response: Parse.Object[]) => {
 				var compositions = response.map(MapperSvc.compositionMapper);
@@ -96,6 +99,7 @@ module lilybook.data {
 			if (featured) {
 				query.equalTo('featured', featured);
 			}
+			query.ascending('order');
 			query.find().then((response: Parse.Object[]) => {
 				var compositionTypes = response.map(MapperSvc.compositionTypeMapper);
 				defer.resolve(compositionTypes);

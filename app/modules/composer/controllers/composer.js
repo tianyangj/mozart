@@ -27,7 +27,7 @@ var lilybook;
                 });
                 this.sorts = [
                     { id: 0, name: 'Alphabetical' },
-                    { id: 1, name: 'Difficulties / Grades' },
+                    { id: 1, name: 'Grade Level' },
                     { id: 2, name: 'Popularity' }
                 ];
                 this.$scope.$emit('headerUpdateContext', {
@@ -38,7 +38,16 @@ var lilybook;
                     return _this.selectedForm;
                 }, function (newVal, oldVal) {
                     if (newVal !== oldVal) {
-                        _this.compositionSvc.getCompositions(composer, newVal).then(function (compositions) {
+                        _this.compositionSvc.getCompositions(composer, newVal, _this.selectedSort).then(function (compositions) {
+                            _this.compositions = compositions;
+                        });
+                    }
+                });
+                this.$scope.$watch(function () {
+                    return _this.selectedSort;
+                }, function (newVal, oldVal) {
+                    if (newVal !== oldVal) {
+                        _this.compositionSvc.getCompositions(composer, _this.selectedForm, newVal).then(function (compositions) {
                             _this.compositions = compositions;
                         });
                     }

@@ -9,7 +9,8 @@ var lilybook;
                 templateUrl: 'modules/component/templates/header.html',
                 replace: true,
                 scope: {
-                    context: '='
+                    context: '=',
+                    logout: '&'
                 },
                 controller: ['$scope', '$mdSidenav', 'searchSvc', function ($scope, $mdSidenav, searchSvc) {
                         $scope.toggleSidenav = function (sidenavId) {

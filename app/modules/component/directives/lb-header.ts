@@ -7,7 +7,8 @@ module lilybook.component {
 			templateUrl: 'modules/component/templates/header.html',
 			replace: true,
 			scope: {
-				context: '='
+				context: '=',
+				logout: '&'
 			},
 			controller: ['$scope', '$mdSidenav', 'searchSvc', ($scope, $mdSidenav, searchSvc: lilybook.data.ISearchSvc) => {
 				$scope.toggleSidenav = (sidenavId: string) => {

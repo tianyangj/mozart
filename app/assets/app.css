@@ -44,6 +44,11 @@
     -webkit-box-orient: vertical;
 }
 
+.brand {
+	font-family: 'Kaushan Script',cursive;
+    font-size: 28px;
+}
+
 .splash-container {
 	background-image: url('/images/hero.jpg');
 	background-size: cover;

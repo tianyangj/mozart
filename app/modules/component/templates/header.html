@@ -3,13 +3,19 @@
 		<md-button class="md-icon-button" aria-label="Menu" hide-gt-lg ng-click="toggleSidenav('left')">
 			<md-icon class="md-36" md-svg-icon="assets/svg/menu.svg"></md-icon>
 		</md-button>
-		<div flex style="white-space:nowrap;">
-			<a class="brand" ui-sref="app.splash">LilyBook</a>
+		<!--<div style="white-space:nowrap;">
+			<a class="brand md-padding" ui-sref="app.splash">LilyBook</a>
 			<md-icon ng-if="context" md-svg-icon="assets/svg/ic_chevron_right.svg"></md-icon>
 			<a ng-if="context" ng-href="{{context.href}}">{{context.name}}</a>
+		</div>-->
+		<div flex style="white-space:nowrap;">
+			<a class="brand md-padding" ui-sref="app.splash">LilyBook</a>
+			<a hide-md hide-sm class="md-margin" ui-sref="app.discovery">Discover</a>
+			<a hide-md hide-sm class="md-margin" ui-sref="app.browse">Browse</a>
+			<a hide-md hide-sm class="md-margin" ui-sref="app.composers">Composers</a>
 		</div>
-		<md-autocomplete flex="50" hide-sm md-autofocus="false" md-items="item in search(searchText)" md-search-text="searchText"
-		md-search-text-change="" placeholder="Search">
+		<md-autocomplete flex-gt-md="35" flex-md="50" hide-sm md-autofocus="false" md-items="item in search(searchText)" md-search-text="searchText" md-search-text-change=""
+		placeholder="Search">
 			<md-item-template>
 				<span md-highlight-text="searchText" md-highlight-flags="^i">{{item.display}}</span>
 			</md-item-template>
@@ -18,7 +24,7 @@
 		<md-button hide-gt-sm class="md-icon-button" aria-label="Search" ng-click="todo()">
 			<md-icon class="md-36" md-svg-icon="assets/svg/ic_search.svg"></md-icon>
 		</md-button>
-		<md-menu md-position-mode="target-right target" md-offset="0 64" ng-if="$root.user">
+		<!--<md-menu md-position-mode="target-right target" md-offset="0 64" ng-if="$root.user">
 			<md-button md-menu-origin class="md-icon-button" aria-label="Open account menu" ng-click="$mdOpenMenu($event)">
 				<md-icon md-svg-icon="assets/svg/avatar-1.svg"></md-icon>
 			</md-button>
@@ -34,7 +40,26 @@
 					<md-button ng-click="todo()">Account</md-button>
 				</md-menu-item>
 			</md-menu-content>
-		</md-menu>
-		<a ui-sref="app.login" ng-if="!$root.user"><md-button>Login</md-button></a>
+		</md-menu>-->
+		<md-menu-bar ng-if="$root.user" style="padding:0;">
+			<md-menu>
+				<md-button class="md-icon-button" aria-label="Open account menu" ng-click="$mdOpenMenu($event)">
+					<md-icon md-svg-icon="assets/svg/avatar-1.svg"></md-icon>
+				</md-button>
+				<md-menu-content>
+					<md-menu-item>
+						<md-button ng-click="todo()">Home</md-button>
+					</md-menu-item>
+					<md-menu-item>
+						<md-button ng-click="todo()">Account</md-button>
+					</md-menu-item>
+					<md-menu-divider></md-menu-divider>
+					<md-menu-item>
+						<md-button ng-click="logout()" style="color:#000;">Logout</md-button>
+					</md-menu-item>
+				</md-menu-content>
+			</md-menu>
+		</md-menu-bar>
+		<a class="md-margin" ui-sref="app.login" ng-if="!$root.user">Login</a>
 	</div>
 </md-toolbar>

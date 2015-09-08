@@ -1,4 +1,4 @@
-<md-toolbar class="header">
+<md-toolbar class="header md-whiteframe-z1">
 	<div class="md-toolbar-tools">
 		<md-button class="md-icon-button" aria-label="Menu" hide-gt-lg ng-click="toggleSidenav('left')">
 			<md-icon class="md-36" md-svg-icon="assets/svg/menu.svg"></md-icon>
@@ -9,12 +9,12 @@
 			<a ng-if="context" ng-href="{{context.href}}">{{context.name}}</a>
 		</div>-->
 		<div flex style="white-space:nowrap;">
-			<a class="brand md-padding" ui-sref="app.splash">LilyBook</a>
+			<a hide-gt-lg class="brand md-padding" ui-sref="app.splash">LilyBook</a>
 			<a hide-md hide-sm class="md-margin" ui-sref="app.discovery">Discover</a>
 			<a hide-md hide-sm class="md-margin" ui-sref="app.browse">Browse</a>
 			<a hide-md hide-sm class="md-margin" ui-sref="app.composers">Composers</a>
 		</div>
-		<md-autocomplete flex-gt-md="35" flex-md="50" hide-sm md-autofocus="false" md-items="item in search(searchText)" md-search-text="searchText" md-search-text-change=""
+		<md-autocomplete flex="35" hide-sm md-autofocus="false" md-items="item in search(searchText)" md-search-text="searchText" md-search-text-change=""
 		placeholder="Search">
 			<md-item-template>
 				<span md-highlight-text="searchText" md-highlight-flags="^i">{{item.display}}</span>

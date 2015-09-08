@@ -13,7 +13,7 @@ var lilybook;
                 controllerAs: 'browseCtrl'
             })
                 .state('app.discovery', {
-                url: '/discovery',
+                url: '/discover',
                 templateUrl: 'modules/discovery/views/discovery.html',
                 controller: 'DiscoveryController',
                 controllerAs: 'discoveryCtrl'

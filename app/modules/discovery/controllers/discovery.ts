@@ -14,17 +14,15 @@ module lilybook.discovery {
 			) {
 			this.compositionSvc.getCompositionTypes()
 				.then((compositionTypes) => {
-					this.compositionTypes = compositionTypes;
+					this.forms = compositionTypes;
 				});
-			this.composerSvc.getComposers(0, 100)
+			this.composerSvc.getFeaturedComposers()
 				.then((composers) => {
-					this.composers = composers.filter((composer) => {
-						return composer.image !== null;
-					});
+					this.composers = composers.slice(0, 4);
 				});
 		}
 
-		compositionTypes: lilybook.data.ICompositionType[];
+		forms: lilybook.data.ICompositionType[];
 		composers: lilybook.data.IComposer[];
 	}
 

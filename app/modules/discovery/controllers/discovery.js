@@ -10,13 +10,11 @@ var lilybook;
                 this.composerSvc = composerSvc;
                 this.compositionSvc.getCompositionTypes()
                     .then(function (compositionTypes) {
-                    _this.compositionTypes = compositionTypes;
+                    _this.forms = compositionTypes;
                 });
-                this.composerSvc.getComposers(0, 100)
+                this.composerSvc.getFeaturedComposers()
                     .then(function (composers) {
-                    _this.composers = composers.filter(function (composer) {
-                        return composer.image !== null;
-                    });
+                    _this.composers = composers.slice(0, 4);
                 });
             }
             DiscoveryController.$inject = [

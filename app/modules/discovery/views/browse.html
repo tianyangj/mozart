@@ -1,5 +1,18 @@
 <div flex class="md-padding">
-	<h1 class="md-display-3" style="margin-bottom:0;">Browse</h1>
+	<md-whiteframe class="md-padding md-whiteframe-z2" layout="column">
+		<h2 class="md-headline">Filters</h2>
+		<div layout="row">
+			<lb-select-form flex></lb-select-form>
+			<lb-select-difficulty flex></lb-select-difficulty>
+			<lb-select-period flex></lb-select-period>
+		</div>
+		<div layout="row">
+			<lb-select-sort flex></lb-select-sort>
+		</div>
+	</md-whiteframe>
+
+	<div>list of compositions with pager...</div>
+	<!--<h1 class="md-display-3" style="margin-bottom:0;">Browse</h1>
 	<section class="md-padding">
 		<h3 class="md-headline">Featured Composers</h3>
 		<div layout-sm="column" layout-gt-sm="row">
@@ -53,5 +66,5 @@
 				</md-grid-tile>
 			</md-grid-list>
 		</div>
-	</section>
+	</section>-->
 </div>

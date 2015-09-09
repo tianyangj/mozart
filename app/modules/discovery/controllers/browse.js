@@ -4,10 +4,11 @@ var lilybook;
     (function (discovery) {
         'use strict';
         var BrowseController = (function () {
-            function BrowseController(compositionSvc, composerSvc) {
+            function BrowseController(compositionSvc, composerSvc, $scope) {
                 var _this = this;
                 this.compositionSvc = compositionSvc;
                 this.composerSvc = composerSvc;
+                this.$scope = $scope;
                 this.compositionSvc.getCompositionTypes()
                     .then(function (compositionTypes) {
                     _this.forms = compositionTypes;
@@ -16,10 +17,14 @@ var lilybook;
                     .then(function (composers) {
                     _this.composers = composers.slice(0, 4);
                 });
+                this.$scope.$on('selectFormChanged', function (event, selectedForm) {
+                    console.log(selectedForm);
+                });
             }
             BrowseController.$inject = [
                 'compositionSvc',
-                'composerSvc'
+                'composerSvc',
+                '$scope'
             ];
             return BrowseController;
         })();

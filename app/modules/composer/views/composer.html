@@ -27,18 +27,8 @@
     <div layout="row" layout-align="center center" style="padding:0 24px;">
       <h3 class="md-headline margin-none">All Compositions</h3>
       <span flex></span>
-      <md-input-container>
-        <label>Genres & Forms</label>
-        <md-select ng-model="composerCtrl.selectedForm">
-          <md-option ng-repeat="form in composerCtrl.forms" value="{{form.id}}">{{form.name}}</md-option>
-        </md-select>
-      </md-input-container>
-      <md-input-container style="margin-left:24px;">
-        <label>Sort By</label>
-        <md-select ng-model="composerCtrl.selectedSort">
-          <md-option ng-repeat="sort in composerCtrl.sorts" value="{{sort.id}}">{{sort.name}}</md-option>
-        </md-select>
-      </md-input-container>
+      <lb-select-form></lb-select-form>
+      <lb-select-sort style="margin-left:24px;"></lb-select-sort>
     </div>
     <md-list flex ng-if="composerCtrl.compositions.length">
       <md-list-item class="md-2-line" ng-repeat="composition in composerCtrl.compositions" ng-click="$state.go('app.composition',{vanity:composition.vanity,id:composition.id})">

@@ -28,7 +28,7 @@ module lilybook.data {
 
 	export interface ICompositionSvc {
 		getComposition(compositionId: string): ng.IPromise<IComposition>,
-		getCompositions(composer: IComposer, typeId?: string, sortId?: string): ng.IPromise<IComposition[]>,
+		getCompositions(composer: IComposer, typeId?: string, sortId?: number): ng.IPromise<IComposition[]>,
 		getCompositionTypes(featured?: boolean): ng.IPromise<ICompositionType[]>
 	}
 
@@ -64,7 +64,7 @@ module lilybook.data {
 			return defer.promise;
 		}
 
-		getCompositions(composer: IComposer, typeId?: string, sortId = '0') {
+		getCompositions(composer: IComposer, typeId?: string, sortId = 0) {
 			var defer = this.$q.defer<IComposition[]>();
 			var query = new Parse.Query(this.CompositionDB);
 			query.equalTo('composer', composer.base);
@@ -77,10 +77,10 @@ module lilybook.data {
 			query.include('key');
 			query.include('type');
 			switch (sortId) {
-				case '1':
+				case 1:
 					query.ascending(['rcm', 'order']);
 					break;
-				case '2':
+				case 2:
 				default:
 					query.ascending(['order', 'title']);
 			}

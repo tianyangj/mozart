@@ -27,43 +27,26 @@ module lilybook.composer {
 				});
 				this.compositionGroups = compositionGroups;
 			});
-			this.compositionSvc.getCompositionTypes()
-				.then((compositionTypes) => {
-					this.forms = compositionTypes;
-				});
-			this.sorts = [
-				{ id: 0, name: 'Alphabetical' },
-				{ id: 1, name: 'Grade Level' },
-				{ id: 2, name: 'Popularity' }
-			];
 			this.$scope.$emit('headerUpdateContext', {
 				href: $state.href('app.composers'),
 				name: 'Composers'
 			});
-			this.$scope.$watch(() => {
-				return this.selectedForm;
-			}, (newVal, oldVal) => {
-				if (newVal !== oldVal) {
-					this.compositionSvc.getCompositions(composer, newVal, this.selectedSort).then(compositions => {
-						this.compositions = compositions;
-					});
-				}
+			this.$scope.$on('selectFormChanged', (event, selectedForm) => {
+				this.selectedForm = selectedForm;
+				this.compositionSvc.getCompositions(composer, this.selectedForm, this.selectedSort).then(compositions => {
+					this.compositions = compositions;
+				});
 			});
-			this.$scope.$watch(() => {
-				return this.selectedSort;
-			}, (newVal, oldVal) => {
-				if (newVal !== oldVal) {
-					this.compositionSvc.getCompositions(composer, this.selectedForm, newVal).then(compositions => {
-						this.compositions = compositions;
-					});
-				}
+			this.$scope.$on('selectSortChanged', (event, selectedSort) => {
+				this.selectedSort = selectedSort;
+				this.compositionSvc.getCompositions(composer, this.selectedForm, this.selectedSort).then(compositions => {
+					this.compositions = compositions;
+				});
 			});
 		}
 
 		compositions: any;
 		compositionGroups: any;
-		forms: data.ICompositionType[];
-		sorts;
 		selectedForm;
 		selectedSort;
 	}

@@ -31,7 +31,7 @@ var lilybook;
                 return defer.promise;
             };
             CompositionSvc.prototype.getCompositions = function (composer, typeId, sortId) {
-                if (sortId === void 0) { sortId = '0'; }
+                if (sortId === void 0) { sortId = 0; }
                 var defer = this.$q.defer();
                 var query = new Parse.Query(this.CompositionDB);
                 query.equalTo('composer', composer.base);
@@ -44,10 +44,10 @@ var lilybook;
                 query.include('key');
                 query.include('type');
                 switch (sortId) {
-                    case '1':
+                    case 1:
                         query.ascending(['rcm', 'order']);
                         break;
-                    case '2':
+                    case 2:
                     default:
                         query.ascending(['order', 'title']);
                 }

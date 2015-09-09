@@ -21,36 +21,21 @@ var lilybook;
                     });
                     _this.compositionGroups = compositionGroups;
                 });
-                this.compositionSvc.getCompositionTypes()
-                    .then(function (compositionTypes) {
-                    _this.forms = compositionTypes;
-                });
-                this.sorts = [
-                    { id: 0, name: 'Alphabetical' },
-                    { id: 1, name: 'Grade Level' },
-                    { id: 2, name: 'Popularity' }
-                ];
                 this.$scope.$emit('headerUpdateContext', {
                     href: $state.href('app.composers'),
                     name: 'Composers'
                 });
-                this.$scope.$watch(function () {
-                    return _this.selectedForm;
-                }, function (newVal, oldVal) {
-                    if (newVal !== oldVal) {
-                        _this.compositionSvc.getCompositions(composer, newVal, _this.selectedSort).then(function (compositions) {
-                            _this.compositions = compositions;
-                        });
-                    }
+                this.$scope.$on('selectFormChanged', function (event, selectedForm) {
+                    _this.selectedForm = selectedForm;
+                    _this.compositionSvc.getCompositions(composer, _this.selectedForm, _this.selectedSort).then(function (compositions) {
+                        _this.compositions = compositions;
+                    });
                 });
-                this.$scope.$watch(function () {
-                    return _this.selectedSort;
-                }, function (newVal, oldVal) {
-                    if (newVal !== oldVal) {
-                        _this.compositionSvc.getCompositions(composer, _this.selectedForm, newVal).then(function (compositions) {
-                            _this.compositions = compositions;
-                        });
-                    }
+                this.$scope.$on('selectSortChanged', function (event, selectedSort) {
+                    _this.selectedSort = selectedSort;
+                    _this.compositionSvc.getCompositions(composer, _this.selectedForm, _this.selectedSort).then(function (compositions) {
+                        _this.compositions = compositions;
+                    });
                 });
             }
             ComposerController.$inject = [

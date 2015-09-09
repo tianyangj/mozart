@@ -21,54 +21,56 @@
 </md-content>-->
 <div flex class="md-padding">
 	<section>
-		<h2 class="md-headline">Featured Composers</h2>
+		<h2 class="md-headline" style="margin:16px 0;">Featured Composers</h2>
 		<div layout-sm="column" layout-gt-sm="row">
 			<div flex-sm="100" flex-md="50" flex-gt-md="25" ng-repeat="composer in discoveryCtrl.composers">
-				<md-card ng-click="$state.go('app.composer',{vanity:composer.vanity})" lb-hover="4">
-					<img ng-src="{{composer.image}}" class="md-card-image">
-					<md-card-content>
-						<h4 class="md-title ellipsis" style="margin:16px 0;">{{composer.fullname}}</h4>
-						<p class="ellipsis-3">{{composer.bio}}</p>
-					</md-card-content>
-				</md-card>
+				<a ui-sref="app.composer({vanity:composer.vanity})">
+					<md-card lb-hover="4">
+						<img ng-src="{{composer.image}}" class="md-card-image">
+						<md-card-content>
+							<h4 class="md-title ellipsis" style="margin:16px 0;">{{composer.fullname}}</h4>
+							<p class="ellipsis-3">{{composer.bio}}</p>
+						</md-card-content>
+					</md-card>
+				</a>
 			</div>
 		</div>
 	</section>
-	<md-divider style="margin:20px 0;"></md-divider>
+	<md-divider style="margin:16px 0;"></md-divider>
 	<section>
 		<div layout-sm="column" layout-gt-sm="row">
-			<div flex-sm="100" flex-gt-sm="33">
-				<md-card ng-click="todo()" lb-hover="4">
+			<a flex-sm="100" flex-gt-sm="33" ui-sref="app.browse">
+				<md-card lb-hover="4">
 					<img src="http://placehold.it/400x200" class="md-card-image">
 					<md-card-content class="text-center">
 						<h4 class="md-title ellipsis" style="margin:8px 0;">Charts</h4>
 						<p class="ellipsis margin-none" style="padding:0 8px 16px 8px;">Top 50 compositions by popularity</p>
 					</md-card-content>
 				</md-card>
-			</div>
-			<div flex-sm="100" flex-gt-sm="33">
-				<md-card flex-sm="100" flex-gt-sm="33" ng-click="todo()" lb-hover="4">
+			</a>
+			<a flex-sm="100" flex-gt-sm="33" ui-sref="app.browse">
+				<md-card lb-hover="4">
 					<img src="http://placehold.it/400x200" class="md-card-image">
 					<md-card-content class="text-center">
 						<h4 class="md-title ellipsis" style="margin:8px 0;">New Additions</h4>
 						<p class="ellipsis margin-none" style="padding:0 8px 16px 8px;">The latest additions to our existing catalog</p>
 					</md-card-content>
 				</md-card>
-			</div>
-			<div flex-sm="100" flex-gt-sm="33">
-				<md-card flex-sm="100" flex-gt-sm="33" ng-click="todo()" lb-hover="4">
+			</a>
+			<a flex-sm="100" flex-gt-sm="33" ui-sref="app.browse">
+				<md-card lb-hover="4">
 					<img src="http://placehold.it/400x200" class="md-card-image">
 					<md-card-content class="text-center">
 						<h4 class="md-title ellipsis" style="margin:8px 0;">Browse</h4>
 						<p class="ellipsis margin-none" style="padding:0 8px 16px 8px;">Browse all of our compositions</p>
 					</md-card-content>
 				</md-card>
-			</div>
+			</a>
 		</div>
 	</section>
-	<md-divider style="margin:20px 0;"></md-divider>
+	<md-divider style="margin:16px 0;"></md-divider>
 	<section>
-		<h2 class="md-headline">Forms & Genres</h2>
+		<h2 class="md-headline" style="margin:16px 0;">Forms & Genres</h2>
 		<div style="padding:8px;">
 			<md-grid-list md-cols-sm="2" md-cols-md="4" md-cols-gt-md="6" md-row-height="1:1" md-gutter="8px">
 				<md-grid-tile ng-repeat="form in discoveryCtrl.forms">

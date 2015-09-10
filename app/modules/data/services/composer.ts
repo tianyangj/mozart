@@ -49,6 +49,7 @@ module lilybook.data {
 			var query = new Parse.Query(this.ComposerDB);
 			query.skip(skip);
 			query.limit(limit);
+			query.ascending('shortName');
 			query.find().then((response: Parse.Object[]) => {
 				var composers = response.map(MapperSvc.composerMapper);
 				defer.resolve(composers);

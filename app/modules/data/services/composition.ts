@@ -1,6 +1,12 @@
 module lilybook.data {
 	'use strict';
 
+	export class CompositionSort {
+		static Alphabetical = 1;
+		static Difficulty = 2;
+		static Popularity = 3;
+	}
+
 	export interface IComposition {
 		base: Parse.Object,
 		id: string,
@@ -26,9 +32,16 @@ module lilybook.data {
 		name: string
 	}
 
+	export interface ICompositionQuery {
+		composer?: IComposer,
+		composerId?: string,
+		typeId?: string,
+		sortId?: number
+	}
+
 	export interface ICompositionSvc {
 		getComposition(compositionId: string): ng.IPromise<IComposition>,
-		getCompositions(composer: IComposer, typeId?: string, sortId?: number): ng.IPromise<IComposition[]>,
+		getCompositions(compositionQuery: ICompositionQuery): ng.IPromise<IComposition[]>,
 		getCompositionTypes(featured?: boolean): ng.IPromise<ICompositionType[]>
 	}
 
@@ -64,23 +77,30 @@ module lilybook.data {
 			return defer.promise;
 		}
 
-		getCompositions(composer: IComposer, typeId?: string, sortId = 0) {
+		getCompositions(compositionQuery: ICompositionQuery) {
 			var defer = this.$q.defer<IComposition[]>();
 			var query = new Parse.Query(this.CompositionDB);
-			query.equalTo('composer', composer.base);
 			query.equalTo('published', true);
-			if (typeId) {
+			if (compositionQuery.composer) {
+				query.equalTo('composer', compositionQuery.composer.base);
+			}
+			if (compositionQuery.composerId) {
+				var composer = new Parse.Object('Composer');
+				composer.id = compositionQuery.composerId;
+				query.equalTo('composer', composer);
+			}
+			if (compositionQuery.typeId) {
 				var type = new Parse.Object('CompositionType');
-				type.id = typeId;
+				type.id = compositionQuery.typeId;
 				query.equalTo('type', type);
 			}
 			query.include('key');
 			query.include('type');
-			switch (sortId) {
-				case 1:
+			switch (compositionQuery.sortId) {
+				case 2:
 					query.ascending(['rcm', 'order']);
 					break;
-				case 2:
+				case 3:
 				default:
 					query.ascending(['order', 'title']);
 			}

@@ -3,6 +3,15 @@ var lilybook;
     var data;
     (function (data) {
         'use strict';
+        var CompositionSort = (function () {
+            function CompositionSort() {
+            }
+            CompositionSort.Alphabetical = 1;
+            CompositionSort.Difficulty = 2;
+            CompositionSort.Popularity = 3;
+            return CompositionSort;
+        })();
+        data.CompositionSort = CompositionSort;
         var CompositionSvc = (function () {
             function CompositionSvc($q) {
                 this.$q = $q;
@@ -30,24 +39,30 @@ var lilybook;
                 });
                 return defer.promise;
             };
-            CompositionSvc.prototype.getCompositions = function (composer, typeId, sortId) {
-                if (sortId === void 0) { sortId = 0; }
+            CompositionSvc.prototype.getCompositions = function (compositionQuery) {
                 var defer = this.$q.defer();
                 var query = new Parse.Query(this.CompositionDB);
-                query.equalTo('composer', composer.base);
                 query.equalTo('published', true);
-                if (typeId) {
+                if (compositionQuery.composer) {
+                    query.equalTo('composer', compositionQuery.composer.base);
+                }
+                if (compositionQuery.composerId) {
+                    var composer = new Parse.Object('Composer');
+                    composer.id = compositionQuery.composerId;
+                    query.equalTo('composer', composer);
+                }
+                if (compositionQuery.typeId) {
                     var type = new Parse.Object('CompositionType');
-                    type.id = typeId;
+                    type.id = compositionQuery.typeId;
                     query.equalTo('type', type);
                 }
                 query.include('key');
                 query.include('type');
-                switch (sortId) {
-                    case 1:
+                switch (compositionQuery.sortId) {
+                    case 2:
                         query.ascending(['rcm', 'order']);
                         break;
-                    case 2:
+                    case 3:
                     default:
                         query.ascending(['order', 'title']);
                 }

@@ -5,30 +5,42 @@ module lilybook.discovery {
 
 		static $inject = [
 			'compositionSvc',
-			'composerSvc',
 			'$scope'
 		];
 
 		constructor(
 			private compositionSvc: lilybook.data.ICompositionSvc,
-			private composerSvc: lilybook.data.IComposerSvc,
 			private $scope
 			) {
-			this.compositionSvc.getCompositionTypes()
-				.then((compositionTypes) => {
-					this.forms = compositionTypes;
-				});
-			this.composerSvc.getFeaturedComposers()
-				.then((composers) => {
-					this.composers = composers.slice(0, 4);
-				});
+			this.getCompositions();
+			this.$scope.$on('selectComposerChanged', (event, selectedComposer) => {
+				this.selectedComposer = selectedComposer;
+				this.getCompositions();
+			});
 			this.$scope.$on('selectFormChanged', (event, selectedForm) => {
-				console.log(selectedForm)
-			})
+				this.selectedForm = selectedForm;
+				this.getCompositions();
+			});
+			this.$scope.$on('selectSortChanged', (event, selectedSort) => {
+				this.selectedSort = selectedSort;
+				this.getCompositions();
+			});
 		}
 
-		forms: lilybook.data.ICompositionType[];
-		composers: lilybook.data.IComposer[];
+		getCompositions() {
+			this.compositionSvc.getCompositions({
+				composerId: this.selectedComposer,
+				typeId: this.selectedForm,
+				sortId: this.selectedSort
+			}).then(compositions => {
+				this.compositions = compositions;
+			});
+		}
+
+		compositions: lilybook.data.IComposition[];
+		selectedComposer;
+		selectedForm;
+		selectedSort;
 	}
 
 	lilybook.discovery.module.controller('BrowseController', BrowseController);

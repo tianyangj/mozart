@@ -10,34 +10,26 @@ var lilybook;
                 this.compositionSvc = compositionSvc;
                 this.$scope = $scope;
                 this.$state = $state;
-                this.compositionSvc.getCompositions(composer).then(function (compositions) {
-                    _this.compositions = compositions;
-                    var compositionGroups = {};
-                    compositions.forEach(function (composition) {
-                        if (!compositionGroups[composition.type]) {
-                            compositionGroups[composition.type] = [];
-                        }
-                        compositionGroups[composition.type].push(composition);
-                    });
-                    _this.compositionGroups = compositionGroups;
-                });
-                this.$scope.$emit('headerUpdateContext', {
-                    href: $state.href('app.composers'),
-                    name: 'Composers'
-                });
+                this.getCompositions();
                 this.$scope.$on('selectFormChanged', function (event, selectedForm) {
                     _this.selectedForm = selectedForm;
-                    _this.compositionSvc.getCompositions(composer, _this.selectedForm, _this.selectedSort).then(function (compositions) {
-                        _this.compositions = compositions;
-                    });
+                    _this.getCompositions();
                 });
                 this.$scope.$on('selectSortChanged', function (event, selectedSort) {
                     _this.selectedSort = selectedSort;
-                    _this.compositionSvc.getCompositions(composer, _this.selectedForm, _this.selectedSort).then(function (compositions) {
-                        _this.compositions = compositions;
-                    });
+                    _this.getCompositions();
                 });
             }
+            ComposerController.prototype.getCompositions = function () {
+                var _this = this;
+                this.compositionSvc.getCompositions({
+                    composer: this.composer,
+                    typeId: this.selectedForm,
+                    sortId: this.selectedSort
+                }).then(function (compositions) {
+                    _this.compositions = compositions;
+                });
+            };
             ComposerController.$inject = [
                 'composer',
                 'compositionSvc',

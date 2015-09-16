@@ -7,13 +7,14 @@ var lilybook;
             function SelectSortController($scope) {
                 var _this = this;
                 this.$scope = $scope;
-                this.sorts = [
-                    { id: 0, name: 'Alphabetical' },
-                    { id: 1, name: 'Difficulty' },
-                    { id: 2, name: 'Popularity' }
-                ];
+                this.sorts = Object.keys(lilybook.data.CompositionSort).map(function (key) {
+                    return {
+                        id: lilybook.data.CompositionSort[key],
+                        name: key
+                    };
+                });
                 this.$scope.$watch(function () {
-                    return _this.sort;
+                    return _this.sortId;
                 }, function (newVal, oldVal) {
                     if (newVal !== oldVal) {
                         _this.$scope.$emit('selectSortChanged', newVal);
@@ -28,7 +29,7 @@ var lilybook;
         function lbSelectSortDirective() {
             return {
                 restrict: 'E',
-                template: "\n\t\t\t\t<md-input-container>\n        \t\t\t<label>Sort By</label>\n        \t\t\t<md-select ng-model=\"selectSortCtrl.sort\">\n          \t\t\t\t<md-option ng-repeat=\"sort in selectSortCtrl.sorts\" value=\"{{sort.id}}\">{{sort.name}}</md-option>\n        \t\t\t</md-select>\n      \t\t\t</md-input-container>\n\t\t\t",
+                template: "\n\t\t\t\t<md-input-container>\n        \t\t\t<label>Sort By</label>\n        \t\t\t<md-select ng-model=\"selectSortCtrl.sortId\">\n          \t\t\t\t<md-option ng-repeat=\"sort in selectSortCtrl.sorts\" value=\"{{sort.id}}\">{{sort.name}}</md-option>\n        \t\t\t</md-select>\n      \t\t\t</md-input-container>\n\t\t\t",
                 controller: SelectSortController,
                 controllerAs: 'selectSortCtrl'
             };

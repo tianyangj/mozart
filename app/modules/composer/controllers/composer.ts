@@ -16,37 +16,28 @@ module lilybook.composer {
 			private $scope,
 			private $state
 			) {
-			this.compositionSvc.getCompositions(composer).then(compositions => {
-				this.compositions = compositions;
-				var compositionGroups = {};
-				compositions.forEach(composition => {
-					if (!compositionGroups[composition.type]) {
-						compositionGroups[composition.type] = [];
-					}
-					compositionGroups[composition.type].push(composition);
-				});
-				this.compositionGroups = compositionGroups;
-			});
-			this.$scope.$emit('headerUpdateContext', {
-				href: $state.href('app.composers'),
-				name: 'Composers'
-			});
+			this.getCompositions();
 			this.$scope.$on('selectFormChanged', (event, selectedForm) => {
 				this.selectedForm = selectedForm;
-				this.compositionSvc.getCompositions(composer, this.selectedForm, this.selectedSort).then(compositions => {
-					this.compositions = compositions;
-				});
+				this.getCompositions();
 			});
 			this.$scope.$on('selectSortChanged', (event, selectedSort) => {
 				this.selectedSort = selectedSort;
-				this.compositionSvc.getCompositions(composer, this.selectedForm, this.selectedSort).then(compositions => {
-					this.compositions = compositions;
-				});
+				this.getCompositions();
+			});
+		}
+
+		getCompositions() {
+			this.compositionSvc.getCompositions({
+				composer: this.composer,
+				typeId: this.selectedForm,
+				sortId: this.selectedSort
+			}).then(compositions => {
+				this.compositions = compositions;
 			});
 		}
 
 		compositions: any;
-		compositionGroups: any;
 		selectedForm;
 		selectedSort;
 	}

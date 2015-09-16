@@ -11,7 +11,19 @@
 			<lb-select-sort flex-gt-md="20" flex-md="40" flex-sm="80"></lb-select-sort>
 		</div>
 	</md-whiteframe>
-
+	<md-list flex ng-if="browseCtrl.compositions.length">
+		<md-list-item class="md-2-line" ng-repeat="composition in browseCtrl.compositions" ng-click="$state.go('app.composition',{vanity:composition.vanity,id:composition.id})">
+			<span class="md-avatar" style="text-align:center;font-family:'Great Vibes',cursive;font-size:40px;">{{$index+1}}</span>
+			<div class="md-list-item-text">
+				<h4 class="md-title" style="font-size:18px">{{composition.title}}</h4>
+				<p>{{composition.type}}, {{composition.rcm}}</p>
+				<md-icon class="md-secondary md-accent md-36" md-svg-icon="assets/svg/ic_play_circle_filled.svg" aria-label="Play" ng-click="todo()"></md-icon>
+			</div>
+		</md-list-item>
+	</md-list>
+	<div ng-if="!browseCtrl.compositions.length" style="padding:24px;">
+		No compositions found.
+	</div>
 	<div>list of compositions with pager...</div>
 	<!--<h1 class="md-display-3" style="margin-bottom:0;">Browse</h1>
 	<section class="md-padding">

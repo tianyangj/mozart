@@ -2,40 +2,37 @@ var lilybook;
 (function (lilybook) {
     var component;
     (function (component) {
-        'use strict';
         var SelectDifficultyController = (function () {
-            function SelectDifficultyController($scope) {
+            function SelectDifficultyController($scope, definitionSvc) {
                 var _this = this;
                 this.$scope = $scope;
-                this.difficulties = [
-                    { id: 1, name: 'Level 1' },
-                    { id: 2, name: 'Level 2' },
-                    { id: 3, name: 'Level 3' },
-                    { id: 4, name: 'Level 4' },
-                    { id: 5, name: 'Level 5' },
-                    { id: 6, name: 'Level 6' },
-                    { id: 7, name: 'Level 7' },
-                    { id: 8, name: 'Level 8' },
-                    { id: 9, name: 'Level 9' },
-                    { id: 10, name: 'Level 10' }
-                ];
+                this.definitionSvc = definitionSvc;
                 this.$scope.$watch(function () {
-                    return _this.difficulty;
+                    return _this.difficultyId;
                 }, function (newVal, oldVal) {
                     if (newVal !== oldVal) {
                         _this.$scope.$emit('selectDifficultyChanged', newVal);
                     }
                 });
             }
+            SelectDifficultyController.prototype.loadDifficulties = function () {
+                var _this = this;
+                if (!this.difficulties) {
+                    return this.definitionSvc.getDifficulties().then(function (difficulties) {
+                        _this.difficulties = difficulties;
+                    });
+                }
+            };
             SelectDifficultyController.$inject = [
-                '$scope'
+                '$scope',
+                'definitionSvc'
             ];
             return SelectDifficultyController;
         })();
         function lbSelectDifficultyDirective() {
             return {
                 restrict: 'E',
-                template: "\n\t\t\t\t<md-input-container>\n        \t\t\t<label>Difficulty & Level</label>\n        \t\t\t<md-select ng-model=\"selectDifficultyCtrl.difficulty\">\n          \t\t\t\t<md-option ng-repeat=\"difficulty in selectDifficultyCtrl.difficulties\" value=\"{{difficulty.id}}\">{{difficulty.name}}</md-option>\n        \t\t\t</md-select>\n      \t\t\t</md-input-container>\n\t\t\t",
+                template: "\n\t\t\t\t<md-input-container>\n        \t\t\t<label>Difficulty & Level</label>\n        \t\t\t<md-select ng-model=\"selectDifficultyCtrl.difficultyId\" md-on-open=\"selectDifficultyCtrl.loadDifficulties()\">\n          \t\t\t\t<md-option ng-repeat=\"difficulty in selectDifficultyCtrl.difficulties\" value=\"{{difficulty.id}}\">{{difficulty.name}}</md-option>\n        \t\t\t</md-select>\n      \t\t\t</md-input-container>\n\t\t\t",
                 controller: SelectDifficultyController,
                 controllerAs: 'selectDifficultyCtrl'
             };

@@ -1,29 +1,18 @@
 module lilybook.component {
-	'use strict';
 
 	class SelectDifficultyController {
 
 		static $inject = [
-			'$scope'
+			'$scope',
+			'definitionSvc'
 		];
 
 		constructor(
-			private $scope
+			private $scope,
+			private definitionSvc: lilybook.data.IDefinitionSvc
 			) {
-			this.difficulties = [
-				{ id: 1, name: 'Level 1' },
-				{ id: 2, name: 'Level 2' },
-				{ id: 3, name: 'Level 3' },
-				{ id: 4, name: 'Level 4' },
-				{ id: 5, name: 'Level 5' },
-				{ id: 6, name: 'Level 6' },
-				{ id: 7, name: 'Level 7' },
-				{ id: 8, name: 'Level 8' },
-				{ id: 9, name: 'Level 9' },
-				{ id: 10, name: 'Level 10' }
-			];
 			this.$scope.$watch(() => {
-				return this.difficulty;
+				return this.difficultyId;
 			}, (newVal, oldVal) => {
 				if (newVal !== oldVal) {
 					this.$scope.$emit('selectDifficultyChanged', newVal);
@@ -31,7 +20,15 @@ module lilybook.component {
 			});
 		}
 
-		difficulty;
+		loadDifficulties() {
+			if (!this.difficulties) {
+				return this.definitionSvc.getDifficulties().then((difficulties) => {
+					this.difficulties = difficulties;
+				});
+			}
+		}
+
+		difficultyId;
 		difficulties;
 	}
 
@@ -41,7 +38,7 @@ module lilybook.component {
 			template: `
 				<md-input-container>
         			<label>Difficulty & Level</label>
-        			<md-select ng-model="selectDifficultyCtrl.difficulty">
+        			<md-select ng-model="selectDifficultyCtrl.difficultyId" md-on-open="selectDifficultyCtrl.loadDifficulties()">
           				<md-option ng-repeat="difficulty in selectDifficultyCtrl.difficulties" value="{{difficulty.id}}">{{difficulty.name}}</md-option>
         			</md-select>
       			</md-input-container>

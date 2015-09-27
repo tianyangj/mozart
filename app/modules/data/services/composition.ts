@@ -56,6 +56,7 @@ module lilybook.data {
 			query.include('key');
 			query.include('type');
 			query.include('composer');
+			query.include('rcm');
 			query.first().then((response: Parse.Object) => {
 				if (response) {
 					var composition = MapperSvc.compositionMapper(response);
@@ -88,6 +89,7 @@ module lilybook.data {
 			}
 			query.include('key');
 			query.include('type');
+			query.include('rcm');
 			switch (compositionQuery.sortId) {
 				case 2:
 					query.ascending(['rcm', 'order']);

@@ -28,7 +28,7 @@ var lilybook;
                     number: composition.get('number'),
                     wikipedia: composition.get('wikipedia'),
                     imslp: composition.get('imslp'),
-                    rcm: composition.get('rcm'),
+                    rcm: composition.get('rcm') && composition.get('rcm').get('name'),
                     abrsm: composition.get('abrsm'),
                     henle: composition.get('henle'),
                     video: composition.get('video'),

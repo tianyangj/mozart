@@ -16,7 +16,6 @@ module lilybook.data {
 		catalogue: string,
 		number: number,
 		key: string,
-		instrumentation: string,
 		type: string,
 		wikipedia: string,
 		imslp: string,

@@ -24,7 +24,6 @@ module lilybook.data {
 				vanity: composition.get('vanity'),
 				catalogue: composition.get('catalogue'),
 				number: composition.get('number'),
-				instrumentation: composition.get('instrumentation'),
 				wikipedia: composition.get('wikipedia'),
 				imslp: composition.get('imslp'),
 				rcm: composition.get('rcm'),

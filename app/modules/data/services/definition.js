@@ -6,6 +6,7 @@ var lilybook;
             function DefinitionSvc($q) {
                 this.$q = $q;
                 this.RCMDB = Parse.Object.extend('RCM');
+                this.CompositionTypeDB = Parse.Object.extend('CompositionType');
             }
             ;
             DefinitionSvc.prototype.getDifficulties = function () {
@@ -21,6 +22,31 @@ var lilybook;
                         };
                     });
                     defer.resolve(difficulties);
+                }, function (error) {
+                    defer.reject(error);
+                });
+                return defer.promise;
+            };
+            DefinitionSvc.prototype.getForms = function (featured) {
+                if (featured === void 0) { featured = false; }
+                var defer = this.$q.defer();
+                var query = new Parse.Query(this.CompositionTypeDB);
+                if (featured) {
+                    query.equalTo('featured', featured);
+                }
+                query.ascending('order');
+                query.find().then(function (response) {
+                    var forms = response.map(function (form) {
+                        return {
+                            base: form,
+                            id: form.id,
+                            name: form.get('name'),
+                            description: form.get('description'),
+                            wiki: form.get('wiki'),
+                            featured: form.get('featured')
+                        };
+                    });
+                    defer.resolve(forms);
                 }, function (error) {
                     defer.reject(error);
                 });

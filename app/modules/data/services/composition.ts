@@ -26,12 +26,6 @@ module lilybook.data {
 		henle?: string
 	}
 
-	export interface ICompositionType {
-		base: Parse.Object,
-		id: string,
-		name: string
-	}
-
 	export interface ICompositionQuery {
 		composer?: IComposer,
 		composerId?: string,
@@ -41,8 +35,7 @@ module lilybook.data {
 
 	export interface ICompositionSvc {
 		getComposition(compositionId: string): ng.IPromise<IComposition>,
-		getCompositions(compositionQuery: ICompositionQuery): ng.IPromise<IComposition[]>,
-		getCompositionTypes(featured?: boolean): ng.IPromise<ICompositionType[]>
+		getCompositions(compositionQuery: ICompositionQuery): ng.IPromise<IComposition[]>
 	}
 
 	class CompositionSvc implements ICompositionSvc {
@@ -107,22 +100,6 @@ module lilybook.data {
 			query.find().then((response: Parse.Object[]) => {
 				var compositions = response.map(MapperSvc.compositionMapper);
 				defer.resolve(compositions);
-			}, (error) => {
-				defer.reject(error);
-			});
-			return defer.promise;
-		}
-
-		getCompositionTypes(featured = false) {
-			var defer = this.$q.defer<ICompositionType[]>();
-			var query = new Parse.Query(this.CompositionTypeDB);
-			if (featured) {
-				query.equalTo('featured', featured);
-			}
-			query.ascending('order');
-			query.find().then((response: Parse.Object[]) => {
-				var compositionTypes = response.map(MapperSvc.compositionTypeMapper);
-				defer.resolve(compositionTypes);
 			}, (error) => {
 				defer.reject(error);
 			});

@@ -2,15 +2,14 @@ var lilybook;
 (function (lilybook) {
     var discovery;
     (function (discovery) {
-        'use strict';
         var DiscoveryController = (function () {
-            function DiscoveryController(compositionSvc, composerSvc) {
+            function DiscoveryController(definitionSvc, composerSvc) {
                 var _this = this;
-                this.compositionSvc = compositionSvc;
+                this.definitionSvc = definitionSvc;
                 this.composerSvc = composerSvc;
-                this.compositionSvc.getCompositionTypes()
-                    .then(function (compositionTypes) {
-                    _this.forms = compositionTypes;
+                this.definitionSvc.getForms()
+                    .then(function (forms) {
+                    _this.forms = forms;
                 });
                 this.composerSvc.getFeaturedComposers()
                     .then(function (composers) {
@@ -18,7 +17,7 @@ var lilybook;
                 });
             }
             DiscoveryController.$inject = [
-                'compositionSvc',
+                'definitionSvc',
                 'composerSvc'
             ];
             return DiscoveryController;

@@ -1,20 +1,19 @@
 module lilybook.discovery {
-    'use strict';
 
 	class DiscoveryController {
 
 		static $inject = [
-			'compositionSvc',
+			'definitionSvc',
 			'composerSvc'
 		];
 
 		constructor(
-			private compositionSvc: lilybook.data.ICompositionSvc,
+			private definitionSvc: lilybook.data.IDefinitionSvc,
 			private composerSvc: lilybook.data.IComposerSvc
 			) {
-			this.compositionSvc.getCompositionTypes()
-				.then((compositionTypes) => {
-					this.forms = compositionTypes;
+			this.definitionSvc.getForms()
+				.then((forms) => {
+					this.forms = forms;
 				});
 			this.composerSvc.getFeaturedComposers()
 				.then((composers) => {
@@ -22,7 +21,7 @@ module lilybook.discovery {
 				});
 		}
 
-		forms: lilybook.data.ICompositionType[];
+		forms: lilybook.data.IForm[];
 		composers: lilybook.data.IComposer[];
 	}
 

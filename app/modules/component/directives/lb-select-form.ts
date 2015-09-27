@@ -1,22 +1,18 @@
 module lilybook.component {
-	'use strict';
 
 	class SelectFormController {
 
 		static $inject = [
 			'$scope',
-			'compositionSvc'
+			'definitionSvc'
 		];
 
 		constructor(
 			private $scope,
-			private compositionSvc: lilybook.data.ICompositionSvc
+			private definitionSvc: lilybook.data.IDefinitionSvc
 			) {
-			this.compositionSvc.getCompositionTypes().then((compositionTypes) => {
-				this.forms = compositionTypes;
-			});
 			this.$scope.$watch(() => {
-				return this.form;
+				return this.formId;
 			}, (newVal, oldVal) => {
 				if (newVal !== oldVal) {
 					this.$scope.$emit('selectFormChanged', newVal);
@@ -24,8 +20,16 @@ module lilybook.component {
 			});
 		}
 
-		form;
-		forms: lilybook.data.ICompositionType[];
+		loadForms() {
+			if (!this.forms) {
+				return this.definitionSvc.getForms().then((forms) => {
+					this.forms = forms;
+				});
+			}
+		}
+
+		formId;
+		forms;
 	}
 
 	function lbSelectFormDirective(): ng.IDirective {
@@ -34,7 +38,7 @@ module lilybook.component {
 			template: `
 				<md-input-container>
         			<label>Forms & Genres</label>
-        			<md-select ng-model="selectFormCtrl.form">
+        			<md-select ng-model="selectFormCtrl.formId" md-on-open="selectFormCtrl.loadForms()">
           				<md-option ng-repeat="form in selectFormCtrl.forms" value="{{form.id}}">{{form.name}}</md-option>
         			</md-select>
       			</md-input-container>

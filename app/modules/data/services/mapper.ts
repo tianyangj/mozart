@@ -37,14 +37,6 @@ module lilybook.data {
 			};
 		}
 
-		static compositionTypeMapper(compositionType: Parse.Object): ICompositionType {
-			return {
-				base: compositionType,
-				id: compositionType.id,
-				name: compositionType.get('name')
-			};
-		}
-
 		static userMapper(user: Parse.User): IUser {
 			return {
 				base: user,

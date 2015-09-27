@@ -74,22 +74,6 @@ var lilybook;
                 });
                 return defer.promise;
             };
-            CompositionSvc.prototype.getCompositionTypes = function (featured) {
-                if (featured === void 0) { featured = false; }
-                var defer = this.$q.defer();
-                var query = new Parse.Query(this.CompositionTypeDB);
-                if (featured) {
-                    query.equalTo('featured', featured);
-                }
-                query.ascending('order');
-                query.find().then(function (response) {
-                    var compositionTypes = response.map(data.MapperSvc.compositionTypeMapper);
-                    defer.resolve(compositionTypes);
-                }, function (error) {
-                    defer.reject(error);
-                });
-                return defer.promise;
-            };
             CompositionSvc.$inject = ['$q'];
             return CompositionSvc;
         })();

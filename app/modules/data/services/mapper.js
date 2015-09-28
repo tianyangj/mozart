@@ -34,7 +34,8 @@ var lilybook;
                     video: composition.get('video'),
                     key: composition.get('key') && composition.get('key').get('name'),
                     type: composition.get('type') && composition.get('type').get('name'),
-                    composer: composition.get('composer') ? MapperSvc.composerMapper(composition.get('composer')) : null
+                    composer: composition.get('composer') ? MapperSvc.composerMapper(composition.get('composer')) : null,
+                    order: composition.get('order')
                 };
             };
             MapperSvc.userMapper = function (user) {

@@ -12,6 +12,7 @@ var lilybook;
             DefinitionSvc.prototype.getDifficulties = function () {
                 var defer = this.$q.defer();
                 var query = new Parse.Query(this.RCMDB);
+                query.ascending('order');
                 query.find().then(function (response) {
                     var difficulties = response.map(function (difficulty) {
                         return {

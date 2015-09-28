@@ -36,6 +36,7 @@ module lilybook.data {
 		getDifficulties() {
 			var defer = this.$q.defer<IDifficulty[]>();
 			var query = new Parse.Query(this.RCMDB);
+			query.ascending('order');
 			query.find().then((response: Parse.Object[]) => {
 				var difficulties = response.map((difficulty) => {
 					return {

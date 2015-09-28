@@ -19,6 +19,7 @@ module lilybook.data {
 		type: string,
 		wikipedia: string,
 		imslp: string,
+		order: number,
 		composer: IComposer,
 		rcm?: string,
 		abrsm?: string,
@@ -90,16 +91,20 @@ module lilybook.data {
 			query.include('key');
 			query.include('type');
 			query.include('rcm');
-			switch (compositionQuery.sortId) {
-				case 2:
-					query.ascending(['rcm', 'order']);
-					break;
-				case 3:
-				default:
-					query.ascending(['order', 'title']);
-			}
+			// sorting is done on client side
+			query.ascending(['order', 'title']);
 			query.find().then((response: Parse.Object[]) => {
 				var compositions = response.map(MapperSvc.compositionMapper);
+				switch (compositionQuery.sortId) {
+					case 2:
+						compositions.sort((a, b) => {
+							if (a.rcm < b.rcm) return -1;
+							if (a.rcm > b.rcm) return 1;
+							// otherwise sort by order
+							return a.order - b.order;
+						});
+						break;
+				}
 				defer.resolve(compositions);
 			}, (error) => {
 				defer.reject(error);

@@ -60,16 +60,22 @@ var lilybook;
                 query.include('key');
                 query.include('type');
                 query.include('rcm');
-                switch (compositionQuery.sortId) {
-                    case 2:
-                        query.ascending(['rcm', 'order']);
-                        break;
-                    case 3:
-                    default:
-                        query.ascending(['order', 'title']);
-                }
+                // sorting is done on client side
+                query.ascending(['order', 'title']);
                 query.find().then(function (response) {
                     var compositions = response.map(data.MapperSvc.compositionMapper);
+                    switch (compositionQuery.sortId) {
+                        case 2:
+                            compositions.sort(function (a, b) {
+                                if (a.rcm < b.rcm)
+                                    return -1;
+                                if (a.rcm > b.rcm)
+                                    return 1;
+                                // otherwise sort by order
+                                return a.order - b.order;
+                            });
+                            break;
+                    }
                     defer.resolve(compositions);
                 }, function (error) {
                     defer.reject(error);

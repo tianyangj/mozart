@@ -64,6 +64,7 @@ var lilybook;
                 }
                 query.include('key');
                 query.include('type');
+                query.include('composer');
                 query.include('rcm');
                 // sorting is done on client side
                 query.ascending(['order', 'title']);

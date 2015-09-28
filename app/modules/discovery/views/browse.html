@@ -5,9 +5,6 @@
 			<lb-select-composer flex-gt-md="20" flex-md="40" flex-sm="80"></lb-select-composer>
 			<lb-select-form flex-gt-md="20" flex-md="40" flex-sm="80"></lb-select-form>
 			<lb-select-difficulty flex-gt-md="20" flex-md="40" flex-sm="80"></lb-select-difficulty>
-			<lb-select-period flex-gt-md="20" flex-md="40" flex-sm="80"></lb-select-period>
-		</div>
-		<div layout="row" layout-align="center center">
 			<lb-select-sort flex-gt-md="20" flex-md="40" flex-sm="80"></lb-select-sort>
 		</div>
 	</md-whiteframe>
@@ -16,7 +13,7 @@
 			<span class="md-avatar" style="text-align:center;font-family:'Great Vibes',cursive;font-size:40px;">{{$index+1}}</span>
 			<div class="md-list-item-text">
 				<h4 class="md-title" style="font-size:18px">{{composition.title}}</h4>
-				<p>{{composition.type}}, {{composition.rcm}}</p>
+				<p>{{composition.composer.fullname}}, {{composition.type}}, {{composition.rcm}}</p>
 				<md-icon class="md-secondary md-accent md-36" md-svg-icon="assets/svg/ic_play_circle_filled.svg" aria-label="Play" ng-click="todo()"></md-icon>
 			</div>
 		</md-list-item>

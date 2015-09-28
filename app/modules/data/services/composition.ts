@@ -23,7 +23,8 @@ module lilybook.data {
 		composer: IComposer,
 		rcm?: string,
 		abrsm?: string,
-		henle?: string
+		henle?: string,
+		video: string
 	}
 
 	export interface ICompositionQuery {

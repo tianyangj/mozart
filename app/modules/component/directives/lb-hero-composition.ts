@@ -1,12 +1,16 @@
 module lilybook.component {
-	'use strict';
 
 	function lbHeroCompositionDirective(): ng.IDirective {
 		return {
 			restrict: 'E',
-			templateUrl: 'modules/component/templates/hero-composition.html',
+			template: `
+				<div ng-if="video" class="hero-composition-video">
+					<youtube-video video-url="video" player-width="'100%'" player-height="'360px'" player-vars="{autoplay:1,showinfo:0}"></youtube-video>
+				</div>
+				<div ng-if="!video" class="hero-composition-image"></div>
+			`,
 			scope: {
-				composition: '='
+				video: '='
 			}
 		};
 	}

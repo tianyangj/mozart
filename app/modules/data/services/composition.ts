@@ -30,6 +30,7 @@ module lilybook.data {
 		composer?: IComposer,
 		composerId?: string,
 		typeId?: string,
+		difficultyId?: string,
 		sortId?: number
 	}
 
@@ -87,6 +88,11 @@ module lilybook.data {
 				var type = new Parse.Object('CompositionType');
 				type.id = compositionQuery.typeId;
 				query.equalTo('type', type);
+			}
+			if (compositionQuery.difficultyId) {
+				var difficulty = new Parse.Object('RCM');
+				difficulty.id = compositionQuery.difficultyId;
+				query.equalTo('rcm', difficulty);
 			}
 			query.include('key');
 			query.include('type');

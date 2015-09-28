@@ -21,6 +21,10 @@ module lilybook.discovery {
 				this.selectedForm = selectedForm;
 				this.getCompositions();
 			});
+			this.$scope.$on('selectDifficultyChanged', (event, selectedDifficulty) => {
+				this.selectedDifficulty = selectedDifficulty;
+				this.getCompositions();
+			});
 			this.$scope.$on('selectSortChanged', (event, selectedSort) => {
 				this.selectedSort = selectedSort;
 				this.getCompositions();
@@ -31,6 +35,7 @@ module lilybook.discovery {
 			this.compositionSvc.getCompositions({
 				composerId: this.selectedComposer,
 				typeId: this.selectedForm,
+				difficultyId: this.selectedDifficulty,
 				sortId: this.selectedSort
 			}).then(compositions => {
 				this.compositions = compositions;
@@ -40,6 +45,7 @@ module lilybook.discovery {
 		compositions: lilybook.data.IComposition[];
 		selectedComposer;
 		selectedForm;
+		selectedDifficulty;
 		selectedSort;
 	}
 

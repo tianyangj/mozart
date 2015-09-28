@@ -17,6 +17,10 @@ var lilybook;
                     _this.selectedForm = selectedForm;
                     _this.getCompositions();
                 });
+                this.$scope.$on('selectDifficultyChanged', function (event, selectedDifficulty) {
+                    _this.selectedDifficulty = selectedDifficulty;
+                    _this.getCompositions();
+                });
                 this.$scope.$on('selectSortChanged', function (event, selectedSort) {
                     _this.selectedSort = selectedSort;
                     _this.getCompositions();
@@ -27,6 +31,7 @@ var lilybook;
                 this.compositionSvc.getCompositions({
                     composerId: this.selectedComposer,
                     typeId: this.selectedForm,
+                    difficultyId: this.selectedDifficulty,
                     sortId: this.selectedSort
                 }).then(function (compositions) {
                     _this.compositions = compositions;

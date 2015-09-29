@@ -21,27 +21,31 @@ module lilybook.component {
 				}
 			});
 			if (this.$location.search().form) {
-				this.definitionSvc.getForms().then((forms) => {
-					this.forms = forms;
-					forms.forEach((form) => {
-						if (form.name === this.$location.search().form) {
-							this.form = form;
-						}
-					});
-				});
+				this.loadData(this.$location.search().form);
 			}
 		}
 
 		onOpen() {
 			if (!this.forms) {
-				return this.definitionSvc.getForms().then((forms) => {
-					this.forms = forms;
-				});
+				return this.loadData();
 			}
 		}
 
 		onChange() {
 			this.$location.search('form', this.form.name);
+		}
+
+		loadData(querystring?) {
+			return this.definitionSvc.getForms().then((forms) => {
+				this.forms = forms;
+				if (querystring) {
+					this.forms.forEach((form) => {
+						if (form.name === querystring) {
+							this.form = form;
+						}
+					});
+				}
+			});
 		}
 
 		form;

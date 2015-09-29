@@ -16,26 +16,29 @@ var lilybook;
                     }
                 });
                 if (this.$location.search().form) {
-                    this.definitionSvc.getForms().then(function (forms) {
-                        _this.forms = forms;
-                        forms.forEach(function (form) {
-                            if (form.name === _this.$location.search().form) {
-                                _this.form = form;
-                            }
-                        });
-                    });
+                    this.loadData(this.$location.search().form);
                 }
             }
             SelectFormController.prototype.onOpen = function () {
-                var _this = this;
                 if (!this.forms) {
-                    return this.definitionSvc.getForms().then(function (forms) {
-                        _this.forms = forms;
-                    });
+                    return this.loadData();
                 }
             };
             SelectFormController.prototype.onChange = function () {
                 this.$location.search('form', this.form.name);
+            };
+            SelectFormController.prototype.loadData = function (querystring) {
+                var _this = this;
+                return this.definitionSvc.getForms().then(function (forms) {
+                    _this.forms = forms;
+                    if (querystring) {
+                        _this.forms.forEach(function (form) {
+                            if (form.name === querystring) {
+                                _this.form = form;
+                            }
+                        });
+                    }
+                });
             };
             SelectFormController.$inject = [
                 '$scope',

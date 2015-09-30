@@ -16,16 +16,17 @@ module lilybook.component {
 					name: key
 				};
 			});
+			this.sort = this.sorts[0];
 			this.$scope.$watch(() => {
-				return this.sortId;
+				return this.sort;
 			}, (newVal, oldVal) => {
 				if (newVal !== oldVal) {
-					this.$scope.$emit('selectSortChanged', newVal);
+					this.$scope.$emit('selectSortChanged', newVal.id);
 				}
 			});
 		}
 
-		sortId;
+		sort;
 		sorts;
 	}
 
@@ -35,8 +36,8 @@ module lilybook.component {
 			template: `
 				<md-input-container>
         			<label>Sort By</label>
-        			<md-select ng-model="selectSortCtrl.sortId">
-          				<md-option ng-repeat="sort in selectSortCtrl.sorts" value="{{sort.id}}">{{sort.name}}</md-option>
+        			<md-select ng-model="selectSortCtrl.sort" ng-model-options="{trackBy: '$value.id'}">
+          				<md-option ng-repeat="sort in selectSortCtrl.sorts" ng-value="{{sort}}">{{sort.name}}</md-option>
         			</md-select>
       			</md-input-container>
 			`,

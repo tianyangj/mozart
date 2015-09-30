@@ -13,11 +13,12 @@ var lilybook;
                         name: key
                     };
                 });
+                this.sort = this.sorts[0];
                 this.$scope.$watch(function () {
-                    return _this.sortId;
+                    return _this.sort;
                 }, function (newVal, oldVal) {
                     if (newVal !== oldVal) {
-                        _this.$scope.$emit('selectSortChanged', newVal);
+                        _this.$scope.$emit('selectSortChanged', newVal.id);
                     }
                 });
             }
@@ -29,7 +30,7 @@ var lilybook;
         function lbSelectSortDirective() {
             return {
                 restrict: 'E',
-                template: "\n\t\t\t\t<md-input-container>\n        \t\t\t<label>Sort By</label>\n        \t\t\t<md-select ng-model=\"selectSortCtrl.sortId\">\n          \t\t\t\t<md-option ng-repeat=\"sort in selectSortCtrl.sorts\" value=\"{{sort.id}}\">{{sort.name}}</md-option>\n        \t\t\t</md-select>\n      \t\t\t</md-input-container>\n\t\t\t",
+                template: "\n\t\t\t\t<md-input-container>\n        \t\t\t<label>Sort By</label>\n        \t\t\t<md-select ng-model=\"selectSortCtrl.sort\" ng-model-options=\"{trackBy: '$value.id'}\">\n          \t\t\t\t<md-option ng-repeat=\"sort in selectSortCtrl.sorts\" ng-value=\"{{sort}}\">{{sort.name}}</md-option>\n        \t\t\t</md-select>\n      \t\t\t</md-input-container>\n\t\t\t",
                 controller: SelectSortController,
                 controllerAs: 'selectSortCtrl'
             };

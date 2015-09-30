@@ -50,7 +50,7 @@ var lilybook;
         function lbSelectFormDirective() {
             return {
                 restrict: 'E',
-                template: "\n\t\t\t\t<md-input-container>\n        \t\t\t<label>Forms & Genres</label>\n        \t\t\t<md-select\n\t\t\t\t\t\tng-model=\"selectFormCtrl.form\"\n\t\t\t\t\t\tng-model-options=\"{trackBy: '$value.id'}\"\n\t\t\t\t\t\tmd-on-open=\"selectFormCtrl.onOpen()\"\n\t\t\t\t\t\tng-change=\"selectFormCtrl.onChange()\">\n          \t\t\t\t<md-option ng-repeat=\"form in selectFormCtrl.forms\" ng-value=\"{{form}}\">{{form.name}}</md-option>\n        \t\t\t</md-select>\n      \t\t\t</md-input-container>\n\t\t\t",
+                template: "\n\t\t\t\t<md-input-container>\n        \t\t\t<label>Forms & Genres</label>\n        \t\t\t<md-select\n\t\t\t\t\t\tng-model=\"selectFormCtrl.form\"\n\t\t\t\t\t\tng-model-options=\"{trackBy: '$value.id'}\"\n\t\t\t\t\t\tmd-on-open=\"selectFormCtrl.onOpen()\"\n\t\t\t\t\t\tng-change=\"selectFormCtrl.onChange()\">\n\t\t\t\t\t\t<md-option>All</md-option>\n\t\t\t\t\t\t<md-divider></md-divider>\n          \t\t\t\t<md-option ng-repeat=\"form in selectFormCtrl.forms\" ng-value=\"{{form}}\">{{form.name}}</md-option>\n        \t\t\t</md-select>\n      \t\t\t</md-input-container>\n\t\t\t",
                 controller: SelectFormController,
                 controllerAs: 'selectFormCtrl'
             };

@@ -71,6 +71,8 @@ module lilybook.component {
 						ng-model-options="{trackBy: '$value.id'}"
 						md-on-open="selectComposerCtrl.onOpen()"
 						ng-change="selectComposerCtrl.onChange()">
+						<md-option>All</md-option>
+						<md-divider></md-divider>
 						<md-optgroup label="{{letter}}" ng-repeat="(letter, composers) in selectComposerCtrl.composerGroups">
 							<md-option ng-repeat="composer in composers" ng-value="{{composer}}">{{composer.fullname}}</md-option>
 						 </md-optgroup>

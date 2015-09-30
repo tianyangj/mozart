@@ -63,6 +63,8 @@ module lilybook.component {
 						ng-model-options="{trackBy: '$value.id'}"
 						md-on-open="selectFormCtrl.onOpen()"
 						ng-change="selectFormCtrl.onChange()">
+						<md-option>All</md-option>
+						<md-divider></md-divider>
           				<md-option ng-repeat="form in selectFormCtrl.forms" ng-value="{{form}}">{{form.name}}</md-option>
         			</md-select>
       			</md-input-container>

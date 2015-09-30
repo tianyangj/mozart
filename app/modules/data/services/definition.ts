@@ -4,6 +4,7 @@ module lilybook.data {
 		base: Parse.Object,
 		id: string,
 		name: string,
+		value: string,
 		certificate: string
 	}
 
@@ -43,6 +44,7 @@ module lilybook.data {
 						base: difficulty,
 						id: difficulty.id,
 						name: difficulty.get('name'),
+						value: difficulty.get('value'),
 						certificate: difficulty.get('certificate')
 					};
 				});

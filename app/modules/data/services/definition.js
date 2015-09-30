@@ -19,6 +19,7 @@ var lilybook;
                             base: difficulty,
                             id: difficulty.id,
                             name: difficulty.get('name'),
+                            value: difficulty.get('value'),
                             certificate: difficulty.get('certificate')
                         };
                     });

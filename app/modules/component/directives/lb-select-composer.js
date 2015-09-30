@@ -58,7 +58,7 @@ var lilybook;
         function lbSelectComposerDirective() {
             return {
                 restrict: 'E',
-                template: "\n\t\t\t\t<md-input-container>\n        \t\t\t<label>Composers</label>\n        \t\t\t<md-select\n\t\t\t\t\t\tng-model=\"selectComposerCtrl.composer\"\n\t\t\t\t\t\tng-model-options=\"{trackBy: '$value.id'}\"\n\t\t\t\t\t\tmd-on-open=\"selectComposerCtrl.onOpen()\"\n\t\t\t\t\t\tng-change=\"selectComposerCtrl.onChange()\">\n\t\t\t\t\t\t<md-optgroup label=\"{{letter}}\" ng-repeat=\"(letter, composers) in selectComposerCtrl.composerGroups\">\n\t\t\t\t\t\t\t<md-option ng-repeat=\"composer in composers\" ng-value=\"{{composer}}\">{{composer.fullname}}</md-option>\n\t\t\t\t\t\t </md-optgroup>\n        \t\t\t</md-select>\n      \t\t\t</md-input-container>\n\t\t\t",
+                template: "\n\t\t\t\t<md-input-container>\n        \t\t\t<label>Composers</label>\n        \t\t\t<md-select\n\t\t\t\t\t\tng-model=\"selectComposerCtrl.composer\"\n\t\t\t\t\t\tng-model-options=\"{trackBy: '$value.id'}\"\n\t\t\t\t\t\tmd-on-open=\"selectComposerCtrl.onOpen()\"\n\t\t\t\t\t\tng-change=\"selectComposerCtrl.onChange()\">\n\t\t\t\t\t\t<md-option>All</md-option>\n\t\t\t\t\t\t<md-divider></md-divider>\n\t\t\t\t\t\t<md-optgroup label=\"{{letter}}\" ng-repeat=\"(letter, composers) in selectComposerCtrl.composerGroups\">\n\t\t\t\t\t\t\t<md-option ng-repeat=\"composer in composers\" ng-value=\"{{composer}}\">{{composer.fullname}}</md-option>\n\t\t\t\t\t\t </md-optgroup>\n        \t\t\t</md-select>\n      \t\t\t</md-input-container>\n\t\t\t",
                 controller: SelectComposerController,
                 controllerAs: 'selectComposerCtrl'
             };

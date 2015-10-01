@@ -7,7 +7,7 @@ var lilybook;
         discovery.module.config(function ($stateProvider) {
             $stateProvider
                 .state('app.browse', {
-                url: '/browse',
+                url: '/browse?composer&form&level',
                 templateUrl: 'modules/discovery/views/browse.html',
                 controller: 'BrowseController',
                 controllerAs: 'browseCtrl'

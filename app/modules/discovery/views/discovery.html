@@ -74,10 +74,12 @@
 		<div style="padding:8px;">
 			<md-grid-list md-cols-sm="2" md-cols-md="4" md-cols-gt-md="6" md-row-height="1:1" md-gutter="8px">
 				<md-grid-tile ng-repeat="form in discoveryCtrl.forms">
-					<img class="full-width" src="http://placehold.it/200x200" lb-hover="4" />
-					<md-grid-tile-footer>
-						<h4 class="md-subhead ellipsis">{{form.name}}</h4>
-					</md-grid-tile-footer>
+					<a ui-sref="app.browse({form:form.name})">
+						<img class="full-width" src="http://placehold.it/200x200" lb-hover="4" />
+						<md-grid-tile-footer>
+							<h4 class="md-subhead ellipsis">{{form.name}}</h4>
+						</md-grid-tile-footer>
+					</a>
 				</md-grid-tile>
 			</md-grid-list>
 		</div>

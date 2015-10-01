@@ -7,12 +7,10 @@ var lilybook;
                 var _this = this;
                 this.definitionSvc = definitionSvc;
                 this.composerSvc = composerSvc;
-                this.definitionSvc.getForms()
-                    .then(function (forms) {
+                this.definitionSvc.getForms().then(function (forms) {
                     _this.forms = forms;
                 });
-                this.composerSvc.getFeaturedComposers()
-                    .then(function (composers) {
+                this.composerSvc.getFeaturedComposers().then(function (composers) {
                     _this.composers = composers.slice(0, 4);
                 });
             }

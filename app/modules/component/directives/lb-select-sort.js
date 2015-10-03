@@ -17,7 +17,7 @@ var lilybook;
                 this.$scope.$watch(function () {
                     return _this.sort;
                 }, function (newVal, oldVal) {
-                    if (newVal !== oldVal) {
+                    if ((newVal && !oldVal) || (newVal && oldVal && newVal.id !== oldVal.id)) {
                         _this.$scope.$emit('selectSortChanged', newVal.id);
                     }
                 });

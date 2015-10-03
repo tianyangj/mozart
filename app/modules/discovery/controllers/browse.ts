@@ -5,12 +5,14 @@ module lilybook.discovery {
 
 		static $inject = [
 			'compositionSvc',
-			'$scope'
+			'$scope',
+			'$timeout'
 		];
 
 		constructor(
 			private compositionSvc: lilybook.data.ICompositionSvc,
-			private $scope
+			private $scope,
+			private $timeout
 			) {
 			this.getCompositions();
 			this.$scope.$on('selectComposerChanged', (event, selectedComposer) => {
@@ -32,14 +34,19 @@ module lilybook.discovery {
 		}
 
 		getCompositions() {
-			this.compositionSvc.getCompositions({
-				composerId: this.selectedComposer,
-				typeId: this.selectedForm,
-				difficultyId: this.selectedDifficulty,
-				sortId: this.selectedSort
-			}).then(compositions => {
-				this.compositions = compositions;
-			});
+			this.loading = true;
+			this.$timeout.cancel(this.timeout);
+			this.timeout = this.$timeout(() => {
+				this.compositionSvc.getCompositions({
+					composerId: this.selectedComposer,
+					typeId: this.selectedForm,
+					difficultyId: this.selectedDifficulty,
+					sortId: this.selectedSort
+				}).then(compositions => {
+					this.loading = false;
+					this.compositions = compositions;
+				});
+			}, 300);
 		}
 
 		compositions: lilybook.data.IComposition[];
@@ -47,6 +54,8 @@ module lilybook.discovery {
 		selectedForm;
 		selectedDifficulty;
 		selectedSort;
+		timeout;
+		loading: boolean = false;
 	}
 
 	lilybook.discovery.module.controller('BrowseController', BrowseController);

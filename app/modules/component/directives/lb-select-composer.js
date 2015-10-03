@@ -11,7 +11,7 @@ var lilybook;
                 this.$scope.$watch(function () {
                     return _this.composer;
                 }, function (newVal, oldVal) {
-                    if (newVal !== oldVal) {
+                    if ((newVal && !oldVal) || (newVal && oldVal && newVal.id !== oldVal.id)) {
                         _this.$scope.$emit('selectComposerChanged', newVal.id);
                     }
                 });

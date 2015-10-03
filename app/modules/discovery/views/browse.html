@@ -8,23 +8,30 @@
 			<lb-select-sort flex-gt-md="20" flex-md="40" flex-sm="80"></lb-select-sort>
 		</div>
 	</md-subheader>
-	<md-list flex class="md-padding" ng-if="browseCtrl.compositions.length">
-		<md-list-item class="md-2-line" ng-repeat="composition in browseCtrl.compositions">
-			<span class="md-avatar" style="text-align:center;font-family:'Great Vibes',cursive;font-size:40px;">{{$index+1}}</span>
-			<div class="md-list-item-text">
-				<a ui-sref="app.composition({vanity:composition.vanity,id:composition.id})" style="font-size:18px;line-height:36px;text-decoration:underline;">
+	<div ng-if="browseCtrl.loading">
+		<md-progress-circular class="md-primary" md-mode="indeterminate" md-diameter="100" style="margin:48px auto;"></md-progress-circular>
+	</div>
+	<div class="md-padding" ng-if="!browseCtrl.loading">
+		<md-list flex ng-if="browseCtrl.compositions.length">
+			<md-list-item class="md-2-line" ng-repeat="composition in browseCtrl.compositions">
+				<span class="md-avatar" style="text-align:center;font-family:'Great Vibes',cursive;font-size:40px;">{{$index+1}}</span>
+				<div class="md-list-item-text">
+					<a class="md-title" ui-sref="app.composition({vanity:composition.vanity,id:composition.id})">
 					{{composition.title}}
 				</a>
-				<div>
-					<span class="md-subhead">{{composition.composer.fullname}}</span>,
-					<span class="md-body-1">{{composition.type}}</span>,
-					<span class="md-body-1">{{composition.rcm}}</span>
+					<div>
+						<span class="md-subhead">{{composition.composer.fullname}}</span>,
+						<span class="md-body-1">{{composition.type}}</span>,
+						<span class="md-body-1">{{composition.rcm}}</span>
+					</div>
+					<a ui-sref="app.composition({vanity:composition.vanity,id:composition.id})">
+						<md-icon class="md-secondary md-36" md-svg-icon="assets/svg/ic_chevron_right.svg" aria-label="Go"></md-icon>
+					</a>
 				</div>
-				<md-icon class="md-secondary md-accent md-36" md-svg-icon="assets/svg/ic_play_circle_filled.svg" aria-label="Play" ng-click="todo()"></md-icon>
-			</div>
-		</md-list-item>
-	</md-list>
-	<div ng-if="!browseCtrl.compositions.length" style="padding:24px;">
-		No compositions found.
+			</md-list-item>
+		</md-list>
+		<p ng-if="!browseCtrl.compositions.length" style="padding:16px;">
+			No compositions found.
+		</p>
 	</div>
 </div>

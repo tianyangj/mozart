@@ -9,7 +9,8 @@ module lilybook.discovery {
                 url: '/browse?composer&form&level',
                 templateUrl: 'modules/discovery/views/browse.html',
                 controller: 'BrowseController',
-                controllerAs: 'browseCtrl'
+                controllerAs: 'browseCtrl',
+                reloadOnSearch: false
             })
             .state('app.discovery', {
                 url: '/discover',

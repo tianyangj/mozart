@@ -26,15 +26,20 @@ module lilybook.data {
 
 		private RCMDB: Parse.Object;
 		private CompositionTypeDB: Parse.Object;
+		private cache;
 
 		static $inject = ['$q'];
 
 		constructor(private $q: ng.IQService) {
 			this.RCMDB = Parse.Object.extend('RCM');
 			this.CompositionTypeDB = Parse.Object.extend('CompositionType');
+			this.cache = {};
 		};
 
 		getDifficulties() {
+			if (this.cache.difficulties) {
+				return this.$q.when(this.cache.difficulties);
+			}
 			var defer = this.$q.defer<IDifficulty[]>();
 			var query = new Parse.Query(this.RCMDB);
 			query.ascending('order');
@@ -48,6 +53,7 @@ module lilybook.data {
 						certificate: difficulty.get('certificate')
 					};
 				});
+				this.cache.difficulties = difficulties;
 				defer.resolve(difficulties);
 			}, (error) => {
 				defer.reject(error)
@@ -56,6 +62,9 @@ module lilybook.data {
 		}
 
 		getForms(featured = false) {
+			if (this.cache.forms) {
+				return this.$q.when(this.cache.forms);
+			}
 			var defer = this.$q.defer<IForm[]>();
 			var query = new Parse.Query(this.CompositionTypeDB);
 			if (featured) {
@@ -73,6 +82,7 @@ module lilybook.data {
 						featured: form.get('featured')
 					};
 				});
+				this.cache.forms = forms;
 				defer.resolve(forms);
 			}, (error) => {
 				defer.reject(error);

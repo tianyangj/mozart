@@ -4,10 +4,12 @@ var lilybook;
     (function (discovery) {
         'use strict';
         var BrowseController = (function () {
-            function BrowseController(compositionSvc, $scope) {
+            function BrowseController(compositionSvc, $scope, $timeout) {
                 var _this = this;
                 this.compositionSvc = compositionSvc;
                 this.$scope = $scope;
+                this.$timeout = $timeout;
+                this.loading = false;
                 this.getCompositions();
                 this.$scope.$on('selectComposerChanged', function (event, selectedComposer) {
                     _this.selectedComposer = selectedComposer;
@@ -28,18 +30,24 @@ var lilybook;
             }
             BrowseController.prototype.getCompositions = function () {
                 var _this = this;
-                this.compositionSvc.getCompositions({
-                    composerId: this.selectedComposer,
-                    typeId: this.selectedForm,
-                    difficultyId: this.selectedDifficulty,
-                    sortId: this.selectedSort
-                }).then(function (compositions) {
-                    _this.compositions = compositions;
-                });
+                this.loading = true;
+                this.$timeout.cancel(this.timeout);
+                this.timeout = this.$timeout(function () {
+                    _this.compositionSvc.getCompositions({
+                        composerId: _this.selectedComposer,
+                        typeId: _this.selectedForm,
+                        difficultyId: _this.selectedDifficulty,
+                        sortId: _this.selectedSort
+                    }).then(function (compositions) {
+                        _this.loading = false;
+                        _this.compositions = compositions;
+                    });
+                }, 300);
             };
             BrowseController.$inject = [
                 'compositionSvc',
-                '$scope'
+                '$scope',
+                '$timeout'
             ];
             return BrowseController;
         })();

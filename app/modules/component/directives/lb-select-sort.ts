@@ -20,7 +20,7 @@ module lilybook.component {
 			this.$scope.$watch(() => {
 				return this.sort;
 			}, (newVal, oldVal) => {
-				if (newVal !== oldVal) {
+				if ((newVal && !oldVal) || (newVal && oldVal && newVal.id !== oldVal.id)) {
 					this.$scope.$emit('selectSortChanged', newVal.id);
 				}
 			});

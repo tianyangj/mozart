@@ -16,7 +16,7 @@ module lilybook.component {
 			this.$scope.$watch(() => {
 				return this.composer;
 			}, (newVal, oldVal) => {
-				if (newVal !== oldVal) {
+				if ((newVal && !oldVal) || (newVal && oldVal && newVal.id !== oldVal.id)) {
 					this.$scope.$emit('selectComposerChanged', newVal.id);
 				}
 			});

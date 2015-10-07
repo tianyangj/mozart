@@ -13,7 +13,7 @@ var lilybook;
             DefinitionSvc.prototype.getDifficulties = function () {
                 var _this = this;
                 if (this.cache.difficulties) {
-                    return this.$q.when(this.cache.difficulties);
+                    return this.$q.when(angular.copy(this.cache.difficulties));
                 }
                 var defer = this.$q.defer();
                 var query = new Parse.Query(this.RCMDB);
@@ -29,7 +29,7 @@ var lilybook;
                         };
                     });
                     _this.cache.difficulties = difficulties;
-                    defer.resolve(difficulties);
+                    defer.resolve(angular.copy(_this.cache.difficulties));
                 }, function (error) {
                     defer.reject(error);
                 });
@@ -39,7 +39,7 @@ var lilybook;
                 var _this = this;
                 if (featured === void 0) { featured = false; }
                 if (this.cache.forms) {
-                    return this.$q.when(this.cache.forms);
+                    return this.$q.when(angular.copy(this.cache.forms));
                 }
                 var defer = this.$q.defer();
                 var query = new Parse.Query(this.CompositionTypeDB);
@@ -59,7 +59,7 @@ var lilybook;
                         };
                     });
                     _this.cache.forms = forms;
-                    defer.resolve(forms);
+                    defer.resolve(angular.copy(_this.cache.forms));
                 }, function (error) {
                     defer.reject(error);
                 });

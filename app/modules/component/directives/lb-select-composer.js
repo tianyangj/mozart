@@ -10,9 +10,10 @@ var lilybook;
                 this.composerSvc = composerSvc;
                 this.$scope.$watch(function () {
                     return _this.composer;
-                }, function (newVal, oldVal) {
-                    if ((newVal && !oldVal) || (newVal && oldVal && newVal.id !== oldVal.id)) {
-                        _this.$scope.$emit('selectComposerChanged', newVal.id);
+                }, function (newVal) {
+                    if (newVal && newVal.id !== _this.composerId) {
+                        _this.composerId = newVal.id;
+                        _this.$scope.$emit('selectComposerChanged', _this.composerId);
                     }
                 });
                 if (this.$location.search().composer) {

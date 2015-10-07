@@ -19,15 +19,17 @@ module lilybook.component {
 			this.sort = this.sorts[0];
 			this.$scope.$watch(() => {
 				return this.sort;
-			}, (newVal, oldVal) => {
-				if ((newVal && !oldVal) || (newVal && oldVal && newVal.id !== oldVal.id)) {
-					this.$scope.$emit('selectSortChanged', newVal.id);
+			}, (newVal) => {
+				if (newVal && newVal.id !== this.sortId) {
+					this.sortId = newVal.id;
+					this.$scope.$emit('selectSortChanged', this.sortId);
 				}
 			});
 		}
 
 		sort;
 		sorts;
+		sortId;
 	}
 
 	function lbSelectSortDirective(): ng.IDirective {

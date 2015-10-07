@@ -10,9 +10,10 @@ var lilybook;
                 this.definitionSvc = definitionSvc;
                 this.$scope.$watch(function () {
                     return _this.form;
-                }, function (newVal, oldVal) {
-                    if ((newVal && !oldVal) || (newVal && oldVal && newVal.id != oldVal.id)) {
-                        _this.$scope.$emit('selectFormChanged', newVal.id);
+                }, function (newVal) {
+                    if (newVal && newVal.id !== _this.formId) {
+                        _this.formId = newVal.id;
+                        _this.$scope.$emit('selectFormChanged', _this.formId);
                     }
                 });
                 if (this.$location.search().form) {

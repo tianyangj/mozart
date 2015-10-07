@@ -10,9 +10,10 @@ var lilybook;
                 this.definitionSvc = definitionSvc;
                 this.$scope.$watch(function () {
                     return _this.difficulty;
-                }, function (newVal, oldVal) {
-                    if ((newVal && !oldVal) || (newVal && oldVal && newVal.id !== oldVal.id)) {
-                        _this.$scope.$emit('selectDifficultyChanged', newVal.id);
+                }, function (newVal) {
+                    if (newVal && newVal.id !== _this.difficultyId) {
+                        _this.difficultyId = newVal.id;
+                        _this.$scope.$emit('selectDifficultyChanged', _this.difficultyId);
                     }
                 });
                 if (this.$location.search().level) {

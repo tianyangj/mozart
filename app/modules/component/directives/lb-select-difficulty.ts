@@ -15,9 +15,10 @@ module lilybook.component {
 			) {
 			this.$scope.$watch(() => {
 				return this.difficulty;
-			}, (newVal, oldVal) => {
-				if ((newVal && !oldVal) || (newVal && oldVal && newVal.id !== oldVal.id)) {
-					this.$scope.$emit('selectDifficultyChanged', newVal.id);
+			}, (newVal) => {
+				if (newVal && newVal.id !== this.difficultyId) {
+					this.difficultyId = newVal.id;
+					this.$scope.$emit('selectDifficultyChanged', this.difficultyId);
 				}
 			});
 			if (this.$location.search().level) {
@@ -50,6 +51,7 @@ module lilybook.component {
 
 		difficulty: lilybook.data.IDifficulty;
 		difficulties: lilybook.data.IDifficulty[];
+		difficultyId: string;
 	}
 
 	function lbSelectDifficultyDirective(): ng.IDirective {

@@ -15,9 +15,10 @@ module lilybook.component {
 			) {
 			this.$scope.$watch(() => {
 				return this.form;
-			}, (newVal, oldVal) => {
-				if ((newVal && !oldVal) || (newVal && oldVal && newVal.id != oldVal.id)) {
-					this.$scope.$emit('selectFormChanged', newVal.id);
+			}, (newVal) => {
+				if (newVal && newVal.id !== this.formId) {
+					this.formId = newVal.id;
+					this.$scope.$emit('selectFormChanged', this.formId);
 				}
 			});
 			if (this.$location.search().form) {
@@ -50,6 +51,7 @@ module lilybook.component {
 
 		form;
 		forms;
+		formId;
 	}
 
 	function lbSelectFormDirective(): ng.IDirective {

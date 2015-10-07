@@ -16,9 +16,10 @@ var lilybook;
                 this.sort = this.sorts[0];
                 this.$scope.$watch(function () {
                     return _this.sort;
-                }, function (newVal, oldVal) {
-                    if ((newVal && !oldVal) || (newVal && oldVal && newVal.id !== oldVal.id)) {
-                        _this.$scope.$emit('selectSortChanged', newVal.id);
+                }, function (newVal) {
+                    if (newVal && newVal.id !== _this.sortId) {
+                        _this.sortId = newVal.id;
+                        _this.$scope.$emit('selectSortChanged', _this.sortId);
                     }
                 });
             }

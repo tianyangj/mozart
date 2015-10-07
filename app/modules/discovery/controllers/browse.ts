@@ -46,7 +46,7 @@ module lilybook.discovery {
 					this.loading = false;
 					this.compositions = compositions;
 				});
-			}, 300);
+			}, 600);
 		}
 
 		compositions: lilybook.data.IComposition[];

@@ -38,7 +38,7 @@ module lilybook.data {
 
 		getDifficulties() {
 			if (this.cache.difficulties) {
-				return this.$q.when(this.cache.difficulties);
+				return this.$q.when(angular.copy(this.cache.difficulties));
 			}
 			var defer = this.$q.defer<IDifficulty[]>();
 			var query = new Parse.Query(this.RCMDB);
@@ -54,7 +54,7 @@ module lilybook.data {
 					};
 				});
 				this.cache.difficulties = difficulties;
-				defer.resolve(difficulties);
+				defer.resolve(angular.copy(this.cache.difficulties));
 			}, (error) => {
 				defer.reject(error)
 			});
@@ -63,7 +63,7 @@ module lilybook.data {
 
 		getForms(featured = false) {
 			if (this.cache.forms) {
-				return this.$q.when(this.cache.forms);
+				return this.$q.when(angular.copy(this.cache.forms));
 			}
 			var defer = this.$q.defer<IForm[]>();
 			var query = new Parse.Query(this.CompositionTypeDB);
@@ -83,7 +83,7 @@ module lilybook.data {
 					};
 				});
 				this.cache.forms = forms;
-				defer.resolve(forms);
+				defer.resolve(angular.copy(this.cache.forms));
 			}, (error) => {
 				defer.reject(error);
 			});

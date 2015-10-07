@@ -42,7 +42,7 @@ var lilybook;
                         _this.loading = false;
                         _this.compositions = compositions;
                     });
-                }, 300);
+                }, 600);
             };
             BrowseController.$inject = [
                 'compositionSvc',

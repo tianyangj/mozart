@@ -4,18 +4,9 @@ var lilybook;
     (function (component) {
         var SelectDifficultyController = (function () {
             function SelectDifficultyController($scope, $location, definitionSvc) {
-                var _this = this;
                 this.$scope = $scope;
                 this.$location = $location;
                 this.definitionSvc = definitionSvc;
-                this.$scope.$watch(function () {
-                    return _this.difficulty;
-                }, function (newVal) {
-                    if (newVal && newVal.id !== _this.difficultyId) {
-                        _this.difficultyId = newVal.id;
-                        _this.$scope.$emit('selectDifficultyChanged', _this.difficultyId);
-                    }
-                });
                 if (this.$location.search().level) {
                     this.loadData(this.$location.search().level);
                 }
@@ -27,6 +18,7 @@ var lilybook;
             };
             SelectDifficultyController.prototype.onChange = function () {
                 this.$location.search('level', this.difficulty.value);
+                this.$scope.$emit('selectDifficultyChanged', this.difficulty.id);
             };
             SelectDifficultyController.prototype.loadData = function (querystring) {
                 var _this = this;

@@ -13,14 +13,6 @@ module lilybook.component {
 			private $location,
 			private composerSvc: lilybook.data.IComposerSvc
 			) {
-			this.$scope.$watch(() => {
-				return this.composer;
-			}, (newVal) => {
-				if (newVal && newVal.id !== this.composerId) {
-					this.composerId = newVal.id;
-					this.$scope.$emit('selectComposerChanged', this.composerId);
-				}
-			});
 			if (this.$location.search().composer) {
 				this.loadData(this.$location.search().composer);
 			}
@@ -34,6 +26,7 @@ module lilybook.component {
 
 		onChange() {
 			this.$location.search('composer', this.composer.shortname);
+			this.$scope.$emit('selectComposerChanged', this.composer.id);
 		}
 
 		loadData(querystring?) {
@@ -59,7 +52,6 @@ module lilybook.component {
 
 		composer;
 		composerGroups;
-		composerId;
 	}
 
 	function lbSelectComposerDirective(): ng.IDirective {

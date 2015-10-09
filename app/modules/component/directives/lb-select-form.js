@@ -4,18 +4,9 @@ var lilybook;
     (function (component) {
         var SelectFormController = (function () {
             function SelectFormController($scope, $location, definitionSvc) {
-                var _this = this;
                 this.$scope = $scope;
                 this.$location = $location;
                 this.definitionSvc = definitionSvc;
-                this.$scope.$watch(function () {
-                    return _this.form;
-                }, function (newVal) {
-                    if (newVal && newVal.id !== _this.formId) {
-                        _this.formId = newVal.id;
-                        _this.$scope.$emit('selectFormChanged', _this.formId);
-                    }
-                });
                 if (this.$location.search().form) {
                     this.loadData(this.$location.search().form);
                 }
@@ -27,6 +18,7 @@ var lilybook;
             };
             SelectFormController.prototype.onChange = function () {
                 this.$location.search('form', this.form.name);
+                this.$scope.$emit('selectFormChanged', this.form.id);
             };
             SelectFormController.prototype.loadData = function (querystring) {
                 var _this = this;

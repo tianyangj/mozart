@@ -13,14 +13,6 @@ module lilybook.component {
 			private $location,
 			private definitionSvc: lilybook.data.IDefinitionSvc
 			) {
-			this.$scope.$watch(() => {
-				return this.form;
-			}, (newVal) => {
-				if (newVal && newVal.id !== this.formId) {
-					this.formId = newVal.id;
-					this.$scope.$emit('selectFormChanged', this.formId);
-				}
-			});
 			if (this.$location.search().form) {
 				this.loadData(this.$location.search().form);
 			}
@@ -34,6 +26,7 @@ module lilybook.component {
 
 		onChange() {
 			this.$location.search('form', this.form.name);
+			this.$scope.$emit('selectFormChanged', this.form.id);
 		}
 
 		loadData(querystring?) {
@@ -51,7 +44,6 @@ module lilybook.component {
 
 		form;
 		forms;
-		formId;
 	}
 
 	function lbSelectFormDirective(): ng.IDirective {

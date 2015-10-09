@@ -4,18 +4,9 @@ var lilybook;
     (function (component) {
         var SelectComposerController = (function () {
             function SelectComposerController($scope, $location, composerSvc) {
-                var _this = this;
                 this.$scope = $scope;
                 this.$location = $location;
                 this.composerSvc = composerSvc;
-                this.$scope.$watch(function () {
-                    return _this.composer;
-                }, function (newVal) {
-                    if (newVal && newVal.id !== _this.composerId) {
-                        _this.composerId = newVal.id;
-                        _this.$scope.$emit('selectComposerChanged', _this.composerId);
-                    }
-                });
                 if (this.$location.search().composer) {
                     this.loadData(this.$location.search().composer);
                 }
@@ -27,6 +18,7 @@ var lilybook;
             };
             SelectComposerController.prototype.onChange = function () {
                 this.$location.search('composer', this.composer.shortname);
+                this.$scope.$emit('selectComposerChanged', this.composer.id);
             };
             SelectComposerController.prototype.loadData = function (querystring) {
                 var _this = this;

@@ -3,7 +3,8 @@ module lilybook.data {
 
 	export interface ISideNavItem {
 		icon: string,
-		title: string
+		title: string,
+		state?: string
 	}
 
 	export interface ISideNavGroup {

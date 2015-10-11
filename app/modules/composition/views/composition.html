@@ -21,7 +21,10 @@
 						</md-menu-content>
 					</md-menu>
 				</div>
-				<p class="md-body-1">{{compositionCtrl.composition.description}}</p>
+				<p class="md-body-1 md-padding">
+					{{compositionCtrl.composition.description}}
+					<a ng-href="{{compositionCtrl.composition.wikipedia}}" target="_blank">More detail on Wikipedia</a>
+				</p>
 				<div layout="row">
 					<div flex>
 						<div class="md-padding" layout="row">

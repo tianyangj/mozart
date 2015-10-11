@@ -21,9 +21,7 @@ module lilybook.data {
 		imslp: string,
 		order: number,
 		composer: IComposer,
-		rcm?: string,
-		abrsm?: string,
-		henle?: string,
+		rcm?: IDifficulty,
 		video: string
 	}
 
@@ -50,7 +48,7 @@ module lilybook.data {
 		constructor(private $q: ng.IQService) {
 			this.CompositionDB = Parse.Object.extend('Composition');
 			this.CompositionTypeDB = Parse.Object.extend('CompositionType');
-		};
+		}
 
 		getComposition(compositionId: string) {
 			var defer = this.$q.defer<IComposition>();
@@ -106,8 +104,8 @@ module lilybook.data {
 				switch (compositionQuery.sortId) {
 					case 2:
 						compositions.sort((a, b) => {
-							if (a.rcm < b.rcm) return -1;
-							if (a.rcm > b.rcm) return 1;
+							if (a.rcm.value < b.rcm.value) return -1;
+							if (a.rcm.value > b.rcm.value) return 1;
 							// otherwise sort by order
 							return a.order - b.order;
 						});

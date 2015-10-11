@@ -368,7 +368,6 @@ var lilybook;
                 this.CompositionDB = Parse.Object.extend('Composition');
                 this.CompositionTypeDB = Parse.Object.extend('CompositionType');
             }
-            ;
             CompositionSvc.prototype.getComposition = function (compositionId) {
                 var defer = this.$q.defer();
                 var query = new Parse.Query(this.CompositionDB);
@@ -422,9 +421,9 @@ var lilybook;
                     switch (compositionQuery.sortId) {
                         case 2:
                             compositions.sort(function (a, b) {
-                                if (a.rcm < b.rcm)
+                                if (a.rcm.value < b.rcm.value)
                                     return -1;
-                                if (a.rcm > b.rcm)
+                                if (a.rcm.value > b.rcm.value)
                                     return 1;
                                 return a.order - b.order;
                             });
@@ -545,9 +544,7 @@ var lilybook;
                     number: composition.get('number'),
                     wikipedia: composition.get('wikipedia'),
                     imslp: composition.get('imslp'),
-                    rcm: composition.get('rcm') && composition.get('rcm').get('name'),
-                    abrsm: composition.get('abrsm'),
-                    henle: composition.get('henle'),
+                    rcm: composition.get('rcm') ? MapperSvc.rcmMapper(composition.get('rcm')) : null,
                     video: composition.get('video'),
                     key: composition.get('key') && composition.get('key').get('name'),
                     type: composition.get('type') && composition.get('type').get('name'),
@@ -601,6 +598,15 @@ var lilybook;
                     composition: activity.get('composition'),
                     difficulty: activity.get('difficulty'),
                     updatedAt: activity.updatedAt
+                };
+            };
+            MapperSvc.rcmMapper = function (rcm) {
+                return {
+                    base: rcm,
+                    id: rcm.id,
+                    name: rcm.get('name'),
+                    value: rcm.get('value'),
+                    certificate: rcm.get('certificate')
                 };
             };
             return MapperSvc;

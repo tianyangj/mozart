@@ -4,7 +4,7 @@
 		<md-tab label="Details">
 			<div class="md-padding">
 				<div layout="row" layout-align="center center">
-					<h1 flex>{{compositionCtrl.composition.title}}</h1>
+					<h1 class="md-display-1" flex>{{compositionCtrl.composition.title}}</h1>
 					<lb-like-composition composition="compositionCtrl.composition"></lb-like-composition>
 					<lb-repertoire composition="compositionCtrl.composition"></lb-repertoire>
 					<md-menu md-position-mode="target-right target">
@@ -21,60 +21,58 @@
 						</md-menu-content>
 					</md-menu>
 				</div>
-				<p>{{compositionCtrl.composition.description}}</p>
+				<p class="md-body-1">{{compositionCtrl.composition.description}}</p>
 				<div layout="row">
 					<div flex>
-						<div layout="row" layout-padding>
+						<div class="md-padding" layout="row">
 							<strong flex="33">Composer</strong>
-							<div flex>{{compositionCtrl.composition.composer.fullname}}</div>
+							<div flex>
+								<a ui-sref="app.composer({vanity:compositionCtrl.composition.composer.vanity})">{{compositionCtrl.composition.composer.fullname}}</a>
+							</div>
 						</div>
-						<div layout="row" layout-padding>
+						<div class="md-padding" layout="row">
 							<strong flex="33">Form</strong>
-							<div flex>{{compositionCtrl.composition.type}}</div>
+							<div flex>
+								<a ui-sref="app.browse({form:compositionCtrl.composition.type,composer:compositionCtrl.composition.composer.shortname})">{{compositionCtrl.composition.type}}</a>
+							</div>
 						</div>
-						<div layout="row" layout-padding>
+						<div class="md-padding" layout="row">
 							<strong flex="33">Catalogue</strong>
 							<div flex>{{compositionCtrl.composition.catalogue}}</div>
 						</div>
-						<div layout="row" layout-padding ng-if="compositionCtrl.composition.number">
+						<div class="md-padding" layout="row" ng-if="compositionCtrl.composition.number">
 							<strong flex="33">Work Number</strong>
 							<div flex>{{compositionCtrl.composition.number}}</div>
 						</div>
-						<div layout="row" layout-padding>
+						<div class="md-padding" layout="row">
 							<strong flex="33">Key</strong>
 							<div flex>{{compositionCtrl.composition.key}}</div>
 						</div>
-						<div layout="row" layout-padding>
+						<div class="md-padding" layout="row">
 							<strong flex="33">RCM</strong>
-							<div flex>{{compositionCtrl.composition.rcm || 'N/A'}}</div>
-						</div>
-						<div layout="row" layout-padding>
-							<strong flex="33">ABRSM</strong>
-							<div flex>{{compositionCtrl.composition.abrsm || 'N/A'}}</div>
-						</div>
-						<div layout="row" layout-padding>
-							<strong flex="33">Henle</strong>
-							<div flex>{{compositionCtrl.composition.henle || 'N/A'}}</div>
+							<div flex>
+								<a ui-sref="app.browse({level:compositionCtrl.composition.rcm.value,composer:compositionCtrl.composition.composer.shortname})">{{compositionCtrl.composition.rcm.name || 'N/A'}}</a>
+							</div>
 						</div>
 					</div>
 					<div flex>
-						<div layout="row" layout-padding>
+						<div class="md-padding" layout="row">
 							<strong flex="33">Likes</strong>
 							<div flex>##</div>
 						</div>
-						<div layout="row" layout-padding>
+						<div class="md-padding" layout="row">
 							<strong flex="33">Repertoires</strong>
 							<div flex>##</div>
 						</div>
-						<div layout="row" layout-padding>
+						<div class="md-padding" layout="row">
 							<strong flex="33">Videos</strong>
 							<div flex>##</div>
 						</div>
-						<div layout="row" layout-padding>
+						<div class="md-padding" layout="row">
 							<strong flex="33">Q&As</strong>
 							<div flex>##</div>
 						</div>
-						<div layout="row" layout-padding>
+						<div class="md-padding" layout="row">
 							<strong flex="33">Average Difficulty</strong>
 							<div flex>##</div>
 						</div>

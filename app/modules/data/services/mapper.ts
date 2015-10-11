@@ -26,9 +26,7 @@ module lilybook.data {
 				number: composition.get('number'),
 				wikipedia: composition.get('wikipedia'),
 				imslp: composition.get('imslp'),
-				rcm: composition.get('rcm') && composition.get('rcm').get('name'),
-				abrsm: composition.get('abrsm'),
-				henle: composition.get('henle'),
+				rcm: composition.get('rcm') ? MapperSvc.rcmMapper(composition.get('rcm')) : null,
 				video: composition.get('video'),
 				key: composition.get('key') && composition.get('key').get('name'),
 				type: composition.get('type') && composition.get('type').get('name'),
@@ -87,6 +85,16 @@ module lilybook.data {
 				composition: activity.get('composition'),
 				difficulty: activity.get('difficulty'),
 				updatedAt: activity.updatedAt
+			};
+		}
+
+		static rcmMapper(rcm: Parse.Object): IDifficulty {
+			return {
+				base: rcm,
+				id: rcm.id,
+				name: rcm.get('name'),
+				value: rcm.get('value'),
+				certificate: rcm.get('certificate')
 			};
 		}
 	}

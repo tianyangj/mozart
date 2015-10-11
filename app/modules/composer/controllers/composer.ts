@@ -7,6 +7,7 @@ module lilybook.composer {
 			'composer',
 			'compositionSvc',
 			'$scope',
+			'$timeout',
 			'$state'
 		];
 
@@ -14,6 +15,7 @@ module lilybook.composer {
 			public composer: lilybook.data.IComposer,
 			private compositionSvc: lilybook.data.ICompositionSvc,
 			private $scope,
+			private $timeout,
 			private $state
 			) {
 			this.getCompositions();
@@ -28,18 +30,22 @@ module lilybook.composer {
 		}
 
 		getCompositions() {
-			this.compositionSvc.getCompositions({
-				composer: this.composer,
-				typeId: this.selectedForm,
-				sortId: this.selectedSort
-			}).then(compositions => {
-				this.compositions = compositions;
-			});
+			this.$timeout.cancel(this.timeout);
+			this.timeout = this.$timeout(() => {
+				this.compositionSvc.getCompositions({
+					composer: this.composer,
+					typeId: this.selectedForm,
+					sortId: this.selectedSort
+				}).then(compositions => {
+					this.compositions = compositions;
+				});
+			}, 600);
 		}
 
-		compositions: any;
+		compositions: lilybook.data.IComposition[];
 		selectedForm;
 		selectedSort;
+		timeout;
 	}
 
 	lilybook.composer.module.controller('ComposerController', ComposerController);

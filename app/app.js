@@ -954,11 +954,12 @@ var lilybook;
     (function (composer_1) {
         'use strict';
         var ComposerController = (function () {
-            function ComposerController(composer, compositionSvc, $scope, $state) {
+            function ComposerController(composer, compositionSvc, $scope, $timeout, $state) {
                 var _this = this;
                 this.composer = composer;
                 this.compositionSvc = compositionSvc;
                 this.$scope = $scope;
+                this.$timeout = $timeout;
                 this.$state = $state;
                 this.getCompositions();
                 this.$scope.$on('selectFormChanged', function (event, selectedForm) {
@@ -972,18 +973,22 @@ var lilybook;
             }
             ComposerController.prototype.getCompositions = function () {
                 var _this = this;
-                this.compositionSvc.getCompositions({
-                    composer: this.composer,
-                    typeId: this.selectedForm,
-                    sortId: this.selectedSort
-                }).then(function (compositions) {
-                    _this.compositions = compositions;
-                });
+                this.$timeout.cancel(this.timeout);
+                this.timeout = this.$timeout(function () {
+                    _this.compositionSvc.getCompositions({
+                        composer: _this.composer,
+                        typeId: _this.selectedForm,
+                        sortId: _this.selectedSort
+                    }).then(function (compositions) {
+                        _this.compositions = compositions;
+                    });
+                }, 600);
             };
             ComposerController.$inject = [
                 'composer',
                 'compositionSvc',
                 '$scope',
+                '$timeout',
                 '$state'
             ];
             return ComposerController;

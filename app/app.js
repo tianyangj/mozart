@@ -1082,6 +1082,7 @@ var lilybook;
                     _this.pdf.load(sheet.pdfUrl).then(function () {
                         _this.$timeout(function () {
                             _this.pdf.goToPage(sheet.firstPage || 1);
+                            _this.updatePaging();
                         });
                     });
                 });
@@ -1103,9 +1104,16 @@ var lilybook;
             };
             CompositionController.prototype.nextPage = function () {
                 this.pdf.next();
+                this.updatePaging();
             };
             CompositionController.prototype.prevPage = function () {
                 this.pdf.prev();
+                this.updatePaging();
+            };
+            CompositionController.prototype.updatePaging = function () {
+                var currentPage = this.pdf.getCurrentPage();
+                this.prev = currentPage === this.sheet.firstPage;
+                this.next = currentPage === this.sheet.lastPage;
             };
             CompositionController.$inject = [
                 'composition',

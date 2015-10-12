@@ -5,6 +5,8 @@ module lilybook.composition {
 		videos: any[];
 		sheet: any;
 		pdf;
+		next: boolean;
+		prev: boolean;
 
 		static $inject = [
 			'composition',
@@ -43,6 +45,7 @@ module lilybook.composition {
 					this.pdf.load(sheet.pdfUrl).then(() => {
 						this.$timeout(() => {
 							this.pdf.goToPage(sheet.firstPage || 1);
+							this.updatePaging();
 						});
 					});
 				});
@@ -66,10 +69,18 @@ module lilybook.composition {
 
 		nextPage() {
 			this.pdf.next();
+			this.updatePaging();
 		}
 
 		prevPage() {
 			this.pdf.prev();
+			this.updatePaging();
+		}
+
+		private updatePaging() {
+			let currentPage = this.pdf.getCurrentPage();
+			this.prev = currentPage === this.sheet.firstPage;
+			this.next = currentPage === this.sheet.lastPage;
 		}
 	}
 

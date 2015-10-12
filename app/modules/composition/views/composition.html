@@ -97,11 +97,11 @@
 		</md-tab>
 		<md-tab label="Sheets">
 			<div layout="row" layout-align="center center">
-				<md-button class="md-icon-button md-accent button-96" aria-label="Previous" ng-click="compositionCtrl.prevPage()">
+				<md-button class="md-icon-button md-accent button-96" aria-label="Previous" ng-disabled="compositionCtrl.prev" ng-click="compositionCtrl.prevPage()">
 					<md-icon class="md-96" md-svg-icon="assets/svg/ic_chevron_left.svg"></md-icon>
 				</md-button>
 				<pdf-viewer delegate-handle="pdf-sheet" scale="2" show-toolbar="false"></pdf-viewer>
-				<md-button class="md-icon-button md-accent button-96" aria-label="Next" ng-click="compositionCtrl.nextPage()">
+				<md-button class="md-icon-button md-accent button-96" aria-label="Next" ng-disabled="compositionCtrl.next" ng-click="compositionCtrl.nextPage()">
 					<md-icon class="md-96" md-svg-icon="assets/svg/ic_chevron_right.svg"></md-icon>
 				</md-button>
 			</div>

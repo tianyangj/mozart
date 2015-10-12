@@ -1,16 +1,21 @@
 module lilybook.composition {
-    'use strict';
 
 	class CompositionController {
+
+		videos: any[];
+		sheet: any;
+		pdf;
 
 		static $inject = [
 			'composition',
 			'compositionSvc',
 			'videoSvc',
 			'sheetSvc',
+			'pdfDelegate',
 			'$mdDialog',
 			'$scope',
-			'$state'
+			'$state',
+			'$timeout'
 		];
 
 		constructor(
@@ -18,9 +23,11 @@ module lilybook.composition {
 			private compositionSvc: lilybook.data.ICompositionSvc,
 			private videoSvc: lilybook.data.IVideoSvc,
 			private sheetSvc: lilybook.data.ISheetSvc,
-			private $mdDialog: any,
+			private pdfDelegate,
+			private $mdDialog,
 			private $scope,
-			private $state
+			private $state,
+			private $timeout
 			) {
 			this.videoSvc.getVideos(this.composition)
 				.then(videos => {
@@ -32,6 +39,12 @@ module lilybook.composition {
 			this.sheetSvc.getSheet(this.composition)
 				.then(sheet => {
 					this.sheet = sheet;
+					this.pdf = this.pdfDelegate.$getByHandle('pdf-sheet');
+					this.pdf.load(sheet.pdfUrl).then(() => {
+						this.$timeout(() => {
+							this.pdf.goToPage(sheet.firstPage || 1);
+						});
+					});
 				});
 			this.$scope.$emit('headerUpdateContext', {
 				href: $state.href('app.composer', { vanity: this.composition.composer.vanity }),
@@ -39,10 +52,7 @@ module lilybook.composition {
 			});
 		}
 
-		videos: any[];
-		sheet: any;
-
-		openVideo = (event, video, composition) => {
+		openVideo(event, video, composition) {
 			this.$mdDialog.show({
 				templateUrl: 'modules/composition/dialogs/video.html',
 				parent: angular.element(document.body),
@@ -52,7 +62,15 @@ module lilybook.composition {
 				controller: DialogVideoController,
 				controllerAs: 'dialogVideoCtrl'
 			});
-		};
+		}
+
+		nextPage() {
+			this.pdf.next();
+		}
+
+		prevPage() {
+			this.pdf.prev();
+		}
 	}
 
 	class DialogVideoController {

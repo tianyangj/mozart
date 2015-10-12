@@ -4,6 +4,7 @@ module lilybook.app {
     export var module = angular.module('lilybook', [
         'ngMaterial',
         'ui.router',
+        'pdf',
         'youtube-embed',
         'lilybook.component',
         'lilybook.composer',

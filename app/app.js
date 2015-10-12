@@ -6,6 +6,7 @@ var lilybook;
         app.module = angular.module('lilybook', [
             'ngMaterial',
             'ui.router',
+            'pdf',
             'youtube-embed',
             'lilybook.component',
             'lilybook.composer',
@@ -1055,28 +1056,18 @@ var lilybook;
 (function (lilybook) {
     var composition;
     (function (composition_1) {
-        'use strict';
         var CompositionController = (function () {
-            function CompositionController(composition, compositionSvc, videoSvc, sheetSvc, $mdDialog, $scope, $state) {
+            function CompositionController(composition, compositionSvc, videoSvc, sheetSvc, pdfDelegate, $mdDialog, $scope, $state, $timeout) {
                 var _this = this;
                 this.composition = composition;
                 this.compositionSvc = compositionSvc;
                 this.videoSvc = videoSvc;
                 this.sheetSvc = sheetSvc;
+                this.pdfDelegate = pdfDelegate;
                 this.$mdDialog = $mdDialog;
                 this.$scope = $scope;
                 this.$state = $state;
-                this.openVideo = function (event, video, composition) {
-                    _this.$mdDialog.show({
-                        templateUrl: 'modules/composition/dialogs/video.html',
-                        parent: angular.element(document.body),
-                        targetEvent: event,
-                        clickOutsideToClose: true,
-                        locals: { video: video, composition: composition },
-                        controller: DialogVideoController,
-                        controllerAs: 'dialogVideoCtrl'
-                    });
-                };
+                this.$timeout = $timeout;
                 this.videoSvc.getVideos(this.composition)
                     .then(function (videos) {
                     _this.videos = videos;
@@ -1087,20 +1078,45 @@ var lilybook;
                 this.sheetSvc.getSheet(this.composition)
                     .then(function (sheet) {
                     _this.sheet = sheet;
+                    _this.pdf = _this.pdfDelegate.$getByHandle('pdf-sheet');
+                    _this.pdf.load(sheet.pdfUrl).then(function () {
+                        _this.$timeout(function () {
+                            _this.pdf.goToPage(sheet.firstPage || 1);
+                        });
+                    });
                 });
                 this.$scope.$emit('headerUpdateContext', {
                     href: $state.href('app.composer', { vanity: this.composition.composer.vanity }),
                     name: this.composition.composer.shortname
                 });
             }
+            CompositionController.prototype.openVideo = function (event, video, composition) {
+                this.$mdDialog.show({
+                    templateUrl: 'modules/composition/dialogs/video.html',
+                    parent: angular.element(document.body),
+                    targetEvent: event,
+                    clickOutsideToClose: true,
+                    locals: { video: video, composition: composition },
+                    controller: DialogVideoController,
+                    controllerAs: 'dialogVideoCtrl'
+                });
+            };
+            CompositionController.prototype.nextPage = function () {
+                this.pdf.next();
+            };
+            CompositionController.prototype.prevPage = function () {
+                this.pdf.prev();
+            };
             CompositionController.$inject = [
                 'composition',
                 'compositionSvc',
                 'videoSvc',
                 'sheetSvc',
+                'pdfDelegate',
                 '$mdDialog',
                 '$scope',
-                '$state'
+                '$state',
+                '$timeout'
             ];
             return CompositionController;
         })();

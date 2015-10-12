@@ -117,6 +117,12 @@ a:focus, a:hover {
 	margin: 20px 40px;
 }
 
+pdf-viewer canvas {
+	max-width: 960px;
+	width: 100%;
+	margin: 0 auto;
+	display: block;
+}
 
 
 
@@ -129,4 +135,16 @@ md-icon.md-36 {
 md-icon.md-48 {
 	width: 48px;
 	height: 48px;
+}
+
+md-icon.md-96 {
+	width: 96px;
+	height: 96px;
+}
+
+.md-button.button-96 {
+	padding: 0;
+	margin: 0;
+	width: 96px;
+	height: 96px;
 }

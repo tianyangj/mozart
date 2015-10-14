@@ -1083,7 +1083,7 @@ var lilybook;
                         _this.$timeout(function () {
                             _this.pdf.goToPage(sheet.firstPage || 1);
                             _this.updatePaging();
-                        });
+                        }, 1000);
                     });
                 });
                 this.$scope.$emit('headerUpdateContext', {

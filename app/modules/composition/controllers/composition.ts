@@ -46,7 +46,7 @@ module lilybook.composition {
 						this.$timeout(() => {
 							this.pdf.goToPage(sheet.firstPage || 1);
 							this.updatePaging();
-						});
+						}, 1000);
 					});
 				});
 			this.$scope.$emit('headerUpdateContext', {

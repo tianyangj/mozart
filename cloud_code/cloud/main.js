@@ -5,6 +5,94 @@ Parse.Cloud.define("hello", function (request, response) {
   response.success("Hello world!!");
 });
 
+Parse.Cloud.define('createActivity', function (req, res) {
+  var composition = new Parse.Object('Composition');
+  composition.id = req.params.compositionId;
+  var query = new Parse.Query('Activity');
+  query.equalTo('type', req.params.type);
+  query.equalTo('fromUser', req.user);
+  query.equalTo('composition', composition);
+  query.first().then(function (activity) {
+    if (activity) {
+      res.error('activity already exists');
+    } else {
+      activity = new Parse.Object('Activity');
+      activity.save({
+        type: req.params.type,
+        fromUser: req.user,
+        composition: composition,
+        meta: req.params.meta
+      }).then(function (activity) {
+        res.success(activity);
+      }, function () {
+        res.error('activity create failed');
+      });
+    }
+  }, function () {
+    res.error('activity lookup failed');
+  });
+});
+
+Parse.Cloud.define('readActivity', function (req, res) {
+  var composition = new Parse.Object('Composition');
+  composition.id = req.params.compositionId;
+  var query = new Parse.Query('Activity');
+  query.equalTo('type', req.params.type);
+  query.equalTo('fromUser', req.user);
+  query.equalTo('composition', composition);
+  query.first().then(function (activity) {
+    res.success(activity || '');
+  }, function () {
+    res.error('activity lookup failed');
+  });
+});
+
+Parse.Cloud.define('updateActivity', function (req, res) {
+  var composition = new Parse.Object('Composition');
+  composition.id = req.params.compositionId;
+  var query = new Parse.Query('Activity');
+  query.equalTo('type', req.params.type);
+  query.equalTo('fromUser', req.user);
+  query.equalTo('composition', composition);
+  query.first().then(function (activity) {
+    if (!activity) {
+      res.error('activity does not exists');
+    } else {
+      activity.save({
+        meta: req.params.meta
+      }).then(function (activity) {
+        res.success(activity);
+      }, function () {
+        res.error('activity update failed');
+      });
+    }
+  }, function () {
+    res.error('activity lookup failed');
+  });
+});
+
+Parse.Cloud.define('deleteActivity', function (req, res) {
+  var composition = new Parse.Object('Composition');
+  composition.id = req.params.compositionId;
+  var query = new Parse.Query('Activity');
+  query.equalTo('type', req.params.type);
+  query.equalTo('fromUser', req.user);
+  query.equalTo('composition', composition);
+  query.first().then(function (activity) {
+    if (!activity) {
+      res.error('activity does not exists');
+    } else {
+      activity.destroy().then(function (activity) {
+        res.success(activity);
+      }, function () {
+        res.error('activity delete failed');
+      });
+    }
+  }, function () {
+    res.error('activity lookup failed');
+  });
+});
+
 Parse.Cloud.define('likeComposition', function (req, res) {
   var composition = new Parse.Object('Composition');
   composition.id = req.params.compositionId;

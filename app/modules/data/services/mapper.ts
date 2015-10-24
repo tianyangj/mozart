@@ -97,5 +97,16 @@ module lilybook.data {
 				certificate: rcm.get('certificate')
 			};
 		}
+
+		static activityMapper(activity: Parse.Object): IActivity {
+			return activity ? {
+				base: activity,
+				id: activity.id,
+				type: activity.get('type'),
+				fromUser: activity.get('fromUser'),
+				composition: activity.get('composition'),
+				meta: activity.get('meta')
+			} : null;
+		}
 	}
 }

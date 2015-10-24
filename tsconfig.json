@@ -44,6 +44,7 @@
 		"app/modules/component/directives/lb-select-form.ts",
 		"app/modules/component/directives/lb-select-period.ts",
 		"app/modules/component/directives/lb-select-sort.ts",
-		"app/modules/component/directives/lb-slider-difficulty.ts"
+		"app/modules/component/directives/lb-slider-difficulty.ts",
+		"app/modules/component/directives/lb-todo.ts"
 	]
 }

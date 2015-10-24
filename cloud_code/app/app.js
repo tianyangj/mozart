@@ -224,7 +224,6 @@ var lilybook;
                 query.equalTo('fromUser', fromUser.base);
                 query.equalTo('composition', composition.base);
                 query.first().then(function (response) {
-                    console.log('like', response);
                     if (response) {
                         defer.resolve(true);
                     }
@@ -270,9 +269,7 @@ var lilybook;
                     type: ActivityType.Difficulty,
                     compositionId: composition.id
                 }).then(function (response) {
-                    console.log('difficulty', response[0]);
                     var difficulties = response.map(data.MapperSvc.difficultyMapper);
-                    console.log(difficulties);
                     defer.resolve({
                         mine: fromUser ? difficulties.filter(function (difficulty) {
                             return difficulty.fromUser.id === fromUser.id;
@@ -295,7 +292,7 @@ var lilybook;
                     meta: meta
                 }).then(function (response) {
                     console.log(response);
-                    defer.resolve(data.MapperSvc.activityMapper(response));
+                    defer.resolve(data.MapperSvc.likeCompositionMapper(response));
                 }, function (error) {
                     defer.reject(error);
                 });
@@ -305,12 +302,14 @@ var lilybook;
                 if (!fromUser) {
                     return this.$q.reject('AUTH_REQUIRED');
                 }
+                console.log('before read', arguments);
                 var defer = this.$q.defer();
                 Parse.Cloud.run('readActivity', {
                     type: type,
                     compositionId: composition.id
                 }).then(function (response) {
-                    defer.resolve(data.MapperSvc.activityMapper(response));
+                    console.log(response);
+                    defer.resolve(data.MapperSvc.likeCompositionMapper(response));
                 }, function (error) {
                     console.log('failing', error);
                     defer.reject(error);
@@ -646,16 +645,6 @@ var lilybook;
                     value: rcm.get('value'),
                     certificate: rcm.get('certificate')
                 };
-            };
-            MapperSvc.activityMapper = function (activity) {
-                return activity ? {
-                    base: activity,
-                    id: activity.id,
-                    type: activity.get('type'),
-                    fromUser: activity.get('fromUser'),
-                    composition: activity.get('composition'),
-                    meta: activity.get('meta')
-                } : null;
             };
             return MapperSvc;
         })();
@@ -1648,11 +1637,11 @@ var lilybook;
     var component;
     (function (component) {
         var TodoController = (function () {
-            function TodoController($scope, $rootScope, $state, activitySvc) {
+            function TodoController($scope, $rootScope, activitySvc) {
                 this.$scope = $scope;
                 this.$rootScope = $rootScope;
-                this.$state = $state;
                 this.activitySvc = activitySvc;
+                console.log('calling constructor');
                 this.onInit();
             }
             TodoController.prototype.onClick = function () {
@@ -1661,21 +1650,15 @@ var lilybook;
                     console.log(argume);
                 });
             };
-            TodoController.prototype.goHome = function () {
-                this.$state.go('app.home');
-            };
             TodoController.prototype.onInit = function () {
-                var _this = this;
-                this.activitySvc.read(lilybook.data.ActivityType.Todo, this.$rootScope.user, this.$scope.composition).then(function (activity) {
-                    _this.$scope.inTodo = !!activity;
-                    console.log(_this.$scope.inTodo);
-                    console.log(_this);
+                console.log('init..');
+                this.activitySvc.read(lilybook.data.ActivityType.Todo, this.$rootScope.user, this.$scope.composition).then(function (argume) {
+                    console.log(argume);
                 });
             };
             TodoController.$inject = [
                 '$scope',
                 '$rootScope',
-                '$state',
                 'activitySvc'
             ];
             return TodoController;
@@ -1683,7 +1666,7 @@ var lilybook;
         function lbTodoDirective() {
             return {
                 restrict: 'E',
-                template: "\n\t\t\t\t<md-button class=\"md-raised md-primary\" ng-if=\"!todoCtrl.inTodo\" ng-click=\"todoCtrl.onClick()\">Add TODO</md-button>\n\t\t\t\t<md-button class=\"md-raised md-default\" ng-if=\"todoCtrl.inTodo\" ng-click=\"todoCtrl.goHome()\">In TODO</md-button>\n\t\t\t",
+                template: "\n\t\t\t\t<md-button class=\"md-raised md-primary\" ng-click=\"todoCtrl.onClick()\">Add to TODO List</md-button>\n\t\t\t",
                 scope: {
                     composition: '='
                 },

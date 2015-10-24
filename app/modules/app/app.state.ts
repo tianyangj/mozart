@@ -7,7 +7,7 @@ namespace lilybook.app {
 				.state('app', {
 					abstract: true,
 					url: '',
-					templateUrl: 'layout.html',
+					templateUrl: 'layout-row.html',
 					controller: 'AppController',
 					controllerAs: 'appCtrl'
 				})

@@ -2,7 +2,6 @@ var lilybook;
 (function (lilybook) {
     var app;
     (function (app) {
-        'use strict';
         app.module = angular.module('lilybook', [
             'ngMaterial',
             'ui.router',
@@ -21,69 +20,71 @@ var lilybook;
 (function (lilybook) {
     var app;
     (function (app) {
-        'use strict';
-        app.module.config(function ($locationProvider, $mdThemingProvider, $mdIconProvider) {
-            $locationProvider
-                .html5Mode(false)
-                .hashPrefix('!');
-            $mdIconProvider
-                .icon("music_library", "./assets/svg/ic_library_music.svg", 24)
-                .icon("arrow_right", "./assets/svg/ic_chevron_right.svg", 24)
-                .icon("close", "./assets/svg/ic_close.svg", 24);
-            $mdThemingProvider
-                .theme('default')
-                .primaryPalette('blue')
-                .accentPalette('pink');
-        });
+        app.module.config(['$locationProvider', '$mdThemingProvider', '$mdIconProvider',
+            function ($locationProvider, $mdThemingProvider, $mdIconProvider) {
+                $locationProvider
+                    .html5Mode(false)
+                    .hashPrefix('!');
+                $mdIconProvider
+                    .icon("music_library", "./assets/svg/ic_library_music.svg", 24)
+                    .icon("arrow_right", "./assets/svg/ic_chevron_right.svg", 24)
+                    .icon("close", "./assets/svg/ic_close.svg", 24);
+                $mdThemingProvider
+                    .theme('default')
+                    .primaryPalette('blue')
+                    .accentPalette('pink');
+            }
+        ]);
     })(app = lilybook.app || (lilybook.app = {}));
 })(lilybook || (lilybook = {}));
 var lilybook;
 (function (lilybook) {
     var app;
     (function (app) {
-        'use strict';
-        app.module.config(function ($stateProvider, $urlRouterProvider) {
-            $stateProvider
-                .state('app', {
-                abstract: true,
-                url: '',
-                templateUrl: 'layout.html',
-                controller: 'AppController',
-                controllerAs: 'appCtrl'
-            })
-                .state('app.splash', {
-                url: '/',
-                templateUrl: 'modules/app/views/splash.html'
-            })
-                .state('app.login', {
-                url: '/login',
-                templateUrl: 'modules/app/views/login.html'
-            })
-                .state('app.signup', {
-                url: '/signup',
-                templateUrl: 'modules/app/views/signup.html'
-            });
-            $urlRouterProvider.otherwise('/');
-        });
+        app.module.config(['$stateProvider', '$urlRouterProvider',
+            function ($stateProvider, $urlRouterProvider) {
+                $stateProvider
+                    .state('app', {
+                    abstract: true,
+                    url: '',
+                    templateUrl: 'layout.html',
+                    controller: 'AppController',
+                    controllerAs: 'appCtrl'
+                })
+                    .state('app.splash', {
+                    url: '/',
+                    templateUrl: 'modules/app/views/splash.html'
+                })
+                    .state('app.login', {
+                    url: '/login',
+                    templateUrl: 'modules/app/views/login.html'
+                })
+                    .state('app.signup', {
+                    url: '/signup',
+                    templateUrl: 'modules/app/views/signup.html'
+                });
+                $urlRouterProvider.otherwise('/');
+            }
+        ]);
     })(app = lilybook.app || (lilybook.app = {}));
 })(lilybook || (lilybook = {}));
 var lilybook;
 (function (lilybook) {
     var app;
     (function (app) {
-        'use strict';
-        app.module.run(function ($rootScope, $state, $stateParams) {
-            Parse.initialize('fHO4LtJRfsdhQBBicYZpdpj3BQHHQCVEiDPkS4ZI', '3gzRyAZnxtQLn1IofC4Layn6cc487e4n5Jin6FzM');
-            $rootScope.$state = $state;
-            $rootScope.$stateParams = $stateParams;
-        });
+        app.module.run(['$rootScope', '$state', '$stateParams',
+            function ($rootScope, $state, $stateParams) {
+                Parse.initialize('fHO4LtJRfsdhQBBicYZpdpj3BQHHQCVEiDPkS4ZI', '3gzRyAZnxtQLn1IofC4Layn6cc487e4n5Jin6FzM');
+                $rootScope.$state = $state;
+                $rootScope.$stateParams = $stateParams;
+            }
+        ]);
     })(app = lilybook.app || (lilybook.app = {}));
 })(lilybook || (lilybook = {}));
 var lilybook;
 (function (lilybook) {
     var app;
     (function (app) {
-        'use strict';
         var AppController = (function () {
             function AppController($rootScope, $state, $mdSidenav, $mdToast, menuSvc, userSvc) {
                 var _this = this;
@@ -93,43 +94,11 @@ var lilybook;
                 this.$mdToast = $mdToast;
                 this.menuSvc = menuSvc;
                 this.userSvc = userSvc;
-                this.getSimpleToast = function (message) {
-                    return _this.$mdToast
-                        .simple()
-                        .content(message)
-                        .position('top right');
-                };
-                this.signup = function (signupData) {
-                    _this.userSvc.signUp(signupData.email, signupData.password, signupData.firstname, signupData.lastname)
-                        .then(function (user) {
-                        _this.$rootScope['user'] = user;
-                        _this.$state.go('app.home');
-                    }, function (error) {
-                        _this.$mdToast.show(_this.getSimpleToast(error.message));
-                    });
-                };
-                this.login = function (loginData) {
-                    _this.userSvc.logIn(loginData.email, loginData.password)
-                        .then(function (user) {
-                        _this.$rootScope['user'] = user;
-                        _this.$state.go('app.home');
-                    }, function (error) {
-                        _this.$mdToast.show(_this.getSimpleToast(error.message));
-                    });
-                };
-                this.logout = function () {
-                    _this.userSvc.logOut()
-                        .then(function () {
-                        _this.$rootScope['user'] = null;
-                        _this.$state.go('app.splash');
-                    });
-                };
                 this.menuSvc.getSideNav().then(function (sidenav) {
                     _this.sidenav = sidenav;
                 });
                 this.$rootScope['user'] = this.userSvc.current();
                 this.$rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
-                    _this.context = null;
                     _this.$mdSidenav('left').close();
                 });
                 this.$rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams, error) {
@@ -138,10 +107,45 @@ var lilybook;
                         _this.$state.go('app.login');
                     }
                 });
-                this.$rootScope.$on('headerUpdateContext', function (event, context) {
-                    _this.context = context;
-                });
             }
+            AppController.prototype.getSimpleToast = function (message) {
+                return this.$mdToast
+                    .simple()
+                    .content(message)
+                    .position('top right');
+            };
+            ;
+            AppController.prototype.signup = function (signupData) {
+                var _this = this;
+                this.userSvc.signUp(signupData.email, signupData.password, signupData.firstname, signupData.lastname)
+                    .then(function (user) {
+                    _this.$rootScope['user'] = user;
+                    _this.$state.go('app.home');
+                }, function (error) {
+                    _this.$mdToast.show(_this.getSimpleToast(error.message));
+                });
+            };
+            ;
+            AppController.prototype.login = function (loginData) {
+                var _this = this;
+                this.userSvc.logIn(loginData.email, loginData.password)
+                    .then(function (user) {
+                    _this.$rootScope['user'] = user;
+                    _this.$state.go('app.home');
+                }, function (error) {
+                    _this.$mdToast.show(_this.getSimpleToast(error.message));
+                });
+            };
+            ;
+            AppController.prototype.logout = function () {
+                var _this = this;
+                this.userSvc.logOut()
+                    .then(function () {
+                    _this.$rootScope['user'] = null;
+                    _this.$state.go('app.splash');
+                });
+            };
+            ;
             AppController.$inject = [
                 '$rootScope',
                 '$state',
@@ -152,8 +156,7 @@ var lilybook;
             ];
             return AppController;
         })();
-        app.AppController = AppController;
-        lilybook.app.module.controller('AppController', AppController);
+        app.module.controller('AppController', AppController);
     })(app = lilybook.app || (lilybook.app = {}));
 })(lilybook || (lilybook = {}));
 var lilybook;
@@ -519,7 +522,6 @@ var lilybook;
 (function (lilybook) {
     var data;
     (function (data) {
-        'use strict';
         var MapperSvc = (function () {
             function MapperSvc() {
             }
@@ -554,13 +556,13 @@ var lilybook;
                 };
             };
             MapperSvc.userMapper = function (user) {
-                return {
+                return user ? {
                     base: user,
                     id: user.id,
                     email: user.get('email'),
                     firstname: user.get('firstname'),
                     lastname: user.get('lastname')
-                };
+                } : null;
             };
             MapperSvc.videoMapper = function (video) {
                 return {
@@ -731,7 +733,6 @@ var lilybook;
 (function (lilybook) {
     var data;
     (function (data) {
-        'use strict';
         var UserSvc = (function () {
             function UserSvc($q) {
                 this.$q = $q;
@@ -770,14 +771,7 @@ var lilybook;
                 return defer.promise;
             };
             UserSvc.prototype.current = function () {
-                var user = Parse.User.current();
-                if (user) {
-                    return data.MapperSvc.userMapper(user);
-                }
-                return null;
-            };
-            UserSvc.prototype.isAuthenticated = function () {
-                return Parse.User.current() !== null;
+                return data.MapperSvc.userMapper(Parse.User.current());
             };
             UserSvc.$inject = ['$q'];
             return UserSvc;
@@ -1085,10 +1079,6 @@ var lilybook;
                             _this.updatePaging();
                         }, 1000);
                     });
-                });
-                this.$scope.$emit('headerUpdateContext', {
-                    href: $state.href('app.composer', { vanity: this.composition.composer.vanity }),
-                    name: this.composition.composer.shortname
                 });
             }
             CompositionController.prototype.openVideo = function (event, video, composition) {

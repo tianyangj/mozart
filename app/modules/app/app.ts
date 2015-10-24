@@ -1,7 +1,6 @@
-module lilybook.app {
-    'use strict';
+namespace lilybook.app {
 
-    export var module = angular.module('lilybook', [
+    export let module = angular.module('lilybook', [
         'ngMaterial',
         'ui.router',
         'pdf',

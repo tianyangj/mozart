@@ -1,5 +1,4 @@
-module lilybook.data {
-  'use strict';
+namespace lilybook.data {
 
   export interface IUser {
     base: Parse.User,
@@ -13,8 +12,7 @@ module lilybook.data {
     signUp(email: string, password: string, firstname: string, lastname: string): ng.IPromise<IUser>,
     logIn(email: string, password: string): ng.IPromise<IUser>,
     logOut(): ng.IPromise<any>,
-    current(): IUser,
-    isAuthenticated(): boolean
+    current(): IUser
   }
 
   class UserSvc implements IUserSvc {
@@ -59,15 +57,7 @@ module lilybook.data {
     }
 
     current() {
-      var user = Parse.User.current();
-      if (user) {
-        return MapperSvc.userMapper(user);
-      }
-      return null;
-    }
-
-    isAuthenticated() {
-      return Parse.User.current() !== null;
+      return MapperSvc.userMapper(Parse.User.current());
     }
   }
 

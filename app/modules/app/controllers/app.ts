@@ -1,7 +1,6 @@
-module lilybook.app {
-	'use strict';
+namespace lilybook.app {
 
-	export class AppController {
+	class AppController {
 
 		static $inject = [
 			'$rootScope',
@@ -19,13 +18,12 @@ module lilybook.app {
 			private $mdToast: any,
 			private menuSvc: lilybook.data.IMenuSvc,
 			private userSvc: lilybook.data.IUserSvc
-			) {
+		) {
 			this.menuSvc.getSideNav().then((sidenav) => {
 				this.sidenav = sidenav;
 			});
 			this.$rootScope['user'] = this.userSvc.current();
 			this.$rootScope.$on('$stateChangeSuccess', (event, toState, toParams, fromState, fromParams) => {
-				this.context = null;
 				this.$mdSidenav('left').close();
 			});
 			this.$rootScope.$on('$stateChangeError', (event, toState, toParams, fromState, fromParams, error) => {
@@ -34,22 +32,18 @@ module lilybook.app {
 					this.$state.go('app.login');
 				}
 			});
-			this.$rootScope.$on('headerUpdateContext', (event, context) => {
-				this.context = context;
-			});
 		}
 
-		private getSimpleToast = (message: string) => {
+		sidenav: any[];
+
+		private getSimpleToast(message: string) {
 			return this.$mdToast
 				.simple()
 				.content(message)
 				.position('top right');
 		};
 
-		sidenav: any[];
-		context;
-
-		signup = (signupData: any) => {
+		signup(signupData: any) {
 			this.userSvc.signUp(signupData.email, signupData.password, signupData.firstname, signupData.lastname)
 				.then((user) => {
 					this.$rootScope['user'] = user;
@@ -59,7 +53,7 @@ module lilybook.app {
 				});
 		};
 
-		login = (loginData: any) => {
+		login(loginData: any) {
 			this.userSvc.logIn(loginData.email, loginData.password)
 				.then((user) => {
 					this.$rootScope['user'] = user;
@@ -69,15 +63,14 @@ module lilybook.app {
 				});
 		};
 
-		logout = () => {
+		logout() {
 			this.userSvc.logOut()
 				.then(() => {
 					this.$rootScope['user'] = null;
 					this.$state.go('app.splash');
 				});
 		};
-
 	}
 
-	lilybook.app.module.controller('AppController', AppController);
+	module.controller('AppController', AppController);
 }

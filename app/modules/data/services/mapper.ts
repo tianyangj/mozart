@@ -1,5 +1,4 @@
-module lilybook.data {
-	'use strict';
+namespace lilybook.data {
 
 	export class MapperSvc {
 
@@ -36,13 +35,13 @@ module lilybook.data {
 		}
 
 		static userMapper(user: Parse.User): IUser {
-			return {
+			return user ? {
 				base: user,
 				id: user.id,
 				email: user.get('email'),
 				firstname: user.get('firstname'),
 				lastname: user.get('lastname')
-			};
+			} : null;
 		}
 
 		static videoMapper(video: Parse.Object): IVideo {

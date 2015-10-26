@@ -1,32 +1,32 @@
 <div layout="row" flex>
-	<md-sidenav layout="column" class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-lg')">
-		<md-toolbar class="md-toolbar-tools md-whiteframe-z1" layout="column" layout-align="center center">
-			<a class="brand" ui-sref="app.splash">LilyBook</a>
+	<md-sidenav layout="column" class="md-sidenav-left md-whiteframe-z2" md-component-id="left">
+		<md-toolbar layout="column" layout-align="center center" class="md-toolbar-tools md-whiteframe-z1">
+			<md-button class="brand" ui-sref="app.splash">LilyBook</md-button>
 		</md-toolbar>
 		<md-content flex>
 			<md-list>
-				<md-subheader>Discovery</md-subheader>
-				 <md-list-item layout="row" layout-align="start center" ng-click="$state.go('app.browse')">
-					<md-icon md-svg-icon="assets/svg/ic_library_music.svg"></md-icon>
-					<div flex class="inset">Browse</div>
-				</md-list-item>
-				<md-list-item layout="row" layout-align="start center" ng-click="$state.go('app.discovery')">
-					<md-icon md-svg-icon="assets/svg/ic_library_music.svg"></md-icon>
-					<div flex class="inset">Discovery</div>
-				</md-list-item>
-				<md-list-item layout="row" layout-align="start center" ng-click="$state.go('app.composers')">
-					<md-icon md-svg-icon="assets/svg/ic_list.svg"></md-icon>
-					<div flex class="inset">Composers</div>
+				<md-list-item ui-sref="app.browse">
+					<span flex>Browse</span>
+					<md-icon md-svg-icon="assets/svg/ic_chevron_right.svg"></md-icon>
 				</md-list-item>
 				<md-divider></md-divider>
+				<md-list-item ui-sref="app.discovery">
+					<span flex>Discover</span>
+					<md-icon md-svg-icon="assets/svg/ic_chevron_right.svg"></md-icon>
+				</md-list-item>
+				<md-divider></md-divider>
+				<md-list-item ui-sref="app.composers">
+					<span flex>Composers</span>
+					<md-icon md-svg-icon="assets/svg/ic_chevron_right.svg"></md-icon>
+				</md-list-item>
 			</md-list>
 		</md-content>
 		<md-toolbar layout="row" layout-align="center center">
-			<md-button class="md-raised md-accent" ng-if="!user" ui-sref="app.signup">Sign Up</md-button>
-			<div class="md-padding" ng-if="user">Hi, {{user.firstname}}</div>
+			<md-button ng-if="!user" ui-sref="app.signup">Sign Up</md-button>
+			<span class="md-padding" ng-if="user">Hi, {{user.firstname}}</span>
 			<span flex></span>
-			<md-button class="md-raised" ng-if="!user" ui-sref="app.login">Login</md-button>
-			<md-button class="md-raised" ng-if="user" ng-click="appCtrl.logout()">Logout</md-button>
+			<md-button ng-if="!user" ui-sref="app.login">Login</md-button>
+			<md-button ng-if="user" ng-click="appCtrl.logout()">Logout</md-button>
 		</md-toolbar>
 	</md-sidenav>
 	<div layout="column" flex>

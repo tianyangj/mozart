@@ -1168,14 +1168,12 @@ var lilybook;
 (function (lilybook) {
     var component;
     (function (component) {
-        'use strict';
         function lbHeaderDirective() {
             return {
                 restrict: 'E',
                 templateUrl: 'modules/component/templates/header.html',
                 replace: true,
                 scope: {
-                    context: '=',
                     logout: '&'
                 },
                 controller: ['$scope', '$mdSidenav', 'searchSvc', function ($scope, $mdSidenav, searchSvc) {

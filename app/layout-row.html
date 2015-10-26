@@ -29,8 +29,8 @@
 			<md-button class="md-raised" ng-if="user" ng-click="appCtrl.logout()">Logout</md-button>
 		</md-toolbar>
 	</md-sidenav>
-	<div flex layout="column">
-		<lb-header context="appCtrl.context" logout="appCtrl.logout()"></lb-header>
-		<md-content flex layout ui-view></md-content>
+	<div layout="column" flex>
+		<lb-header logout="appCtrl.logout()"></lb-header>
+		<md-content layout flex ui-view></md-content>
 	</div>
 </div>

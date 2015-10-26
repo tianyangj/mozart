@@ -1,5 +1,4 @@
-module lilybook.component {
-	'use strict';
+namespace lilybook.component {
 
 	function lbHeaderDirective(): ng.IDirective {
 		return {
@@ -7,7 +6,6 @@ module lilybook.component {
 			templateUrl: 'modules/component/templates/header.html',
 			replace: true,
 			scope: {
-				context: '=',
 				logout: '&'
 			},
 			controller: ['$scope', '$mdSidenav', 'searchSvc', ($scope, $mdSidenav, searchSvc: lilybook.data.ISearchSvc) => {

@@ -1,65 +1,43 @@
 <md-toolbar class="header md-whiteframe-z1">
 	<div class="md-toolbar-tools">
-		<md-button class="md-icon-button" aria-label="Menu" hide-gt-lg ng-click="toggleSidenav('left')">
-			<md-icon class="md-36" md-svg-icon="assets/svg/menu.svg"></md-icon>
+		<md-button hide-gt-sm class="md-icon-button" aria-label="Menu" ng-click="toggleSidenav('left')">
+			<md-icon md-svg-icon="assets/svg/menu.svg"></md-icon>
 		</md-button>
-		<!--<div style="white-space:nowrap;">
-			<a class="brand md-padding" ui-sref="app.splash">LilyBook</a>
-			<md-icon ng-if="context" md-svg-icon="assets/svg/ic_chevron_right.svg"></md-icon>
-			<a ng-if="context" ng-href="{{context.href}}">{{context.name}}</a>
-		</div>-->
-		<div flex style="white-space:nowrap;">
-			<a hide-gt-lg class="brand md-padding" ui-sref="app.splash">LilyBook</a>
-			<a hide-md hide-sm class="md-margin" ui-sref="app.discovery">Discover</a>
-			<a hide-md hide-sm class="md-margin" ui-sref="app.browse">Browse</a>
-			<a hide-md hide-sm class="md-margin" ui-sref="app.composers">Composers</a>
+		<div flex="auto">
+			<md-button ui-sref="app.splash" class="brand">LilyBook</md-button>
+			<md-button hide-sm ui-sref="app.discovery" class="margin-none">Discover</md-button>
+			<md-button hide-sm ui-sref="app.browse" class="margin-none">Browse</md-button>
+			<md-button hide-sm ui-sref="app.composers" class="margin-none">Composers</md-button>
 		</div>
-		<md-autocomplete flex="35" hide-sm md-autofocus="false" md-items="item in search(searchText)" md-search-text="searchText" md-search-text-change=""
-		placeholder="Search">
+		<md-autocomplete flex="auto" hide-md hide-sm md-autofocus="false" md-items="item in search(searchText)" md-search-text="searchText"
+		md-search-text-change="" placeholder="Search">
 			<md-item-template>
 				<span md-highlight-text="searchText" md-highlight-flags="^i">{{item.display}}</span>
 			</md-item-template>
 			<md-not-found>No matches found.</md-not-found>
 		</md-autocomplete>
-		<md-button hide-gt-sm class="md-icon-button" aria-label="Search" ng-click="todo()">
-			<md-icon class="md-36" md-svg-icon="assets/svg/ic_search.svg"></md-icon>
+		<md-button hide-gt-md class="md-icon-button" aria-label="Search" ng-click="todo()" style="margin:0">
+			<md-icon md-svg-icon="assets/svg/ic_search.svg"></md-icon>
 		</md-button>
-		<!--<md-menu md-position-mode="target-right target" md-offset="0 64" ng-if="$root.user">
-			<md-button md-menu-origin class="md-icon-button" aria-label="Open account menu" ng-click="$mdOpenMenu($event)">
-				<md-icon md-svg-icon="assets/svg/avatar-1.svg"></md-icon>
-			</md-button>
-			<md-menu-content width="3">
-				<md-menu-item>
-					<md-button ng-click="todo()">Home</md-button>
-				</md-menu-item>
-				<md-menu-item>
-					<md-button ng-click="todo()">Profile</md-button>
-				</md-menu-item>
-				<md-divider></md-divider>
-				<md-menu-item>
-					<md-button ng-click="todo()">Account</md-button>
-				</md-menu-item>
-			</md-menu-content>
-		</md-menu>-->
-		<md-menu-bar ng-if="$root.user" style="padding:0;">
+		<md-menu-bar ng-if="$root.user" style="padding:0">
 			<md-menu>
 				<md-button class="md-icon-button" aria-label="Open account menu" ng-click="$mdOpenMenu($event)">
 					<md-icon md-svg-icon="assets/svg/avatar-1.svg"></md-icon>
 				</md-button>
-				<md-menu-content>
+				<md-menu-content class="md-hue-2">
 					<md-menu-item>
-						<md-button ng-click="todo()">Home</md-button>
+						<md-button ui-sref="app.home">Home</md-button>
 					</md-menu-item>
 					<md-menu-item>
 						<md-button ng-click="todo()">Account</md-button>
 					</md-menu-item>
 					<md-menu-divider></md-menu-divider>
 					<md-menu-item>
-						<md-button ng-click="logout()" style="color:#000;">Logout</md-button>
+						<md-button ng-click="logout()">Logout</md-button>
 					</md-menu-item>
 				</md-menu-content>
 			</md-menu>
 		</md-menu-bar>
-		<a class="md-margin" ui-sref="app.login" ng-if="!$root.user">Login</a>
+		<md-button ui-sref="app.login" ng-if="!$root.user" class="margin-none">Login</md-button>
 	</div>
 </md-toolbar>

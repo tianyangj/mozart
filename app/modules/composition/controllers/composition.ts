@@ -49,10 +49,6 @@ module lilybook.composition {
 						}, 1000);
 					});
 				});
-			this.$scope.$emit('headerUpdateContext', {
-				href: $state.href('app.composer', { vanity: this.composition.composer.vanity }),
-				name: this.composition.composer.shortname
-			});
 		}
 
 		openVideo(event, video, composition) {

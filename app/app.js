@@ -1636,47 +1636,39 @@ var lilybook;
     var component;
     (function (component) {
         var TodoController = (function () {
-            function TodoController($scope, $rootScope, $state, activitySvc) {
-                this.$scope = $scope;
-                this.$rootScope = $rootScope;
-                this.$state = $state;
+            function TodoController(activitySvc, userSvc) {
                 this.activitySvc = activitySvc;
+                this.userSvc = userSvc;
+                this.todoState = 'Unknown';
                 this.onInit();
             }
-            TodoController.prototype.onClick = function () {
-                console.log('clicked...', this.$scope.composition);
-                this.activitySvc.create(lilybook.data.ActivityType.Todo, this.$rootScope.user, this.$scope.composition, { blah: 1 }).then(function (argume) {
+            TodoController.prototype.onAdd = function () {
+                this.activitySvc.create(lilybook.data.ActivityType.Todo, this.userSvc.current(), this.composition, { blah: 1 }).then(function (argume) {
                     console.log(argume);
                 });
             };
-            TodoController.prototype.goHome = function () {
-                this.$state.go('app.home');
-            };
             TodoController.prototype.onInit = function () {
                 var _this = this;
-                this.activitySvc.read(lilybook.data.ActivityType.Todo, this.$rootScope.user, this.$scope.composition).then(function (activity) {
-                    _this.$scope.inTodo = !!activity;
-                    console.log(_this.$scope.inTodo);
-                    console.log(_this);
+                this.activitySvc.read(lilybook.data.ActivityType.Todo, this.userSvc.current(), this.composition).then(function (activity) {
+                    _this.todoState = activity ? 'In' : 'Out';
                 });
             };
             TodoController.$inject = [
-                '$scope',
-                '$rootScope',
-                '$state',
-                'activitySvc'
+                'activitySvc',
+                'userSvc'
             ];
             return TodoController;
         })();
         function lbTodoDirective() {
             return {
                 restrict: 'E',
-                template: "\n\t\t\t\t<md-button class=\"md-raised md-primary\" ng-if=\"!todoCtrl.inTodo\" ng-click=\"todoCtrl.onClick()\">Add TODO</md-button>\n\t\t\t\t<md-button class=\"md-raised md-default\" ng-if=\"todoCtrl.inTodo\" ng-click=\"todoCtrl.goHome()\">In TODO</md-button>\n\t\t\t",
+                template: "\n\t\t\t\t<md-button class=\"md-raised md-primary\" ng-if=\"todoCtrl.todoState === 'Out'\" ng-click=\"todoCtrl.onAdd()\">Add TODO</md-button>\n\t\t\t\t<md-button class=\"md-raised md-default\" ng-if=\"todoCtrl.todoState === 'In'\" ui-sref=\"app.home\">In TODO</md-button>\n\t\t\t",
                 scope: {
                     composition: '='
                 },
                 controller: TodoController,
-                controllerAs: 'todoCtrl'
+                controllerAs: 'todoCtrl',
+                bindToController: true
             };
         }
         component.module.directive('lbTodo', lbTodoDirective);

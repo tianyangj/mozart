@@ -184,7 +184,39 @@ module lilybook.data {
 			}).then((response: Parse.Object) => {
 				defer.resolve(MapperSvc.activityMapper(response));
 			}, (error) => {
-				console.log('failing', error)
+				defer.reject(error);
+			});
+			return defer.promise;
+		}
+
+		update(type: ActivityType, fromUser: IUser, composition: IComposition, meta?: any) {
+			if (!fromUser) {
+				return this.$q.reject('AUTH_REQUIRED');
+			}
+			var defer = this.$q.defer<IActivity>();
+			Parse.Cloud.run('updateActivity', {
+				type: type,
+				compositionId: composition.id,
+				meta: meta
+			}).then((response: Parse.Object) => {
+				defer.resolve(MapperSvc.activityMapper(response));
+			}, (error) => {
+				defer.reject(error);
+			});
+			return defer.promise;
+		}
+
+		delete(type: ActivityType, fromUser: IUser, composition: IComposition) {
+			if (!fromUser) {
+				return this.$q.reject('AUTH_REQUIRED');
+			}
+			var defer = this.$q.defer<IActivity>();
+			Parse.Cloud.run('updateActivity', {
+				type: type,
+				compositionId: composition.id
+			}).then((response: Parse.Object) => {
+				defer.resolve(MapperSvc.activityMapper(response));
+			}, (error) => {
 				defer.reject(error);
 			});
 			return defer.promise;

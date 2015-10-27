@@ -1,9 +1,10 @@
-module lilybook.component {
+namespace lilybook.component {
 
 	class TodoController {
 
 		composition: data.IComposition;
-		activity: data.IActivity;
+		todo: data.IActivity;
+		user: data.IUser;
 		ready = false;
 
 		static $inject = [
@@ -15,18 +16,21 @@ module lilybook.component {
 			private activitySvc: data.IActivitySvc,
 			private userSvc: data.IUserSvc
 		) {
+			this.user = userSvc.current();
 			this.onInit();
 		}
 
 		onAdd() {
-			this.activitySvc.create(
-				data.ActivityType.Todo,
-				this.userSvc.current(),
-				this.composition,
-				{ progress: 0 }
-			).then((activity) => {
-				this.activity = activity;
-			})
+			if (this.user) {
+				this.activitySvc.create(
+					data.ActivityType.Todo,
+					this.userSvc.current(),
+					this.composition,
+					{ progress: 0 }
+				).then((activity) => {
+					this.todo = activity;
+				})
+			}
 		}
 
 		onInit() {
@@ -36,7 +40,7 @@ module lilybook.component {
 				this.composition
 			).then((activity) => {
 				this.ready = true;
-				this.activity = activity;
+				this.todo = activity;
 			})
 		}
 	}
@@ -45,8 +49,19 @@ module lilybook.component {
 		return {
 			restrict: 'E',
 			template: `
-				<md-button class="md-raised md-primary" ng-if="!todoCtrl.activity && todoCtrl.ready" ng-click="todoCtrl.onAdd()">Add TODO</md-button>
-				<md-button class="md-raised md-default" ng-if="todoCtrl.activity" ui-sref="app.home">In Progress ({{todoCtrl.activity.meta.progress}}%)</md-button>
+				<md-button 
+					class="md-raised md-primary" 
+					ng-if="!todoCtrl.todo && todoCtrl.ready"
+					ng-disabled="!todoCtrl.user"
+					ng-click="todoCtrl.onAdd()">
+					Add TODO
+				</md-button>
+				<md-button 
+					class="md-raised md-default" 
+					ng-if="todoCtrl.todo" 
+					ui-sref="app.home">
+					In Progress ({{todoCtrl.todo.meta.progress}}%)
+				</md-button>
 			`,
 			scope: {
 				composition: '='

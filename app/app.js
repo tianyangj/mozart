@@ -187,70 +187,6 @@ var lilybook;
                 this.ActivityDB = Parse.Object.extend('Activity');
             }
             ;
-            ActivitySvc.prototype.likeComposition = function (fromUser, composition) {
-                if (!fromUser) {
-                    return this.$q.reject('AUTH_REQUIRED');
-                }
-                var defer = this.$q.defer();
-                Parse.Cloud.run('likeComposition', {
-                    type: ActivityType.LikeComposition,
-                    compositionId: composition.id
-                }).then(function (response) {
-                    defer.resolve(data.MapperSvc.likeCompositionMapper(response));
-                }, function (error) {
-                    defer.reject(error);
-                });
-                return defer.promise;
-            };
-            ActivitySvc.prototype.unlikeComposition = function (fromUser, composition) {
-                if (!fromUser) {
-                    return this.$q.reject('AUTH_REQUIRED');
-                }
-                var defer = this.$q.defer();
-                Parse.Cloud.run('unlikeComposition', {
-                    type: ActivityType.LikeComposition,
-                    compositionId: composition.id
-                }).then(function (response) {
-                    defer.resolve(data.MapperSvc.likeCompositionMapper(response));
-                }, function (error) {
-                    defer.reject(error);
-                });
-                return defer.promise;
-            };
-            ActivitySvc.prototype.hasLikedComposition = function (fromUser, composition) {
-                if (!fromUser) {
-                    return this.$q.when(false);
-                }
-                var defer = this.$q.defer();
-                var query = new Parse.Query(this.ActivityDB);
-                query.equalTo('type', ActivityType.LikeComposition);
-                query.equalTo('fromUser', fromUser.base);
-                query.equalTo('composition', composition.base);
-                query.first().then(function (response) {
-                    console.log('like', response);
-                    if (response) {
-                        defer.resolve(true);
-                    }
-                    else {
-                        defer.resolve(false);
-                    }
-                }, function (error) {
-                    defer.reject(error);
-                });
-                return defer.promise;
-            };
-            ActivitySvc.prototype.totalLikedComposition = function (composition) {
-                var defer = this.$q.defer();
-                var query = new Parse.Query(this.ActivityDB);
-                query.equalTo('type', ActivityType.LikeComposition);
-                query.equalTo('composition', composition.base);
-                query.count().then(function (count) {
-                    defer.resolve(count);
-                }, function (error) {
-                    defer.reject(error);
-                });
-                return defer.promise;
-            };
             ActivitySvc.prototype.rateDifficulty = function (fromUser, composition, difficulty) {
                 if (!fromUser) {
                     return this.$q.reject('AUTH_REQUIRED');
@@ -297,7 +233,6 @@ var lilybook;
                     compositionId: composition.id,
                     meta: meta
                 }).then(function (response) {
-                    console.log(response);
                     defer.resolve(data.MapperSvc.activityMapper(response));
                 }, function (error) {
                     defer.reject(error);
@@ -306,7 +241,7 @@ var lilybook;
             };
             ActivitySvc.prototype.read = function (type, fromUser, composition) {
                 if (!fromUser) {
-                    return this.$q.reject('AUTH_REQUIRED');
+                    return this.$q.when(null);
                 }
                 var defer = this.$q.defer();
                 Parse.Cloud.run('readActivity', {
@@ -340,11 +275,23 @@ var lilybook;
                     return this.$q.reject('AUTH_REQUIRED');
                 }
                 var defer = this.$q.defer();
-                Parse.Cloud.run('updateActivity', {
+                Parse.Cloud.run('deleteActivity', {
                     type: type,
                     compositionId: composition.id
                 }).then(function (response) {
                     defer.resolve(data.MapperSvc.activityMapper(response));
+                }, function (error) {
+                    defer.reject(error);
+                });
+                return defer.promise;
+            };
+            ActivitySvc.prototype.count = function (type, composition) {
+                var defer = this.$q.defer();
+                var query = new Parse.Query(this.ActivityDB);
+                query.equalTo('type', type);
+                query.equalTo('composition', composition.base);
+                query.count().then(function (count) {
+                    defer.resolve(count);
                 }, function (error) {
                     defer.reject(error);
                 });
@@ -648,15 +595,6 @@ var lilybook;
                     firstPage: sheet.get('firstPage'),
                     lastPage: sheet.get('lastPage'),
                     pdfUrl: sheet.get('pdf') ? sheet.get('pdf').url() : null
-                };
-            };
-            MapperSvc.likeCompositionMapper = function (activity) {
-                return {
-                    base: activity,
-                    id: activity.id,
-                    type: data.ActivityType.LikeComposition,
-                    fromUser: activity.get('fromUser'),
-                    composition: activity.get('composition')
                 };
             };
             MapperSvc.difficultyMapper = function (activity) {
@@ -1312,51 +1250,71 @@ var lilybook;
 (function (lilybook) {
     var component;
     (function (component) {
-        'use strict';
-        function lbLikeCompositionDirective() {
+        var LikeController = (function () {
+            function LikeController($q, activitySvc, userSvc) {
+                this.$q = $q;
+                this.activitySvc = activitySvc;
+                this.userSvc = userSvc;
+                this.total = 0;
+                this.tooltip = 'Login to Like';
+                this.ready = false;
+                this.user = userSvc.current();
+                this.onInit();
+            }
+            LikeController.prototype.onLike = function () {
+                var _this = this;
+                if (this.user) {
+                    if (this.like) {
+                        console.log('deleting...');
+                        this.activitySvc.delete(lilybook.data.ActivityType.LikeComposition, this.user, this.composition).then(function () {
+                            _this.like = null;
+                            _this.tooltip = 'I like this';
+                            _this.total--;
+                        });
+                    }
+                    else {
+                        this.activitySvc.create(lilybook.data.ActivityType.LikeComposition, this.user, this.composition).then(function (like) {
+                            _this.like = like;
+                            _this.tooltip = 'Unlike';
+                            _this.total++;
+                        });
+                    }
+                }
+            };
+            LikeController.prototype.onInit = function () {
+                var _this = this;
+                this.$q.all([
+                    this.activitySvc.read(lilybook.data.ActivityType.LikeComposition, this.userSvc.current(), this.composition),
+                    this.activitySvc.count(lilybook.data.ActivityType.LikeComposition, this.composition)
+                ]).then(function (results) {
+                    _this.ready = true;
+                    _this.like = results[0];
+                    _this.total = results[1];
+                    if (_this.user) {
+                        _this.tooltip = _this.like ? 'Unlike' : 'I like this';
+                    }
+                });
+            };
+            LikeController.$inject = [
+                '$q',
+                'activitySvc',
+                'userSvc'
+            ];
+            return LikeController;
+        })();
+        function lbLikeDirective() {
             return {
                 restrict: 'E',
-                templateUrl: 'modules/component/templates/like-composition.html',
+                template: "\n\t\t\t\t<md-button\n\t\t\t\t\taria-label=\"Like\"\n\t\t\t\t\tclass=\"md-icon-button\"\n\t\t\t\t\tng-class=\"{'md-accent':likeCtrl.like}\"\n\t\t\t\t\tng-if=\"likeCtrl.ready\"\n\t\t\t\t\tng-click=\"likeCtrl.onLike()\"\n\t\t\t\t\tstyle=\"width:auto;padding-left:6px;\">\n\t\t\t\t\t<md-tooltip md-delay=\"0\">{{likeCtrl.tooltip}}</md-tooltip>\n\t\t\t\t\t<md-icon md-svg-src=\"assets/svg/ic_thumb_up.svg\"></md-icon>\n\t\t\t\t\t<span>{{likeCtrl.total}}</span>\n\t\t\t\t</md-button>\n\t\t\t",
                 scope: {
                     composition: '='
                 },
-                controller: ['$scope', '$rootScope', 'activitySvc', function ($scope, $rootScope, activitySvc) {
-                        $scope.onClick = function () {
-                            if ($rootScope.user) {
-                                if ($scope.liked) {
-                                    activitySvc.unlikeComposition($rootScope.user, $scope.composition).then(function () {
-                                        $scope.liked = !$scope.liked;
-                                        $scope.tooltip = 'I like this';
-                                        $scope.total--;
-                                    });
-                                }
-                                else {
-                                    activitySvc.likeComposition($rootScope.user, $scope.composition).then(function () {
-                                        $scope.liked = !$scope.liked;
-                                        $scope.tooltip = 'Unlike';
-                                        $scope.total++;
-                                    });
-                                }
-                            }
-                        };
-                        $rootScope.$watch('user', function (user) {
-                            if (user) {
-                                activitySvc.hasLikedComposition(user, $scope.composition).then(function (liked) {
-                                    $scope.liked = liked;
-                                    $scope.tooltip = liked ? 'Unlike' : 'I like this';
-                                });
-                            }
-                            else {
-                                $scope.tooltip = 'Login to Like';
-                            }
-                        });
-                        activitySvc.totalLikedComposition($scope.composition).then(function (count) {
-                            $scope.total = count;
-                        });
-                    }]
+                controller: LikeController,
+                controllerAs: 'likeCtrl',
+                bindToController: true
             };
         }
-        component.module.directive('lbLikeComposition', lbLikeCompositionDirective);
+        component.module.directive('lbLike', lbLikeDirective);
     })(component = lilybook.component || (lilybook.component = {}));
 })(lilybook || (lilybook = {}));
 var lilybook;
@@ -1670,19 +1628,22 @@ var lilybook;
                 this.activitySvc = activitySvc;
                 this.userSvc = userSvc;
                 this.ready = false;
+                this.user = userSvc.current();
                 this.onInit();
             }
             TodoController.prototype.onAdd = function () {
                 var _this = this;
-                this.activitySvc.create(lilybook.data.ActivityType.Todo, this.userSvc.current(), this.composition, { progress: 0 }).then(function (activity) {
-                    _this.activity = activity;
-                });
+                if (this.user) {
+                    this.activitySvc.create(lilybook.data.ActivityType.Todo, this.userSvc.current(), this.composition, { progress: 0 }).then(function (activity) {
+                        _this.todo = activity;
+                    });
+                }
             };
             TodoController.prototype.onInit = function () {
                 var _this = this;
                 this.activitySvc.read(lilybook.data.ActivityType.Todo, this.userSvc.current(), this.composition).then(function (activity) {
                     _this.ready = true;
-                    _this.activity = activity;
+                    _this.todo = activity;
                 });
             };
             TodoController.$inject = [
@@ -1694,7 +1655,7 @@ var lilybook;
         function lbTodoDirective() {
             return {
                 restrict: 'E',
-                template: "\n\t\t\t\t<md-button class=\"md-raised md-primary\" ng-if=\"!todoCtrl.activity && todoCtrl.ready\" ng-click=\"todoCtrl.onAdd()\">Add TODO</md-button>\n\t\t\t\t<md-button class=\"md-raised md-default\" ng-if=\"todoCtrl.activity\" ui-sref=\"app.home\">In Progress ({{todoCtrl.activity.meta.progress}}%)</md-button>\n\t\t\t",
+                template: "\n\t\t\t\t<md-button \n\t\t\t\t\tclass=\"md-raised md-primary\" \n\t\t\t\t\tng-if=\"!todoCtrl.todo && todoCtrl.ready\"\n\t\t\t\t\tng-disabled=\"!todoCtrl.user\"\n\t\t\t\t\tng-click=\"todoCtrl.onAdd()\">\n\t\t\t\t\tAdd TODO\n\t\t\t\t</md-button>\n\t\t\t\t<md-button \n\t\t\t\t\tclass=\"md-raised md-default\" \n\t\t\t\t\tng-if=\"todoCtrl.todo\" \n\t\t\t\t\tui-sref=\"app.home\">\n\t\t\t\t\tIn Progress ({{todoCtrl.todo.meta.progress}}%)\n\t\t\t\t</md-button>\n\t\t\t",
                 scope: {
                     composition: '='
                 },

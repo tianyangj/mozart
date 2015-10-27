@@ -65,16 +65,6 @@ namespace lilybook.data {
 			};
 		}
 
-		static likeCompositionMapper(activity: Parse.Object): IActivityLikeComposition {
-			return {
-				base: activity,
-				id: activity.id,
-				type: ActivityType.LikeComposition,
-				fromUser: activity.get('fromUser'),
-				composition: activity.get('composition')
-			};
-		}
-
 		static difficultyMapper(activity: any): IActivityDifficulty {
 			return {
 				base: activity,

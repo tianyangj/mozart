@@ -37,7 +37,7 @@
 		"app/modules/component/directives/lb-header.ts",
 		"app/modules/component/directives/lb-hero-composition.ts",
 		"app/modules/component/directives/lb-hover.ts",
-		"app/modules/component/directives/lb-like-composition.ts",
+		"app/modules/component/directives/lb-like.ts",
 		"app/modules/component/directives/lb-repertoire.ts",
 		"app/modules/component/directives/lb-select-composer.ts",
 		"app/modules/component/directives/lb-select-difficulty.ts",

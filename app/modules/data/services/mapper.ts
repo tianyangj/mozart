@@ -65,28 +65,6 @@ namespace lilybook.data {
 			};
 		}
 
-		static likeCompositionMapper(activity: Parse.Object): IActivityLikeComposition {
-			return {
-				base: activity,
-				id: activity.id,
-				type: ActivityType.LikeComposition,
-				fromUser: activity.get('fromUser'),
-				composition: activity.get('composition')
-			};
-		}
-
-		static difficultyMapper(activity: any): IActivityDifficulty {
-			return {
-				base: activity,
-				id: activity.id,
-				type: ActivityType.Difficulty,
-				fromUser: activity.get('fromUser'),
-				composition: activity.get('composition'),
-				difficulty: activity.get('difficulty'),
-				updatedAt: activity.updatedAt
-			};
-		}
-
 		static rcmMapper(rcm: Parse.Object): IDifficulty {
 			return {
 				base: rcm,
@@ -95,6 +73,19 @@ namespace lilybook.data {
 				value: rcm.get('value'),
 				certificate: rcm.get('certificate')
 			};
+		}
+
+		static activityMapper(activity: any): IActivity {
+			return activity ? {
+				base: activity,
+				id: activity.id,
+				type: activity.get('type'),
+				fromUser: activity.get('fromUser'),
+				composition: activity.get('composition'),
+				createdAt: activity.createdAt,
+				updatedAt: activity.updatedAt,
+				meta: activity.get('meta')
+			} : null;
 		}
 	}
 }

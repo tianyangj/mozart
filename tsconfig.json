@@ -37,13 +37,14 @@
 		"app/modules/component/directives/lb-header.ts",
 		"app/modules/component/directives/lb-hero-composition.ts",
 		"app/modules/component/directives/lb-hover.ts",
-		"app/modules/component/directives/lb-like-composition.ts",
+		"app/modules/component/directives/lb-like.ts",
 		"app/modules/component/directives/lb-repertoire.ts",
 		"app/modules/component/directives/lb-select-composer.ts",
 		"app/modules/component/directives/lb-select-difficulty.ts",
 		"app/modules/component/directives/lb-select-form.ts",
 		"app/modules/component/directives/lb-select-period.ts",
 		"app/modules/component/directives/lb-select-sort.ts",
-		"app/modules/component/directives/lb-slider-difficulty.ts"
+		"app/modules/component/directives/lb-slider-difficulty.ts",
+		"app/modules/component/directives/lb-todo.ts"
 	]
 }

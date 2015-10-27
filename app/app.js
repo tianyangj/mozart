@@ -173,11 +173,12 @@ var lilybook;
     (function (data) {
         'use strict';
         (function (ActivityType) {
-            ActivityType[ActivityType["LikeComposition"] = 0] = "LikeComposition";
+            ActivityType[ActivityType["Like"] = 0] = "Like";
             ActivityType[ActivityType["Follow"] = 1] = "Follow";
             ActivityType[ActivityType["Comment"] = 2] = "Comment";
             ActivityType[ActivityType["Repertoire"] = 3] = "Repertoire";
             ActivityType[ActivityType["Difficulty"] = 4] = "Difficulty";
+            ActivityType[ActivityType["Todo"] = 5] = "Todo";
         })(data.ActivityType || (data.ActivityType = {}));
         var ActivityType = data.ActivityType;
         var ActivitySvc = (function () {
@@ -186,61 +187,72 @@ var lilybook;
                 this.ActivityDB = Parse.Object.extend('Activity');
             }
             ;
-            ActivitySvc.prototype.likeComposition = function (fromUser, composition) {
+            ActivitySvc.prototype.create = function (type, fromUser, composition, meta) {
                 if (!fromUser) {
                     return this.$q.reject('AUTH_REQUIRED');
                 }
                 var defer = this.$q.defer();
-                Parse.Cloud.run('likeComposition', {
-                    type: ActivityType.LikeComposition,
-                    compositionId: composition.id
+                Parse.Cloud.run('createActivity', {
+                    type: type,
+                    compositionId: composition.id,
+                    meta: meta
                 }).then(function (response) {
-                    defer.resolve(data.MapperSvc.likeCompositionMapper(response));
+                    defer.resolve(data.MapperSvc.activityMapper(response));
                 }, function (error) {
                     defer.reject(error);
                 });
                 return defer.promise;
             };
-            ActivitySvc.prototype.unlikeComposition = function (fromUser, composition) {
+            ActivitySvc.prototype.read = function (type, fromUser, composition) {
+                if (!fromUser) {
+                    return this.$q.when(null);
+                }
+                var defer = this.$q.defer();
+                Parse.Cloud.run('readActivity', {
+                    type: type,
+                    compositionId: composition.id
+                }).then(function (response) {
+                    defer.resolve(data.MapperSvc.activityMapper(response));
+                }, function (error) {
+                    defer.reject(error);
+                });
+                return defer.promise;
+            };
+            ActivitySvc.prototype.update = function (type, fromUser, composition, meta) {
                 if (!fromUser) {
                     return this.$q.reject('AUTH_REQUIRED');
                 }
                 var defer = this.$q.defer();
-                Parse.Cloud.run('unlikeComposition', {
-                    type: ActivityType.LikeComposition,
-                    compositionId: composition.id
+                Parse.Cloud.run('updateActivity', {
+                    type: type,
+                    compositionId: composition.id,
+                    meta: meta
                 }).then(function (response) {
-                    defer.resolve(data.MapperSvc.likeCompositionMapper(response));
+                    defer.resolve(data.MapperSvc.activityMapper(response));
                 }, function (error) {
                     defer.reject(error);
                 });
                 return defer.promise;
             };
-            ActivitySvc.prototype.hasLikedComposition = function (fromUser, composition) {
+            ActivitySvc.prototype.delete = function (type, fromUser, composition) {
                 if (!fromUser) {
-                    return this.$q.when(false);
+                    return this.$q.reject('AUTH_REQUIRED');
                 }
                 var defer = this.$q.defer();
-                var query = new Parse.Query(this.ActivityDB);
-                query.equalTo('type', ActivityType.LikeComposition);
-                query.equalTo('fromUser', fromUser.base);
-                query.equalTo('composition', composition.base);
-                query.first().then(function (response) {
-                    if (response) {
-                        defer.resolve(true);
-                    }
-                    else {
-                        defer.resolve(false);
-                    }
+                Parse.Cloud.run('deleteActivity', {
+                    type: type,
+                    compositionId: composition.id
+                }).then(function (response) {
+                    defer.resolve(data.MapperSvc.activityMapper(response));
                 }, function (error) {
                     defer.reject(error);
                 });
                 return defer.promise;
             };
-            ActivitySvc.prototype.totalLikedComposition = function (composition) {
+            ActivitySvc.prototype.count = function (type, composition) {
                 var defer = this.$q.defer();
                 var query = new Parse.Query(this.ActivityDB);
-                query.equalTo('type', ActivityType.LikeComposition);
+                query.equalTo('type', type);
                 query.equalTo('composition', composition.base);
                 query.count().then(function (count) {
                     defer.resolve(count);
@@ -249,35 +261,14 @@ var lilybook;
                 });
                 return defer.promise;
             };
-            ActivitySvc.prototype.rateDifficulty = function (fromUser, composition, difficulty) {
-                if (!fromUser) {
-                    return this.$q.reject('AUTH_REQUIRED');
-                }
+            ActivitySvc.prototype.list = function (type, composition) {
                 var defer = this.$q.defer();
-                Parse.Cloud.run('rateDifficulty', {
-                    type: ActivityType.Difficulty,
-                    compositionId: composition.id,
-                    difficulty: difficulty
-                }).then(function (response) {
-                    defer.resolve(data.MapperSvc.difficultyMapper(response));
-                }, function (error) {
-                    defer.reject(error);
-                });
-                return defer.promise;
-            };
-            ActivitySvc.prototype.getDifficulty = function (fromUser, composition) {
-                var defer = this.$q.defer();
-                Parse.Cloud.run('getDifficulty', {
-                    type: ActivityType.Difficulty,
-                    compositionId: composition.id
-                }).then(function (response) {
-                    var difficulties = response.map(data.MapperSvc.difficultyMapper);
-                    defer.resolve({
-                        mine: fromUser ? difficulties.filter(function (difficulty) {
-                            return difficulty.fromUser.id === fromUser.id;
-                        })[0] : null,
-                        all: difficulties
-                    });
+                var query = new Parse.Query(this.ActivityDB);
+                query.equalTo('type', type);
+                query.equalTo('composition', composition.base);
+                query.find().then(function (response) {
+                    var activities = response.map(data.MapperSvc.activityMapper);
+                    defer.resolve(activities);
                 }, function (error) {
                     defer.reject(error);
                 });
@@ -583,26 +574,6 @@ var lilybook;
                     pdfUrl: sheet.get('pdf') ? sheet.get('pdf').url() : null
                 };
             };
-            MapperSvc.likeCompositionMapper = function (activity) {
-                return {
-                    base: activity,
-                    id: activity.id,
-                    type: data.ActivityType.LikeComposition,
-                    fromUser: activity.get('fromUser'),
-                    composition: activity.get('composition')
-                };
-            };
-            MapperSvc.difficultyMapper = function (activity) {
-                return {
-                    base: activity,
-                    id: activity.id,
-                    type: data.ActivityType.Difficulty,
-                    fromUser: activity.get('fromUser'),
-                    composition: activity.get('composition'),
-                    difficulty: activity.get('difficulty'),
-                    updatedAt: activity.updatedAt
-                };
-            };
             MapperSvc.rcmMapper = function (rcm) {
                 return {
                     base: rcm,
@@ -611,6 +582,18 @@ var lilybook;
                     value: rcm.get('value'),
                     certificate: rcm.get('certificate')
                 };
+            };
+            MapperSvc.activityMapper = function (activity) {
+                return activity ? {
+                    base: activity,
+                    id: activity.id,
+                    type: activity.get('type'),
+                    fromUser: activity.get('fromUser'),
+                    composition: activity.get('composition'),
+                    createdAt: activity.createdAt,
+                    updatedAt: activity.updatedAt,
+                    meta: activity.get('meta')
+                } : null;
             };
             return MapperSvc;
         })();
@@ -1235,51 +1218,70 @@ var lilybook;
 (function (lilybook) {
     var component;
     (function (component) {
-        'use strict';
-        function lbLikeCompositionDirective() {
+        var LikeController = (function () {
+            function LikeController($q, activitySvc, userSvc) {
+                this.$q = $q;
+                this.activitySvc = activitySvc;
+                this.userSvc = userSvc;
+                this.total = 0;
+                this.tooltip = 'Login to Like';
+                this.ready = false;
+                this.user = userSvc.current();
+                this.onInit();
+            }
+            LikeController.prototype.onLike = function () {
+                var _this = this;
+                if (this.user) {
+                    if (this.like) {
+                        this.activitySvc.delete(lilybook.data.ActivityType.Like, this.user, this.composition).then(function () {
+                            _this.like = null;
+                            _this.tooltip = 'I like this';
+                            _this.total--;
+                        });
+                    }
+                    else {
+                        this.activitySvc.create(lilybook.data.ActivityType.Like, this.user, this.composition).then(function (like) {
+                            _this.like = like;
+                            _this.tooltip = 'Unlike';
+                            _this.total++;
+                        });
+                    }
+                }
+            };
+            LikeController.prototype.onInit = function () {
+                var _this = this;
+                this.$q.all([
+                    this.activitySvc.read(lilybook.data.ActivityType.Like, this.userSvc.current(), this.composition),
+                    this.activitySvc.count(lilybook.data.ActivityType.Like, this.composition)
+                ]).then(function (results) {
+                    _this.ready = true;
+                    _this.like = results[0];
+                    _this.total = results[1];
+                    if (_this.user) {
+                        _this.tooltip = _this.like ? 'Unlike' : 'I like this';
+                    }
+                });
+            };
+            LikeController.$inject = [
+                '$q',
+                'activitySvc',
+                'userSvc'
+            ];
+            return LikeController;
+        })();
+        function lbLikeDirective() {
             return {
                 restrict: 'E',
-                templateUrl: 'modules/component/templates/like-composition.html',
+                template: "\n\t\t\t\t<md-button\n\t\t\t\t\taria-label=\"Like\"\n\t\t\t\t\tclass=\"md-icon-button\"\n\t\t\t\t\tng-class=\"{'md-accent':likeCtrl.like}\"\n\t\t\t\t\tng-if=\"likeCtrl.ready\"\n\t\t\t\t\tng-click=\"likeCtrl.onLike()\"\n\t\t\t\t\tstyle=\"width:auto;padding-left:6px;\">\n\t\t\t\t\t<md-tooltip md-delay=\"0\">{{likeCtrl.tooltip}}</md-tooltip>\n\t\t\t\t\t<md-icon md-svg-src=\"assets/svg/ic_thumb_up.svg\"></md-icon>\n\t\t\t\t\t<span>{{likeCtrl.total}}</span>\n\t\t\t\t</md-button>\n\t\t\t",
                 scope: {
                     composition: '='
                 },
-                controller: ['$scope', '$rootScope', 'activitySvc', function ($scope, $rootScope, activitySvc) {
-                        $scope.onClick = function () {
-                            if ($rootScope.user) {
-                                if ($scope.liked) {
-                                    activitySvc.unlikeComposition($rootScope.user, $scope.composition).then(function () {
-                                        $scope.liked = !$scope.liked;
-                                        $scope.tooltip = 'I like this';
-                                        $scope.total--;
-                                    });
-                                }
-                                else {
-                                    activitySvc.likeComposition($rootScope.user, $scope.composition).then(function () {
-                                        $scope.liked = !$scope.liked;
-                                        $scope.tooltip = 'Unlike';
-                                        $scope.total++;
-                                    });
-                                }
-                            }
-                        };
-                        $rootScope.$watch('user', function (user) {
-                            if (user) {
-                                activitySvc.hasLikedComposition(user, $scope.composition).then(function (liked) {
-                                    $scope.liked = liked;
-                                    $scope.tooltip = liked ? 'Unlike' : 'I like this';
-                                });
-                            }
-                            else {
-                                $scope.tooltip = 'Login to Like';
-                            }
-                        });
-                        activitySvc.totalLikedComposition($scope.composition).then(function (count) {
-                            $scope.total = count;
-                        });
-                    }]
+                controller: LikeController,
+                controllerAs: 'likeCtrl',
+                bindToController: true
             };
         }
-        component.module.directive('lbLikeComposition', lbLikeCompositionDirective);
+        component.module.directive('lbLike', lbLikeDirective);
     })(component = lilybook.component || (lilybook.component = {}));
 })(lilybook || (lilybook = {}));
 var lilybook;
@@ -1558,30 +1560,102 @@ var lilybook;
 (function (lilybook) {
     var component;
     (function (component) {
-        'use strict';
+        var SliderDifficultyController = (function () {
+            function SliderDifficultyController($q, activitySvc, userSvc) {
+                this.$q = $q;
+                this.activitySvc = activitySvc;
+                this.userSvc = userSvc;
+                this.ready = false;
+                this.user = userSvc.current();
+                this.onInit();
+            }
+            SliderDifficultyController.prototype.onChange = function () {
+                var _this = this;
+                if (this.user) {
+                    this.activitySvc.update(lilybook.data.ActivityType.Difficulty, this.user, this.composition, { difficulty: this.mine.meta.difficulty }).then(function (difficulty) {
+                        _this.mine = difficulty;
+                    });
+                }
+            };
+            SliderDifficultyController.prototype.onInit = function () {
+                var _this = this;
+                this.$q.all([
+                    this.activitySvc.read(lilybook.data.ActivityType.Difficulty, this.user, this.composition),
+                    this.activitySvc.list(lilybook.data.ActivityType.Difficulty, this.composition)
+                ]).then(function (results) {
+                    _this.ready = true;
+                    _this.mine = results[0];
+                    _this.all = results[1];
+                });
+            };
+            SliderDifficultyController.$inject = [
+                '$q',
+                'activitySvc',
+                'userSvc'
+            ];
+            return SliderDifficultyController;
+        })();
         function lbSliderDifficultyDirective() {
             return {
                 restrict: 'E',
-                templateUrl: 'modules/component/templates/slider-difficulty.html',
+                template: "\n\t\t\t\t<div class=\"md-padding\">\n\t\t\t\t\t<h4>On a scale of 1 to 10 (1 being easiest and 10 being hardest), how hard do you think this composition is?</h4>\n\t\t\t\t\t<div layout=\"row\" layout-align=\"center center\">\n\t\t\t\t\t\t<md-slider flex\n\t\t\t\t\t\t\tclass=\"md-default\"\n\t\t\t\t\t\t\tmd-discrete\n\t\t\t\t\t\t\tng-model=\"vm.mine.meta.difficulty\"\n\t\t\t\t\t\t\tng-change=\"vm.onChange()\"\n\t\t\t\t\t\t\tng-disabled=\"!vm.user\"\n\t\t\t\t\t\t\tstep=\"1\"\n\t\t\t\t\t\t\tmin=\"1\"\n\t\t\t\t\t\t\tmax=\"10\"\n\t\t\t\t\t\t\taria-label=\"Difficulty Slider\">\n\t\t\t\t\t\t</md-slider>\n\t\t\t\t\t\t<span class=\"md-padding\" ng-if=\"vm.mine.updatedAt\">(rated on {{vm.mine.updatedAt | date}})</span>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t",
                 scope: {
                     composition: '='
                 },
-                controller: ['$scope', '$rootScope', 'activitySvc', function ($scope, $rootScope, activitySvc) {
-                        activitySvc.getDifficulty($rootScope.user, $scope.composition).then(function (difficulty) {
-                            $scope.mine = difficulty.mine;
-                            $scope.all = difficulty.all;
-                        });
-                        $scope.$watch('mine.difficulty', function (newDifficulty, oldDifficulty) {
-                            if (newDifficulty && oldDifficulty && newDifficulty !== oldDifficulty) {
-                                activitySvc.rateDifficulty($rootScope.user, $scope.composition, newDifficulty).then(function (difficulty) {
-                                    $scope.mine = difficulty;
-                                });
-                            }
-                        });
-                    }]
+                controller: SliderDifficultyController,
+                controllerAs: 'vm',
+                bindToController: true
             };
         }
         component.module.directive('lbSliderDifficulty', lbSliderDifficultyDirective);
+    })(component = lilybook.component || (lilybook.component = {}));
+})(lilybook || (lilybook = {}));
+var lilybook;
+(function (lilybook) {
+    var component;
+    (function (component) {
+        var TodoController = (function () {
+            function TodoController(activitySvc, userSvc) {
+                this.activitySvc = activitySvc;
+                this.userSvc = userSvc;
+                this.ready = false;
+                this.user = userSvc.current();
+                this.onInit();
+            }
+            TodoController.prototype.onAdd = function () {
+                var _this = this;
+                if (this.user) {
+                    this.activitySvc.create(lilybook.data.ActivityType.Todo, this.userSvc.current(), this.composition, { progress: 0 }).then(function (activity) {
+                        _this.todo = activity;
+                    });
+                }
+            };
+            TodoController.prototype.onInit = function () {
+                var _this = this;
+                this.activitySvc.read(lilybook.data.ActivityType.Todo, this.userSvc.current(), this.composition).then(function (activity) {
+                    _this.ready = true;
+                    _this.todo = activity;
+                });
+            };
+            TodoController.$inject = [
+                'activitySvc',
+                'userSvc'
+            ];
+            return TodoController;
+        })();
+        function lbTodoDirective() {
+            return {
+                restrict: 'E',
+                template: "\n\t\t\t\t<md-button \n\t\t\t\t\tclass=\"md-raised md-primary\" \n\t\t\t\t\tng-if=\"!todoCtrl.todo && todoCtrl.ready\"\n\t\t\t\t\tng-disabled=\"!todoCtrl.user\"\n\t\t\t\t\tng-click=\"todoCtrl.onAdd()\">\n\t\t\t\t\tAdd TODO\n\t\t\t\t</md-button>\n\t\t\t\t<md-button \n\t\t\t\t\tclass=\"md-raised md-default\" \n\t\t\t\t\tng-if=\"todoCtrl.todo\" \n\t\t\t\t\tui-sref=\"app.home\">\n\t\t\t\t\tIn Progress ({{todoCtrl.todo.meta.progress}}%)\n\t\t\t\t</md-button>\n\t\t\t",
+                scope: {
+                    composition: '='
+                },
+                controller: TodoController,
+                controllerAs: 'todoCtrl',
+                bindToController: true
+            };
+        }
+        component.module.directive('lbTodo', lbTodoDirective);
     })(component = lilybook.component || (lilybook.component = {}));
 })(lilybook || (lilybook = {}));
 //# sourceMappingURL=app.js.map

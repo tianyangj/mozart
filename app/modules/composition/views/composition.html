@@ -5,8 +5,9 @@
 			<div class="md-padding">
 				<div layout="row" layout-align="center center">
 					<h1 class="md-display-1" flex>{{compositionCtrl.composition.title}}</h1>
-					<lb-like-composition composition="compositionCtrl.composition"></lb-like-composition>
-					<lb-repertoire composition="compositionCtrl.composition"></lb-repertoire>
+					<lb-like composition="compositionCtrl.composition"></lb-like>
+					<lb-todo composition="compositionCtrl.composition"></lb-todo>
+					<!--<lb-repertoire composition="compositionCtrl.composition"></lb-repertoire>
 					<md-menu md-position-mode="target-right target">
 						<md-button aria-label="More Menu" class="md-icon-button" ng-click="$mdOpenMenu($event)">
 							<md-icon md-svg-icon="assets/svg/ic_more_vert.svg"></md-icon>
@@ -19,7 +20,7 @@
 								<md-button ng-href="{{compositionCtrl.composition.imslp}}" target="_blank">Sheet music on IMSLP</md-button>
 							</md-menu-item>
 						</md-menu-content>
-					</md-menu>
+					</md-menu>-->
 				</div>
 				<p class="md-body-1 md-padding">
 					{{compositionCtrl.composition.description}}

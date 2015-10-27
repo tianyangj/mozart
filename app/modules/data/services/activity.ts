@@ -2,37 +2,32 @@ module lilybook.data {
 	'use strict';
 
 	export enum ActivityType {
-		LikeComposition,
+		Like,
 		Follow,
 		Comment,
 		Repertoire,
-		Difficulty
+		Difficulty,
+		Todo
 	}
 
 	export interface IActivity {
 		base: Parse.Object,
 		id: string,
 		type: ActivityType,
-		fromUser: IUser
-	}
-
-	export interface IActivityLikeComposition extends IActivity {
-		composition: IComposition
-	}
-
-	export interface IActivityDifficulty extends IActivity {
+		fromUser: IUser,
 		composition: IComposition,
-		difficulty: number,
-		updatedAt: Date
+		createdAt: Date,
+		updatedAt: Date,
+		meta?: any
 	}
 
 	export interface IActivitySvc {
-		likeComposition(fromUser: IUser, composition: IComposition): ng.IPromise<IActivityLikeComposition>
-		unlikeComposition(fromUser: IUser, composition: IComposition): ng.IPromise<IActivityLikeComposition>
-		hasLikedComposition(fromUser: IUser, composition: IComposition): ng.IPromise<boolean>
-		totalLikedComposition(composition: IComposition): ng.IPromise<number>
-		rateDifficulty(fromUser: IUser, composition: IComposition, difficulty: number): ng.IPromise<IActivityDifficulty>
-		getDifficulty(fromUser: IUser, composition: IComposition): ng.IPromise<{ mine: IActivityDifficulty, all: IActivityDifficulty[] }>
+		create(type: ActivityType, fromUser: IUser, composition: IComposition, meta?: any): ng.IPromise<IActivity>;
+		read(type: ActivityType, fromUser: IUser, composition: IComposition): ng.IPromise<IActivity>;
+		update(type: ActivityType, fromUser: IUser, composition: IComposition, meta?: any): ng.IPromise<IActivity>;
+		delete(type: ActivityType, fromUser: IUser, composition: IComposition): ng.IPromise<IActivity>;
+		count(type: ActivityType, composition: IComposition): ng.IPromise<number>;
+		list(type: ActivityType, composition: IComposition): ng.IPromise<IActivity[]>;
 	}
 
 	class ActivitySvc implements IActivitySvc {
@@ -45,63 +40,76 @@ module lilybook.data {
 			this.ActivityDB = Parse.Object.extend('Activity');
 		};
 
-		likeComposition(fromUser: IUser, composition: IComposition) {
+		create(type: ActivityType, fromUser: IUser, composition: IComposition, meta?: any) {
 			if (!fromUser) {
 				return this.$q.reject('AUTH_REQUIRED');
 			}
-			var defer = this.$q.defer<IActivityLikeComposition>();
-			Parse.Cloud.run('likeComposition', {
-				type: ActivityType.LikeComposition,
-				compositionId: composition.id
+			var defer = this.$q.defer<IActivity>();
+			Parse.Cloud.run('createActivity', {
+				type: type,
+				compositionId: composition.id,
+				meta: meta
 			}).then((response: Parse.Object) => {
-				defer.resolve(MapperSvc.likeCompositionMapper(response));
+				defer.resolve(MapperSvc.activityMapper(response));
 			}, (error) => {
 				defer.reject(error);
 			});
 			return defer.promise;
 		}
 
-		unlikeComposition(fromUser: IUser, composition: IComposition) {
+		read(type: ActivityType, fromUser: IUser, composition: IComposition) {
+			if (!fromUser) {
+				return this.$q.when(null);
+			}
+			var defer = this.$q.defer<IActivity>();
+			Parse.Cloud.run('readActivity', {
+				type: type,
+				compositionId: composition.id
+			}).then((response: Parse.Object) => {
+				defer.resolve(MapperSvc.activityMapper(response));
+			}, (error) => {
+				defer.reject(error);
+			});
+			return defer.promise;
+		}
+
+		update(type: ActivityType, fromUser: IUser, composition: IComposition, meta?: any) {
 			if (!fromUser) {
 				return this.$q.reject('AUTH_REQUIRED');
 			}
-			var defer = this.$q.defer<IActivityLikeComposition>();
-			Parse.Cloud.run('unlikeComposition', {
-				type: ActivityType.LikeComposition,
+			var defer = this.$q.defer<IActivity>();
+			Parse.Cloud.run('updateActivity', {
+				type: type,
+				compositionId: composition.id,
+				meta: meta
+			}).then((response: Parse.Object) => {
+				defer.resolve(MapperSvc.activityMapper(response));
+			}, (error) => {
+				defer.reject(error);
+			});
+			return defer.promise;
+		}
+
+		delete(type: ActivityType, fromUser: IUser, composition: IComposition) {
+			if (!fromUser) {
+				return this.$q.reject('AUTH_REQUIRED');
+			}
+			var defer = this.$q.defer<IActivity>();
+			Parse.Cloud.run('deleteActivity', {
+				type: type,
 				compositionId: composition.id
 			}).then((response: Parse.Object) => {
-				defer.resolve(MapperSvc.likeCompositionMapper(response));
+				defer.resolve(MapperSvc.activityMapper(response));
 			}, (error) => {
 				defer.reject(error);
 			});
 			return defer.promise;
 		}
 
-		hasLikedComposition(fromUser: IUser, composition: IComposition) {
-			if (!fromUser) {
-				return this.$q.when<boolean>(false);
-			}
-			var defer = this.$q.defer<boolean>();
-			var query = new Parse.Query(this.ActivityDB);
-			query.equalTo('type', ActivityType.LikeComposition);
-			query.equalTo('fromUser', fromUser.base);
-			query.equalTo('composition', composition.base);
-			query.first().then((response: Parse.Object) => {
-				if (response) {
-					defer.resolve(true);
-				} else {
-					defer.resolve(false);
-				}
-			}, (error) => {
-				defer.reject(error);
-			});
-			return defer.promise;
-		}
-
-		totalLikedComposition(composition: IComposition) {
+		count(type: ActivityType, composition: IComposition) {
 			var defer = this.$q.defer<number>();
 			var query = new Parse.Query(this.ActivityDB);
-			query.equalTo('type', ActivityType.LikeComposition);
+			query.equalTo('type', type);
 			query.equalTo('composition', composition.base);
 			query.count().then((count: number) => {
 				defer.resolve(count);
@@ -111,36 +119,14 @@ module lilybook.data {
 			return defer.promise;
 		}
 
-		rateDifficulty(fromUser: IUser, composition: IComposition, difficulty: number) {
-			if (!fromUser) {
-				return this.$q.reject('AUTH_REQUIRED');
-			}
-			var defer = this.$q.defer<IActivityDifficulty>();
-			Parse.Cloud.run('rateDifficulty', {
-				type: ActivityType.Difficulty,
-				compositionId: composition.id,
-				difficulty: difficulty
-			}).then((response: Parse.Object) => {
-				defer.resolve(MapperSvc.difficultyMapper(response));
-			}, (error) => {
-				defer.reject(error);
-			});
-			return defer.promise;
-		}
-
-		getDifficulty(fromUser: IUser, composition: IComposition) {
-			var defer = this.$q.defer<{ mine: IActivityDifficulty, all: IActivityDifficulty[] }>();
-			Parse.Cloud.run('getDifficulty', {
-				type: ActivityType.Difficulty,
-				compositionId: composition.id
-			}).then((response: Parse.Object[]) => {
-				var difficulties = response.map(MapperSvc.difficultyMapper);
-				defer.resolve({
-					mine: fromUser ? difficulties.filter((difficulty) => {
-						return difficulty.fromUser.id === fromUser.id;
-					})[0] : null,
-					all: difficulties
-				});
+		list(type: ActivityType, composition: IComposition) {
+			var defer = this.$q.defer<IActivity[]>();
+			var query = new Parse.Query(this.ActivityDB);
+			query.equalTo('type', type);
+			query.equalTo('composition', composition.base);
+			query.find().then((response: Parse.Object[]) => {
+				var activities = response.map(MapperSvc.activityMapper);
+				defer.resolve(activities);
 			}, (error) => {
 				defer.reject(error);
 			});

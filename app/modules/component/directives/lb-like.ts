@@ -27,7 +27,6 @@ namespace lilybook.component {
 		onLike() {
 			if (this.user) {
 				if (this.like) {
-					console.log('deleting...')
 					this.activitySvc.delete(
 						data.ActivityType.Like,
 						this.user,

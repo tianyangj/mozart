@@ -65,18 +65,6 @@ namespace lilybook.data {
 			};
 		}
 
-		static difficultyMapper(activity: any): IActivityDifficulty {
-			return {
-				base: activity,
-				id: activity.id,
-				type: ActivityType.Difficulty,
-				fromUser: activity.get('fromUser'),
-				composition: activity.get('composition'),
-				difficulty: activity.get('difficulty'),
-				updatedAt: activity.updatedAt
-			};
-		}
-
 		static rcmMapper(rcm: Parse.Object): IDifficulty {
 			return {
 				base: rcm,
@@ -87,13 +75,15 @@ namespace lilybook.data {
 			};
 		}
 
-		static activityMapper(activity: Parse.Object): IActivity {
+		static activityMapper(activity: any): IActivity {
 			return activity ? {
 				base: activity,
 				id: activity.id,
 				type: activity.get('type'),
 				fromUser: activity.get('fromUser'),
 				composition: activity.get('composition'),
+				createdAt: activity.createdAt,
+				updatedAt: activity.updatedAt,
 				meta: activity.get('meta')
 			} : null;
 		}

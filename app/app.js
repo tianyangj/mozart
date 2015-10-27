@@ -187,42 +187,6 @@ var lilybook;
                 this.ActivityDB = Parse.Object.extend('Activity');
             }
             ;
-            ActivitySvc.prototype.rateDifficulty = function (fromUser, composition, difficulty) {
-                if (!fromUser) {
-                    return this.$q.reject('AUTH_REQUIRED');
-                }
-                var defer = this.$q.defer();
-                Parse.Cloud.run('rateDifficulty', {
-                    type: ActivityType.Difficulty,
-                    compositionId: composition.id,
-                    difficulty: difficulty
-                }).then(function (response) {
-                    defer.resolve(data.MapperSvc.difficultyMapper(response));
-                }, function (error) {
-                    defer.reject(error);
-                });
-                return defer.promise;
-            };
-            ActivitySvc.prototype.getDifficulty = function (fromUser, composition) {
-                var defer = this.$q.defer();
-                Parse.Cloud.run('getDifficulty', {
-                    type: ActivityType.Difficulty,
-                    compositionId: composition.id
-                }).then(function (response) {
-                    console.log('difficulty', response[0]);
-                    var difficulties = response.map(data.MapperSvc.difficultyMapper);
-                    console.log(difficulties);
-                    defer.resolve({
-                        mine: fromUser ? difficulties.filter(function (difficulty) {
-                            return difficulty.fromUser.id === fromUser.id;
-                        })[0] : null,
-                        all: difficulties
-                    });
-                }, function (error) {
-                    defer.reject(error);
-                });
-                return defer.promise;
-            };
             ActivitySvc.prototype.create = function (type, fromUser, composition, meta) {
                 if (!fromUser) {
                     return this.$q.reject('AUTH_REQUIRED');
@@ -292,6 +256,19 @@ var lilybook;
                 query.equalTo('composition', composition.base);
                 query.count().then(function (count) {
                     defer.resolve(count);
+                }, function (error) {
+                    defer.reject(error);
+                });
+                return defer.promise;
+            };
+            ActivitySvc.prototype.list = function (type, composition) {
+                var defer = this.$q.defer();
+                var query = new Parse.Query(this.ActivityDB);
+                query.equalTo('type', type);
+                query.equalTo('composition', composition.base);
+                query.find().then(function (response) {
+                    var activities = response.map(data.MapperSvc.activityMapper);
+                    defer.resolve(activities);
                 }, function (error) {
                     defer.reject(error);
                 });
@@ -597,17 +574,6 @@ var lilybook;
                     pdfUrl: sheet.get('pdf') ? sheet.get('pdf').url() : null
                 };
             };
-            MapperSvc.difficultyMapper = function (activity) {
-                return {
-                    base: activity,
-                    id: activity.id,
-                    type: data.ActivityType.Difficulty,
-                    fromUser: activity.get('fromUser'),
-                    composition: activity.get('composition'),
-                    difficulty: activity.get('difficulty'),
-                    updatedAt: activity.updatedAt
-                };
-            };
             MapperSvc.rcmMapper = function (rcm) {
                 return {
                     base: rcm,
@@ -624,6 +590,8 @@ var lilybook;
                     type: activity.get('type'),
                     fromUser: activity.get('fromUser'),
                     composition: activity.get('composition'),
+                    createdAt: activity.createdAt,
+                    updatedAt: activity.updatedAt,
                     meta: activity.get('meta')
                 } : null;
             };
@@ -1265,7 +1233,6 @@ var lilybook;
                 var _this = this;
                 if (this.user) {
                     if (this.like) {
-                        console.log('deleting...');
                         this.activitySvc.delete(lilybook.data.ActivityType.Like, this.user, this.composition).then(function () {
                             _this.like = null;
                             _this.tooltip = 'I like this';
@@ -1593,27 +1560,51 @@ var lilybook;
 (function (lilybook) {
     var component;
     (function (component) {
-        'use strict';
+        var SliderDifficultyController = (function () {
+            function SliderDifficultyController($q, activitySvc, userSvc) {
+                this.$q = $q;
+                this.activitySvc = activitySvc;
+                this.userSvc = userSvc;
+                this.ready = false;
+                this.user = userSvc.current();
+                this.onInit();
+            }
+            SliderDifficultyController.prototype.onChange = function () {
+                var _this = this;
+                if (this.user) {
+                    this.activitySvc.update(lilybook.data.ActivityType.Difficulty, this.user, this.composition, { difficulty: this.mine.meta.difficulty }).then(function (difficulty) {
+                        _this.mine = difficulty;
+                    });
+                }
+            };
+            SliderDifficultyController.prototype.onInit = function () {
+                var _this = this;
+                this.$q.all([
+                    this.activitySvc.read(lilybook.data.ActivityType.Difficulty, this.user, this.composition),
+                    this.activitySvc.list(lilybook.data.ActivityType.Difficulty, this.composition)
+                ]).then(function (results) {
+                    _this.ready = true;
+                    _this.mine = results[0];
+                    _this.all = results[1];
+                });
+            };
+            SliderDifficultyController.$inject = [
+                '$q',
+                'activitySvc',
+                'userSvc'
+            ];
+            return SliderDifficultyController;
+        })();
         function lbSliderDifficultyDirective() {
             return {
                 restrict: 'E',
-                templateUrl: 'modules/component/templates/slider-difficulty.html',
+                template: "\n\t\t\t\t<div class=\"md-padding\">\n\t\t\t\t\t<h4>On a scale of 1 to 10 (1 being easiest and 10 being hardest), how hard do you think this composition is?</h4>\n\t\t\t\t\t<div layout=\"row\" layout-align=\"center center\">\n\t\t\t\t\t\t<md-slider flex\n\t\t\t\t\t\t\tclass=\"md-default\"\n\t\t\t\t\t\t\tmd-discrete\n\t\t\t\t\t\t\tng-model=\"vm.mine.meta.difficulty\"\n\t\t\t\t\t\t\tng-change=\"vm.onChange()\"\n\t\t\t\t\t\t\tng-disabled=\"!vm.user\"\n\t\t\t\t\t\t\tstep=\"1\"\n\t\t\t\t\t\t\tmin=\"1\"\n\t\t\t\t\t\t\tmax=\"10\"\n\t\t\t\t\t\t\taria-label=\"Difficulty Slider\">\n\t\t\t\t\t\t</md-slider>\n\t\t\t\t\t\t<span class=\"md-padding\" ng-if=\"vm.mine.updatedAt\">(rated on {{vm.mine.updatedAt | date}})</span>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t",
                 scope: {
                     composition: '='
                 },
-                controller: ['$scope', '$rootScope', 'activitySvc', function ($scope, $rootScope, activitySvc) {
-                        activitySvc.getDifficulty($rootScope.user, $scope.composition).then(function (difficulty) {
-                            $scope.mine = difficulty.mine;
-                            $scope.all = difficulty.all;
-                        });
-                        $scope.$watch('mine.difficulty', function (newDifficulty, oldDifficulty) {
-                            if (newDifficulty && oldDifficulty && newDifficulty !== oldDifficulty) {
-                                activitySvc.rateDifficulty($rootScope.user, $scope.composition, newDifficulty).then(function (difficulty) {
-                                    $scope.mine = difficulty;
-                                });
-                            }
-                        });
-                    }]
+                controller: SliderDifficultyController,
+                controllerAs: 'vm',
+                bindToController: true
             };
         }
         component.module.directive('lbSliderDifficulty', lbSliderDifficultyDirective);

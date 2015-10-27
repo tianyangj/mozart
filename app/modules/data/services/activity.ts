@@ -2,7 +2,7 @@ module lilybook.data {
 	'use strict';
 
 	export enum ActivityType {
-		LikeComposition,
+		Like,
 		Follow,
 		Comment,
 		Repertoire,

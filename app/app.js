@@ -173,7 +173,7 @@ var lilybook;
     (function (data) {
         'use strict';
         (function (ActivityType) {
-            ActivityType[ActivityType["LikeComposition"] = 0] = "LikeComposition";
+            ActivityType[ActivityType["Like"] = 0] = "Like";
             ActivityType[ActivityType["Follow"] = 1] = "Follow";
             ActivityType[ActivityType["Comment"] = 2] = "Comment";
             ActivityType[ActivityType["Repertoire"] = 3] = "Repertoire";
@@ -1266,14 +1266,14 @@ var lilybook;
                 if (this.user) {
                     if (this.like) {
                         console.log('deleting...');
-                        this.activitySvc.delete(lilybook.data.ActivityType.LikeComposition, this.user, this.composition).then(function () {
+                        this.activitySvc.delete(lilybook.data.ActivityType.Like, this.user, this.composition).then(function () {
                             _this.like = null;
                             _this.tooltip = 'I like this';
                             _this.total--;
                         });
                     }
                     else {
-                        this.activitySvc.create(lilybook.data.ActivityType.LikeComposition, this.user, this.composition).then(function (like) {
+                        this.activitySvc.create(lilybook.data.ActivityType.Like, this.user, this.composition).then(function (like) {
                             _this.like = like;
                             _this.tooltip = 'Unlike';
                             _this.total++;
@@ -1284,8 +1284,8 @@ var lilybook;
             LikeController.prototype.onInit = function () {
                 var _this = this;
                 this.$q.all([
-                    this.activitySvc.read(lilybook.data.ActivityType.LikeComposition, this.userSvc.current(), this.composition),
-                    this.activitySvc.count(lilybook.data.ActivityType.LikeComposition, this.composition)
+                    this.activitySvc.read(lilybook.data.ActivityType.Like, this.userSvc.current(), this.composition),
+                    this.activitySvc.count(lilybook.data.ActivityType.Like, this.composition)
                 ]).then(function (results) {
                     _this.ready = true;
                     _this.like = results[0];

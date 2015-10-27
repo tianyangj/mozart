@@ -29,7 +29,7 @@ namespace lilybook.component {
 				if (this.like) {
 					console.log('deleting...')
 					this.activitySvc.delete(
-						data.ActivityType.LikeComposition,
+						data.ActivityType.Like,
 						this.user,
 						this.composition
 					).then(() => {
@@ -39,7 +39,7 @@ namespace lilybook.component {
 					});
 				} else {
 					this.activitySvc.create(
-						data.ActivityType.LikeComposition,
+						data.ActivityType.Like,
 						this.user,
 						this.composition
 					).then((like) => {
@@ -54,12 +54,12 @@ namespace lilybook.component {
 		onInit() {
 			this.$q.all([
 				this.activitySvc.read(
-					data.ActivityType.LikeComposition,
+					data.ActivityType.Like,
 					this.userSvc.current(),
 					this.composition
 				),
 				this.activitySvc.count(
-					data.ActivityType.LikeComposition,
+					data.ActivityType.Like,
 					this.composition
 				)
 			]).then((results) => {
